@@ -10,7 +10,7 @@
 
 - Poser des questions sur l'utilisation des services externes d'assurance.
 - Definir des composants a mettre en place à partir des cas utilisations
-- Faire un Walking Skeleton
+- Faire un Shéma d'architecture de notre Walking Skeleton
 
 ### Green
 
