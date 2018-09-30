@@ -4,13 +4,13 @@
 
 ### Achieved
 
-definition des personas, des scénarios et des user stories
+-Definition des personas, des scénarios et des users stories
 
 ### Planned
 
-definitions des composants a mettre en place à partir des use case 
-
-Besoin de plus d'information par rapport aux services d'information par rapport aux services d'assurance
+- Poser des questions sur l'utilisation des services externes d'assurance.
+-Definir des composants a mettre en place à partir des cas utilisations
+-Faire un Walking Skeleton
 
 ### Green
 
