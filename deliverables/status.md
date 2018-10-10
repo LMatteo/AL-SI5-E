@@ -14,3 +14,15 @@
 
 ### Green
 
+## Week 40 
+
+### Achieved
+
+- diagramme de composant 
+
+### Planned
+
+- choisir les technologies 
+- repartition du travail 
+
+### Green
