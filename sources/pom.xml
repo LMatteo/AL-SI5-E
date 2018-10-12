@@ -98,22 +98,17 @@
             <scope>test</scope>
         </dependency>
         <!-- Core library: Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.20</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--
         <dependency>
             <groupId>org.apache.openjpa</groupId>
             <artifactId>openjpa-maven-plugin</artifactId>
             <version>2.4.1</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
     <build>
-        <finalName>polyevent-backend</finalName>
         <defaultGoal>package</defaultGoal>
         <plugins>
+            <!--
             <plugin>
                 <groupId>org.apache.openjpa</groupId>
                 <artifactId>openjpa-maven-plugin</artifactId>
@@ -138,9 +133,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
-                    <!--
                      otherwise openejb embedded and tomee embedded shares the same context and EJBContainer is broken
-                    -->
+                    --><!--
                     <reuseForks>false</reuseForks>
                     <excludes>
                         <exclude>**/*IntegrationTest.java</exclude>
@@ -164,7 +158,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
