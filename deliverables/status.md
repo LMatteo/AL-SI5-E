@@ -1,5 +1,20 @@
 # Status
 
+## Week 41
+
+### Achieved
+
+- repartition des roles 
+- choix de la technologie
+- mise en place du projet 
+
+### Planned
+
+- definition des interfaces 
+- demarrage du code 
+
+### Green
+
 ## Week 40
 
 ### Achieved
