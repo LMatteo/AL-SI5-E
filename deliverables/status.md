@@ -11,7 +11,7 @@
 ### Planned
 
 - definition des interfaces 
-- demarrage du code 
+- démarrage de l'implémentation
 
 ### Green
 
