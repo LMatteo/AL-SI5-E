@@ -6,6 +6,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 sh '''
+                    cd sources
                     mvn install
                 '''
             }
