@@ -14,11 +14,19 @@ pipeline {
         stage('Build images') {
             steps {
                 sh '''
-                    docker build -t hsy20000118/blablamove-path-service:latest ./path-service
-                    docker build -t hsy20000118/blablamove-contract-registry:latest ./contract-registry
-                    docker build -t hsy20000118/blablamove-contract-instance:latest ./contract-instance
-                    docker build -t hsy20000118/blablamove-agency-notifier:latest ./agency-notifier
+                    docker build -t hsy20000118/blablamove-path-service:latest ./sources/path-service
+                    docker build -t hsy20000118/blablamove-contract-registry:latest ./sources/contract-registry
+                    docker build -t hsy20000118/blablamove-contract-instance:latest ./sources/contract-instance
+                    docker build -t hsy20000118/blablamove-agency-notifier:latest ./sources/agency-notifier
                 '''
+            }
+            post { 
+                always { 
+                    sh '''
+                        docker container prune -f
+                        docker image prune -f
+                    '''
+                }
             }
         }
         stage('Push images') {
@@ -32,14 +40,6 @@ pipeline {
                     '''
                 }
             }
-        }
-    }
-    post { 
-        always { 
-            sh '''
-                docker container prune -f
-                docker image prune -f
-            '''
         }
     }
 }
