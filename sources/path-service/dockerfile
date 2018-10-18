@@ -1,2 +1,2 @@
-FROM tomee:8-jre-8.0.0-M1-webprofile
+FROM tomee:8-jre-7.1.0-webprofile
 COPY target/*.war /usr/local/tomee/webapps/
