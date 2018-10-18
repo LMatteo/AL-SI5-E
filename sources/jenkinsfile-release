@@ -1,0 +1,36 @@
+pipeline {
+    agent  { 
+        label 'slave-3.23-maven-3.5.4'
+    }
+    stages {
+        stage('Build & Test') {
+            steps {
+                sh '''
+                    mvn install
+                '''
+            }
+        }
+        stage('Build images') {
+            steps {
+                sh '''
+                    docker build -t hsy20000118/blablamove-path-service:latest ./path-service
+                    docker build -t hsy20000118/blablamove-contract-registry:latest ./contract-registry
+                    docker build -t hsy20000118/blablamove-contract-instance:latest ./contract-instance
+                    docker build -t hsy20000118/blablamove-agency-notifier:latest ./agency-notifier
+                '''
+            }
+        }
+        stage('Push images') {
+            steps {
+                withDockerRegistry([ credentialsId: "a98e883f-4efa-48cb-9dcc-7922a4582450", url: "" ]) {
+                    sh '''
+                        docker push hsy20000118/blablamove-path-service:latest
+                        docker push hsy20000118/blablamove-contract-registry:latest
+                        docker push hsy20000118/blablamove-contract-instance:latest
+                        docker push hsy20000118/blablamove-agency-notifier:latest
+                    '''
+                }
+            }
+        }
+    }
+}
