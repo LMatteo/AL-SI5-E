@@ -14,6 +14,8 @@
         <module>contract-instance</module>
         <module>contract-registry</module>
         <module>agency-notifier</module>
+        <module>customer-ws</module>
+        <module>common</module>
     </modules>
 
     <properties>
