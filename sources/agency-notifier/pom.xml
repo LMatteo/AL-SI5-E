@@ -4,6 +4,20 @@
     <artifactId>agency-notifier</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>fr.unice.polytech.si5.al.e</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>fr.unice.polytech.si5.al.e</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
     <parent>
         <groupId>fr.unice.polytech.si5.al.e</groupId>
         <artifactId>blabla-move</artifactId>

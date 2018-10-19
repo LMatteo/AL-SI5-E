@@ -1,6 +1,25 @@
-### Répartition 
+# BlaBlaMove
+
+## How to build/run everything
+
+### Build
+
+``` 
+cd ./sources
+mvn clean install
+```
+
+### Run project
+
+``` 
+cd ./sources/customer-ws
+mvn tomee:run
+```
+
+### Repartition 
 
 #### Path service
+
 Shiyang Huang 
 
 #### Contract Registry 
