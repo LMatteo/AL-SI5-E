@@ -7,6 +7,8 @@
 
         <jta-data-source>TCFDataSource</jta-data-source>
 
+        <class>fr.unice.polytech.si5.al.e.model.Contract</class>
+
 
 
         <properties>
@@ -15,4 +17,5 @@
         </properties>
 
     </persistence-unit>
+</persistence>
 

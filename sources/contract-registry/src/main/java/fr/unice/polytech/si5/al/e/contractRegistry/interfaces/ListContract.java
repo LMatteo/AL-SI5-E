@@ -1,4 +1,4 @@
-package fr.unice.polytech.si5.aal.e.interfaces;
+package fr.unice.polytech.si5.al.e.contractRegistry.interfaces;
 
 import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.type.Types;
