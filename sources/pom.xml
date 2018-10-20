@@ -183,7 +183,7 @@
             <plugin>
                 <groupId>org.apache.openejb.maven</groupId>
                 <artifactId>tomee-maven-plugin</artifactId>
-                <version>${versions.tomee.embedded}</version>
+                <version>${versions.tomee}</version>
                 <configuration>
                     <!--
                      From TomEE to TomEE+ to support the web services stack
