@@ -32,7 +32,7 @@ public class ContractRegistryBean implements HandleContract, ListContract {
         CriteriaQuery<Contract> criteria = builder.createQuery(Contract.class);
         Root<Contract> root =  criteria.from(Contract.class);
 
-        //criteria.select(root).where(builder.equal(root.get("name"), name));
+        criteria.select(root).where(builder.equal(root.get("type"), type));
         TypedQuery<Contract> query = manager.createQuery(criteria);
 
         List<Contract> contracts = query.getResultList();
@@ -55,6 +55,34 @@ public class ContractRegistryBean implements HandleContract, ListContract {
 
     @Override
     public Contract updateContractDescription(int id, String description) {
-        return null;
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<Contract> criteria = builder.createQuery(Contract.class);
+        Root<Contract> root =  criteria.from(Contract.class);
+
+        criteria.select(root).where(builder.equal(root.get("id"), id));
+        TypedQuery<Contract> query = manager.createQuery(criteria);
+
+        Contract contract = query.getSingleResult();
+
+        contract.setDescription(description);
+
+        manager.merge(contract);
+
+        return contract;
+    }
+
+    @Override
+    public void clear() {
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<Contract> criteria = builder.createQuery(Contract.class);
+        Root<Contract> root =  criteria.from(Contract.class);
+
+        TypedQuery<Contract> query = manager.createQuery(criteria);
+
+        List<Contract> contracts = query.getResultList();
+
+        for(Contract contract : contracts){
+            manager.remove(contract);
+        }
     }
 }

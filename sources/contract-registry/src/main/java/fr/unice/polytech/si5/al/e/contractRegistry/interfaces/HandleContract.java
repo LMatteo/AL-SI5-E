@@ -9,4 +9,5 @@ import javax.ejb.Local;
 public interface HandleContract {
     Contract addContract(Types type,String description, String mail);
     Contract updateContractDescription(int id,String description);
+    void clear();
 }
