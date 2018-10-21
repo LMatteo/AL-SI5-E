@@ -1,2 +1,0 @@
-FROM tomee:8-jre-7.1.0-webprofile
-COPY target/*.jar /usr/local/tomee/webapps/

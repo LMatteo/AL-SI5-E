@@ -14,10 +14,7 @@ pipeline {
         stage('Build images') {
             steps {
                 sh '''
-                    docker build -t hsy20000118/blablamove-path-service:latest ./sources/path-service
-                    docker build -t hsy20000118/blablamove-contract-registry:latest ./sources/contract-registry
-                    docker build -t hsy20000118/blablamove-contract-instance:latest ./sources/contract-instance
-                    docker build -t hsy20000118/blablamove-agency-notifier:latest ./sources/agency-notifier
+                    docker build -t hsy20000118/blablamove .
                 '''
             }
             post { 
@@ -33,10 +30,7 @@ pipeline {
             steps {
                 withDockerRegistry([ credentialsId: "a98e883f-4efa-48cb-9dcc-7922a4582450", url: "" ]) {
                     sh '''
-                        docker push hsy20000118/blablamove-path-service:latest
-                        docker push hsy20000118/blablamove-contract-registry:latest
-                        docker push hsy20000118/blablamove-contract-instance:latest
-                        docker push hsy20000118/blablamove-agency-notifier:latest
+                        docker push hsy20000118/blablamove:latest
                     '''
                 }
             }
