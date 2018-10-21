@@ -2,19 +2,15 @@ package fr.unice.polytech.si5.al.e.model;
 
 import fr.unice.polytech.si5.al.e.model.type.Types;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 public class Contract implements Serializable {
 
-
-    //not sure about this attribute
-    //private Contact contact;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private Contact contact;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,6 +43,14 @@ public class Contract implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     @Override

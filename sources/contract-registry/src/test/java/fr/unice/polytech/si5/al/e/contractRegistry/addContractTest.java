@@ -11,10 +11,13 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
+import java.util.Collection;
+import java.util.List;
 
 @RunWith(Arquillian.class)
 public class addContractTest {
@@ -38,7 +41,15 @@ public class addContractTest {
 
     @Test
     public void test(){
+
         Contract contract = handleContract.addContract(Types.FRAGILE,"salut","salut");
+        Contract contract1 = handleContract.addContract(Types.FRAGILE,"salut","salut");
+        Contract contract2 = handleContract.addContract(Types.FRAGILE,"salut","salut");
+        Contract contract3 = handleContract.addContract(Types.FRAGILE,"salut","salut");
+        Contract contract4 = handleContract.addContract(Types.FRAGILE,"salut","salut");
+        Collection<Contract> contracts = listContract.getContractByType(Types.FRAGILE);
+
+        Assert.assertEquals(contracts.size(),5);
     }
 
 
