@@ -20,6 +20,6 @@ public class CustomerWebServiceImpl {
     @POST
     public List<Contract> listContracts(List<Constraint> constraints) {
         // return listContract.listContracts(constraints);
-        return Collections.singletonList(new Contract(12,new Contact("contact@insurer.com")));
+        return Collections.singletonList(new Contract());
     }
 }
