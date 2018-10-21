@@ -8,4 +8,13 @@ public class Travel {
 
     List<Customer> customers;
     List<Item> items;
+    Customer transporter;
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void setTransporter(Customer transporter) {
+        this.transporter = transporter;
+    }
 }
