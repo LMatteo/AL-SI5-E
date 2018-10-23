@@ -12,7 +12,7 @@ mvn clean install
 ### Run project
 
 ``` 
-cd ./sources/customer-ws
+cd ./sources/dist
 mvn tomee:run
 ```
 
