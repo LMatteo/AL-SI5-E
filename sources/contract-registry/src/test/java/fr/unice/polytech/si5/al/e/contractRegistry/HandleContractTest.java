@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.al.e.contractRegistry;
 
 
+import fr.unice.polytech.si5.al.e.contractRegistry.exceptions.NoSuchContractIdException;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.HandleContract;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.ListContract;
 import fr.unice.polytech.si5.al.e.model.Contract;
@@ -18,8 +19,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -77,13 +76,24 @@ public class HandleContractTest {
         Contract persistingContract = contracts.get(0);
         Assert.assertEquals(persistingContract.getDescription(),contract.getDescription());
 
-        handleContract.updateContractDescription(persistingContract.getId(),"changement");
+        try {
+            handleContract.updateContractDescription(persistingContract.getId(),"changement");
+        } catch (fr.unice.polytech.si5.al.e.contractRegistry.exceptions.NoSuchContractIdException e) {
+            e.printStackTrace();
+        }
 
         contracts = new ArrayList<>(listContract.getContractByType(Types.FRAGILE));
         Assert.assertEquals(contracts.size(),1);
         persistingContract = contracts.get(0);
 
         Assert.assertEquals("changement",persistingContract.getDescription());
+    }
+
+    @Test(expected = NoSuchContractIdException.class)
+    public void updatingWithWrongIdTest() throws Exception{
+        handleContract.updateContractDescription(100,"changement");
+
+
     }
 
 

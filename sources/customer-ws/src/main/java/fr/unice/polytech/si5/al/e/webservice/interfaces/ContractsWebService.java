@@ -1,22 +1,24 @@
 package fr.unice.polytech.si5.al.e.webservice.interfaces;
 
-import fr.unice.polytech.si5.al.e.model.Contract;
+import fr.unice.polytech.si5.al.e.webservice.holderObjets.ContractAdderHolder;
+import fr.unice.polytech.si5.al.e.webservice.holderObjets.ContractUpdateHolder;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import java.util.List;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/contracts")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public interface ContractsWebService {
 
     @POST
-    Contract addContract(String typeName, String description, String mail);
+    Response addContract(ContractAdderHolder holder);
 
     @PUT
-    Contract updateContractDescription(int id,String newDescription);
+    Response updateContractDescription(ContractUpdateHolder holder);
 
     @GET
-    List<Contract> getContractByType(String typeName);
+    @Path("{type}")
+    Response getContractByType(@PathParam("type")String typeName);
 }

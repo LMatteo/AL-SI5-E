@@ -1,5 +1,7 @@
 package fr.unice.polytech.si5.al.e.model.type;
 
+import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchTypeException;
+
 public enum Types {
     HIGHTECH("hightech"),
     FRAGILE("fragile"),
@@ -11,13 +13,13 @@ public enum Types {
         this.name = type;
     }
 
-    public static Types getTypeFromString(String name){
+    public static Types getTypeFromString(String name) throws NoSuchTypeException {
         for(Types type : Types.values()){
             if(type.name.equals(name)){
                 return type;
             }
         }
 
-        return null;
+        throw new NoSuchTypeException();
     }
 }
