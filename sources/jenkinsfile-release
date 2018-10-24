@@ -6,6 +6,7 @@ pipeline {
         stage('Build images') {
             steps {
                 sh '''
+                    cd sources
                     docker build -t hsy20000118/blablamove .
                 '''
             }
