@@ -1,5 +1,19 @@
 # Status
 
+## Week 42
+
+### Achieved
+
+- definition interfaces / objets métiers
+- premiere implémentation 
+
+### Planned
+
+- mettre en place les test des scénarios défini dans archi.pdf
+- continuer l'implémentation
+
+### Yellow
+
 ## Week 41
 
 ### Achieved
