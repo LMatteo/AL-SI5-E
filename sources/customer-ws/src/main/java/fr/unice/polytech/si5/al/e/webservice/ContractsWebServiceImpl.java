@@ -41,7 +41,7 @@ public class ContractsWebServiceImpl implements ContractsWebService {
         }catch (HttpException e){
             log.log(Level.SEVERE,"EXCEPTION THROWN");
             log.log(Level.SEVERE,e.toString());
-            return Response.status(e.getHttpReturnCode()).entity(e.).build();
+            return Response.status(e.getHttpReturnCode()).entity(e.getMessage()).build();
         }
 
 
