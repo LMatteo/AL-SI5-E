@@ -1,0 +1,1 @@
+FROM Maven:3.5.4-jdk-8

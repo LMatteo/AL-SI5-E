@@ -1,0 +1,50 @@
+pipeline {
+    agent  { 
+        label 'slave-3.23-maven-3.5.4'
+    }
+    triggers {
+        cron('H * * * * ')
+    }
+    stages {
+        stage(pollSCM){
+            parallel{
+                stage("path-service"){
+                    when { changeset "sources/path-service/*" }
+                    steps {
+                        build 'BlaBlaMove_Path_Service'
+                    }
+                }
+                stage("contract-registry"){
+                    when { changeset "sources/contract-registry/*" }
+                    steps {
+                        build 'BlaBlaMove_Contract_Registry'
+                    }
+                }
+                stage("contract-instance"){
+                    when { changeset "sources/contract-instance/*" }
+                    steps {
+                        build 'BlaBlaMove_Contract_Instance'
+                    }
+                }
+                stage("common"){
+                    when { changeset "sources/common/*" }
+                    steps {
+                        build 'BlaBlaMove_Commons'
+                    }
+                }
+                stage("agency-notifier"){
+                    when { changeset "sources/agency-notifier/*" }
+                    steps {
+                        build 'BlaBlaMove_Agency_Notifier'
+                    }
+                }
+                stage("customer-ws"){
+                    when { changeset "sources/customer-ws/*" }
+                    steps {
+                        build 'BlaBlaMove_CustomerWS'
+                    }
+                }
+            }
+        }
+    }
+}

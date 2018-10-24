@@ -1,4 +1,4 @@
-package fr.unice.polytech.si5.aal.e;
+package fr.unice.polytech.si5.al.e;
 
 import javax.jws.WebService;
 import javax.ws.rs.ApplicationPath;
