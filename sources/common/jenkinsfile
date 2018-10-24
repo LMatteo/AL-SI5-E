@@ -7,7 +7,7 @@ pipeline {
             steps {
                 sh '''
                     cd sources/common
-                    mvn install
+                    mvn clean install
                 '''
             }
         }
