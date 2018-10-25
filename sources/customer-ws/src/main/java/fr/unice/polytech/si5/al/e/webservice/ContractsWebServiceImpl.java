@@ -1,5 +1,6 @@
 package fr.unice.polytech.si5.al.e.webservice;
 
+import com.google.gson.Gson;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.HandleContract;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.ListContract;
 import fr.unice.polytech.si5.al.e.model.Contract;
@@ -39,9 +40,10 @@ public class ContractsWebServiceImpl implements ContractsWebService {
             ContractHolder responseHolder = new ContractHolder(contract.getId(), contract.getContact().getMail(), contract.getDescription());
             return Response.ok(responseHolder.toJson()).build();
         }catch (HttpException e){
+            Gson gson = new Gson();
             log.log(Level.SEVERE,"EXCEPTION THROWN");
             log.log(Level.SEVERE,e.toString());
-            return Response.status(e.getHttpReturnCode()).entity(e.getMessage()).build();
+            return Response.status(e.getHttpReturnCode()).entity(gson.toJson(e.getMessage())).build();
         }
 
 
@@ -54,9 +56,10 @@ public class ContractsWebServiceImpl implements ContractsWebService {
             ContractHolder contractHolder =  new ContractHolder(contract.getId(),contract.getContact().getMail(),contract.getDescription());
             return Response.ok(contractHolder.toJson()).build();
         } catch (HttpException e) {
+            Gson gson = new Gson();
             log.log(Level.SEVERE,"EXCEPTION THROWN");
             log.log(Level.SEVERE,e.toString());
-            return Response.status(e.getHttpReturnCode()).entity(e.getMessage()).build();
+            return Response.status(e.getHttpReturnCode()).entity(gson.toJson(e.getMessage())).build();
         }
 
 
@@ -73,9 +76,10 @@ public class ContractsWebServiceImpl implements ContractsWebService {
             }
             return Response.ok(ContractHolder.toJson(contractHolders)).build();
         } catch (HttpException e){
+            Gson gson = new Gson();
             log.log(Level.SEVERE,"EXCEPTION THROWN");
             log.log(Level.SEVERE,e.toString());
-            return Response.status(e.getHttpReturnCode()).entity(e.getMessage()).build();
+            return Response.status(e.getHttpReturnCode()).entity(gson.toJson(e.getMessage())).build();
         }
     }
 }
