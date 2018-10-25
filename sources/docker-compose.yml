@@ -1,0 +1,6 @@
+version: '3'
+services: 
+  blablamove:
+    image: hsy20000118/blablamove
+    ports: 
+      - "9090:9090"

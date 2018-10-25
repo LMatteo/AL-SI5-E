@@ -3,17 +3,10 @@ pipeline {
         label 'slave-3.23-maven-3.5.4'
     }
     stages {
-        stage('Build & Test') {
-            steps {
-                sh '''
-                    cd sources
-                    mvn install
-                '''
-            }
-        }
         stage('Build images') {
             steps {
                 sh '''
+                    cd sources
                     docker build -t hsy20000118/blablamove .
                 '''
             }
