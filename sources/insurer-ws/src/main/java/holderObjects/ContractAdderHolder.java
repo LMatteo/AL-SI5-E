@@ -1,4 +1,4 @@
-package fr.unice.polytech.si5.al.e.webservice.holderObjets;
+package holderObjects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

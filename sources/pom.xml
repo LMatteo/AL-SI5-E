@@ -16,6 +16,7 @@
         <module>agency-notifier</module>
         <module>customer-ws</module>
         <module>common</module>
+        <module>insurer-ws</module>
         <module>dist</module>
     </modules>
 
