@@ -1,7 +1,7 @@
 package fr.unice.polytech.si5.al.e.components;
 
 import fr.unice.polytech.si5.al.e.ControlTravel;
-import fr.unice.polytech.si5.al.e.FinishContract;
+import fr.unice.polytech.si5.al.e.interfaces.FinishContract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
@@ -65,6 +65,6 @@ public class PathServiceBean implements ControlTravel {
 
     @Override
     public void finishTravel(Travel travel) {
-        ContractInstance.travelFinished(travel);
+        ContractInstance.finishTravel(travel);
     }
 }
