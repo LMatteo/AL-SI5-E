@@ -1,12 +1,12 @@
 package fr.unice.polytech.si5.al.e;
 
 
-import fr.unice.polytech.si5.al.e.interfaces.HandleContractInterface;
-import fr.unice.polytech.si5.al.e.model.Contact;
+import fr.unice.polytech.si5.al.e.interfaces.FinishContract;
+import fr.unice.polytech.si5.al.e.interfaces.Subscribe;
 import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.ContractSubscription;
 import fr.unice.polytech.si5.al.e.model.Customer;
-import fr.unice.polytech.si5.al.e.model.type.Types;
+import fr.unice.polytech.si5.al.e.model.Travel;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,12 +14,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.Collection;
 import java.util.List;
 
 @Stateless
-public class ContractInstanceBean implements HandleContractInterface {
+public class contractInstanceBean implements Subscribe, FinishContract {
 
     @PersistenceContext
     private EntityManager manager;
@@ -67,6 +66,11 @@ public class ContractInstanceBean implements HandleContractInterface {
         for(ContractSubscription contract : contracts){
             manager.remove(contract);
         }
+    }
+
+    @Override
+    public void finishTravel(Travel travel) {
+        // TODO
     }
 
 }

@@ -9,9 +9,10 @@ import javax.ejb.Local;
 import java.util.Collection;
 
 @Local
-public interface HandleContractInterface {
+public interface Subscribe {
     Collection<ContractSubscription> getContract();
     ContractSubscription subscribeToContract(Customer customer, Contract contract);
     void cancelSubscritpion(ContractSubscription subscription);
+
     void clear();
 }

@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.al.e.components;
 
 import fr.unice.polytech.si5.al.e.ControlTravel;
+import fr.unice.polytech.si5.al.e.interfaces.FinishContract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
@@ -17,6 +18,8 @@ import java.util.List;
 
 @Stateless
 public class PathServiceBean implements ControlTravel {
+    @EJB
+    private FinishContract ContractInstance;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -62,5 +65,6 @@ public class PathServiceBean implements ControlTravel {
 
     @Override
     public void finishTravel(Travel travel) {
+        ContractInstance.finishTravel(travel);
     }
 }
