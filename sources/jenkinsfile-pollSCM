@@ -6,14 +6,20 @@ pipeline {
         cron('H * * * * ')
     }
     stages {
-        stage(pollSCM){
+        stage("common"){
+            when { changeset "sources/common/*" }
+            steps {
+                build 'BlaBlaMove_Commons'
+            }
+        }
+        stage("agency-notifier"){
+            when { changeset "sources/agency-notifier/*" }
+            steps {
+                build 'BlaBlaMove_Agency_Notifier'
+            }
+        }
+        stage(contract-registry & contract-instance){
             parallel{
-                stage("path-service"){
-                    when { changeset "sources/path-service/*" }
-                    steps {
-                        build 'BlaBlaMove_Path_Service'
-                    }
-                }
                 stage("contract-registry"){
                     when { changeset "sources/contract-registry/*" }
                     steps {
@@ -26,24 +32,18 @@ pipeline {
                         build 'BlaBlaMove_Contract_Instance'
                     }
                 }
-                stage("common"){
-                    when { changeset "sources/common/*" }
-                    steps {
-                        build 'BlaBlaMove_Commons'
-                    }
-                }
-                stage("agency-notifier"){
-                    when { changeset "sources/agency-notifier/*" }
-                    steps {
-                        build 'BlaBlaMove_Agency_Notifier'
-                    }
-                }
-                stage("customer-ws"){
-                    when { changeset "sources/customer-ws/*" }
-                    steps {
-                        build 'BlaBlaMove_CustomerWS'
-                    }
-                }
+            }
+        }
+        stage("path-service"){
+            when { changeset "sources/path-service/*" }
+            steps {
+                build 'BlaBlaMove_Path_Service'
+            }
+        }
+        stage("customer-ws"){
+            when { changeset "sources/customer-ws/*" }
+            steps {
+                build 'BlaBlaMove_CustomerWS'
             }
         }
     }

@@ -4,14 +4,8 @@
          version="3.1">
     <enterprise-beans>
         <session>
-            <ejb-name>ContractListerWebService</ejb-name>
-            <ejb-class>fr.unice.polytech.si5.al.e.webservice.ContractListerServiceImpl</ejb-class>
-            <session-type>Stateless</session-type>
-            <transaction-type>Container</transaction-type>
-        </session>
-        <session>
-            <ejb-name>CustomerWebService</ejb-name>
-            <ejb-class>fr.unice.polytech.si5.al.e.webservice.CustomerWebServiceImpl</ejb-class>
+            <ejb-name>ContractWebService</ejb-name>
+            <ejb-class>fr.unice.polytech.si5.al.e.webservice.ContractServiceImpl</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
         </session>

@@ -16,6 +16,8 @@ public class Travel {
     @NotNull
     private String end;
 
+    private String state;
+
     @OneToMany
     private List<Item> items;
 
@@ -67,5 +69,13 @@ public class Travel {
 
     public void setEnd(String end) {
         this.end = end;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
