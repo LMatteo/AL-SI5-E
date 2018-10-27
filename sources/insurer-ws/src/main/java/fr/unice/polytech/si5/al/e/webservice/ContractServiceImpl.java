@@ -7,8 +7,8 @@ import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.exceptions.HttpException;
 import fr.unice.polytech.si5.al.e.model.holderObject.ContractHolder;
 import fr.unice.polytech.si5.al.e.model.type.Types;
-import holderObjects.ContractAdderHolder;
-import holderObjects.ContractUpdateHolder;
+import fr.unice.polytech.si5.al.e.webservice.holderObjects.ContractAdderHolder;
+import fr.unice.polytech.si5.al.e.webservice.holderObjects.ContractUpdateHolder;
 
 import javax.ejb.EJB;
 import javax.ws.rs.core.Response;

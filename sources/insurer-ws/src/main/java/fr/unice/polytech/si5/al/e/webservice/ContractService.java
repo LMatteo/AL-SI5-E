@@ -1,8 +1,8 @@
 package fr.unice.polytech.si5.al.e.webservice;
 
 
-import holderObjects.ContractAdderHolder;
-import holderObjects.ContractUpdateHolder;
+import fr.unice.polytech.si5.al.e.webservice.holderObjects.ContractAdderHolder;
+import fr.unice.polytech.si5.al.e.webservice.holderObjects.ContractUpdateHolder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
