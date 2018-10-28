@@ -40,11 +40,22 @@ pipeline {
                 build 'BlaBlaMove_Path_Service'
             }
         }
-        stage("customer-ws"){
-            when { changeset "sources/customer-ws/*" }
-            steps {
-                build 'BlaBlaMove_CustomerWS'
+        stage("webservice"){
+            parallel{
+                stage("customer-ws"){
+                    when { changeset "sources/customer-ws/*" }
+                    steps {
+                        build 'BlaBlaMove_CustomerWS'
+                    }
+                }
+                stage("insurer-ws"){
+                    when { changeset "sources/insurer-ws/*" }
+                    steps {
+                        build 'BlaBlaMove_InsurerWS'
+                    }
+                }
             }
         }
+
     }
 }

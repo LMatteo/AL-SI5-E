@@ -6,7 +6,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 sh '''
-                    cd sources/customer-ws
+                    cd sources/insurer-ws
                     mvn clean install
                 '''
             }
