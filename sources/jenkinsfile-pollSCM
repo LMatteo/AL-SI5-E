@@ -18,7 +18,7 @@ pipeline {
                 build 'BlaBlaMove_Agency_Notifier'
             }
         }
-        stage(contract-registry & contract-instance){
+        stage("contract-registry & contract-instance"){
             parallel{
                 stage("contract-registry"){
                     when { changeset "sources/contract-registry/*" }
