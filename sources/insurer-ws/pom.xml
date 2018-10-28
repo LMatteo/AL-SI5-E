@@ -14,17 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>fr.unice.polytech.si5.al.e</groupId>
-            <artifactId>contract-instance</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.unice.polytech.si5.al.e</groupId>
             <artifactId>contract-registry</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.unice.polytech.si5.al.e</groupId>
-            <artifactId>path-service</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
