@@ -13,6 +13,5 @@ public interface Subscribe {
     Collection<ContractSubscription> getContract();
     ContractSubscription subscribeToContract(Customer customer, Contract contract);
     void cancelSubscritpion(ContractSubscription subscription);
-
     void clear();
 }
