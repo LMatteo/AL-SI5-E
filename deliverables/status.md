@@ -1,5 +1,19 @@
 # Status
 
+## Week 43
+
+### Achieved
+
+- implémentation des services
+
+### Planned
+
+- finir les tests sur les API des services
+- finir les tests de scénarios
+- préparer la démo live
+
+### Yellow
+
 ## Week 42
 
 ### Achieved
