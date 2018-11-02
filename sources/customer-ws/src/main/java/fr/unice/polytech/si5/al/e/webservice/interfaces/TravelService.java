@@ -1,35 +1,34 @@
 package fr.unice.polytech.si5.al.e.webservice.interfaces;
 
-import fr.unice.polytech.si5.al.e.model.Travel;
 import fr.unice.polytech.si5.al.e.webservice.Objects.AddItemRequest;
 import fr.unice.polytech.si5.al.e.webservice.Objects.TravelCreationRequest;
 import fr.unice.polytech.si5.al.e.webservice.Objects.TravelSelectRequest;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
+import javax.ws.rs.core.Response;
 
-@Path("/subscribe")
+@Path("/travels")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface TravelService {
 
-    @POST()
-    void createTravel(TravelCreationRequest request);
+    @POST
+    Response createTravel(TravelCreationRequest request);
 
-    @PUT()
+    @PUT
     @Path("{travelId}")
-    void addItemToTravel(@PathParam("travelId") String travelId, AddItemRequest request);
+    Response addItemToTravel(@PathParam("travelId") String travelId, AddItemRequest request);
 
-    @GET()
-    List<Travel> listTravels();
+    @GET
+    Response listTravels();
 
-    @DELETE()
+    @DELETE
     @Path("{travelId}")
-    void endTravel(@PathParam("travelId") String travelId);
+    Response endTravel(@PathParam("travelId") String travelId);
 
 
     @HEAD
     @Path("{travelId}")
-    void selectTravel(@PathParam("travelId") String travelId, TravelSelectRequest request);
+    Response selectTravel(@PathParam("travelId") String travelId, TravelSelectRequest request);
 }

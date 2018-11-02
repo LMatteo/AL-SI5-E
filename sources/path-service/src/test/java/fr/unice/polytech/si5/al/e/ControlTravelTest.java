@@ -97,7 +97,7 @@ public class ControlTravelTest {
 
     @Test
     public void createTravelTest() {
-        Travel travel1 = controlTravel.createTravel(christophe, "startpoint", "endpoint");
+        Travel travel1 = controlTravel.createTravel("christophe", "startpoint", "endpoint");
         Travel travel2 = entityManager.merge(travel1);
         assertEquals(travel1, travel2);
         assertEquals(christophe, travel2.getCustomer());
@@ -108,7 +108,7 @@ public class ControlTravelTest {
 
     @Test
     public void addItemToTravelTest() {
-        Travel travel1 = controlTravel.addItemToTravel(itemA, travelA);
+        Travel travel1 = controlTravel.addItemToTravel(itemA, Integer.toString(travelA.getId()));
         Travel travel2 = entityManager.merge(travel1);
 
         assertEquals(travelA, travel1);
@@ -126,11 +126,11 @@ public class ControlTravelTest {
         List<Travel> travels = controlTravel.findTravel("startA", "endA");
         assertEquals(1, travels.size());
 
-        controlTravel.createTravel(christophe, "startA", "endA");
+        controlTravel.createTravel("christophe", "startA", "endA");
         List<Travel> travels2 = controlTravel.findTravel("startA", "endA");
         assertEquals(2, travels2.size());
 
-        controlTravel.createTravel(christophe, "startB", "endB");
+        controlTravel.createTravel("christophe", "startB", "endB");
         List<Travel> travels3 = controlTravel.findTravel("startA", "endA");
         List<Travel> travels4 = controlTravel.findTravel("startB", "endB");
         assertEquals(2, travels3.size());
@@ -139,7 +139,7 @@ public class ControlTravelTest {
 
     @Test
     public void chooseTravelTest() {
-        Travel travel1 = controlTravel.chooseTravel(johan, travelA);
+        Travel travel1 = controlTravel.chooseTravel("johan", Integer.toString(travelA.getId()));
         Travel travel2 = entityManager.merge(travel1);
         assertEquals(travelA, travel1);
         assertEquals(travel1, travel2);
@@ -153,6 +153,6 @@ public class ControlTravelTest {
     @Ignore
     @Test
     public void finishTravel() {
-        controlTravel.finishTravel(travelA);
+        controlTravel.finishTravel(Integer.toString(travelA.getId()));
     }
 }

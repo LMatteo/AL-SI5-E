@@ -14,6 +14,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Stateless
@@ -25,7 +27,15 @@ public class PathServiceBean implements ControlTravel {
     private EntityManager entityManager;
 
     @Override
-    public Travel createTravel(Customer customer, String departure, String destination) {
+    public Travel createTravel(String customerName, String departure, String destination) {
+        Customer customer;
+        List<Customer> customers = findEntityByName(Customer.class, customerName);
+        if (customers.isEmpty()) {
+            customer = new Customer();
+            customer.setName(customerName);
+        } else {
+            customer = customers.get(0);
+        }
         Travel travel = new Travel();
         travel.setCustomer(customer);
         travel.setStart(departure);
@@ -36,7 +46,8 @@ public class PathServiceBean implements ControlTravel {
     }
 
     @Override
-    public Travel addItemToTravel(Item item, Travel travel) {
+    public Travel addItemToTravel(Item item, String travelId) {
+        Travel travel = findEntityById(Travel.class, travelId).get(0);
         travel.addItem(item);
         travel.getCustomer().addItem(item);
         entityManager.merge(travel);
@@ -55,7 +66,9 @@ public class PathServiceBean implements ControlTravel {
     }
 
     @Override
-    public Travel chooseTravel(Customer transporter, Travel travel) {
+    public Travel chooseTravel(String transporterName, String travelId) {
+        Customer transporter = findEntityByName(Customer.class, transporterName).get(0);
+        Travel travel = findEntityById(Travel.class, travelId).get(0);
         travel.setTransporter(transporter);
         transporter.chooseTravel(travel);
         entityManager.merge(travel);
@@ -64,7 +77,30 @@ public class PathServiceBean implements ControlTravel {
     }
 
     @Override
-    public void finishTravel(Travel travel) {
+    public void finishTravel(String travelId) {
+        Travel travel = findEntityById(Travel.class, travelId).get(0);
         ContractInstance.finishTravel(travel);
+    }
+
+    private <T> List<T> findEntityByName(Class<T> clazz, String name) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<T> criteria = builder.createQuery(clazz);
+        Root<T> root = criteria.from(clazz);
+
+        criteria.select(root).where(builder.like(root.get("name"), "%" + name + "%"));
+        TypedQuery<T> query = entityManager.createQuery(criteria);
+        return query.getResultList();
+    }
+
+    private <T> List<T> findEntityById(Class<T> clazz, String id) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<T> criteria = builder.createQuery(clazz);
+        Root<T> root = criteria.from(clazz);
+
+        criteria.select(root).where(builder.like(root.get("id"), "%" + id + "%"));
+        TypedQuery<T> query = entityManager.createQuery(criteria);
+        return query.getResultList();
     }
 }
