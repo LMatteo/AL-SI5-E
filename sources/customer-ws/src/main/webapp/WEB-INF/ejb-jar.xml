@@ -15,5 +15,11 @@
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
         </session>
+        <session>
+            <ejb-name>TravelWebService</ejb-name>
+            <ejb-class>fr.unice.polytech.si5.al.e.webservice.TravelWebServiceImpl</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+        </session>
     </enterprise-beans>
 </ejb-jar>
