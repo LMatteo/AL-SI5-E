@@ -1,9 +1,11 @@
 package fr.unice.polytech.si5.al.e.model;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+@Entity
 public class ContractSubscription {
     private Contract contract;
     private Customer customer;

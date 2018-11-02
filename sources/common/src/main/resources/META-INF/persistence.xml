@@ -8,6 +8,7 @@
         <jta-data-source>BlaBlaMoveDataSource</jta-data-source>
 
         <class>fr.unice.polytech.si5.al.e.model.Contract</class>
+        <class>fr.unice.polytech.si5.al.e.model.ContractSubscription</class>
         <class>fr.unice.polytech.si5.al.e.model.Contact</class>
         <class>fr.unice.polytech.si5.al.e.model.Customer</class>
         <class>fr.unice.polytech.si5.al.e.model.Item</class>

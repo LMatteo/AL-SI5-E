@@ -5,7 +5,7 @@
     <enterprise-beans>
         <session>
             <ejb-name>ContractWebService</ejb-name>
-            <ejb-class>fr.unice.polytech.si5.al.e.webservice.ContractServiceImpl</ejb-class>
+            <ejb-class>fr.unice.polytech.si5.al.e.webservice.MailerServiceImpl</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
         </session>

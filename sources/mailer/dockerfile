@@ -1,0 +1,6 @@
+FROM maven:3.5.4-jdk-8 AS builder
+COPY ./ /mailer/
+WORKDIR /mailer/
+RUN mvn install -DskipTests
+WORKDIR /mailer/dist
+RUN mvn tomee:start
