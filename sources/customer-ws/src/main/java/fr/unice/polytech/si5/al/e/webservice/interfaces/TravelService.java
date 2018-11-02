@@ -9,17 +9,17 @@ import fr.unice.polytech.si5.al.e.webservice.Objects.TravelSelectRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
+import javax.ws.rs.core.Response;
 
-@Path("/subscribe")
+@Path("/travels")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface TravelService {
 
-    @POST()
+    @POST
     Response createTravel(TravelCreationRequest request);
 
-    @PUT()
+    @PUT
     @Path("{travelId}")
     Response addItemToTravel(@PathParam("travelId") String travelId, AddItemRequest request);
 
@@ -27,7 +27,7 @@ public interface TravelService {
     @Path("{departure}/{destination}")
     Response listTravels(@PathParam("departure") String departure,@PathParam("destination") String destinaton);
 
-    @DELETE()
+    @DELETE
     @Path("{travelId}")
     Response endTravel(@PathParam("travelId") String travelId);
 

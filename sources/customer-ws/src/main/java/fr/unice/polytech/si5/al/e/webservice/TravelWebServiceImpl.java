@@ -1,10 +1,8 @@
 package fr.unice.polytech.si5.al.e.webservice;
 
-import com.google.gson.Gson;
 import fr.unice.polytech.si5.al.e.model.Travel;
 import fr.unice.polytech.si5.al.e.webservice.Objects.AddItemRequest;
 import fr.unice.polytech.si5.al.e.webservice.Objects.TravelCreationRequest;
-import fr.unice.polytech.si5.al.e.webservice.Objects.TravelCreationResponse;
 import fr.unice.polytech.si5.al.e.webservice.Objects.TravelSelectRequest;
 import fr.unice.polytech.si5.al.e.webservice.interfaces.TravelService;
 
@@ -15,51 +13,48 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Path("/travels")
 public class TravelWebServiceImpl implements TravelService {
+    @EJB
+    private ControlTravel controlTravel;
+
+    private static final Logger log = Logger.getLogger(Logger.class.getName());
+
     @Override
     @POST
     public Response createTravel(TravelCreationRequest request) {
-        //todo: remove mock
-        String msg = new TravelCreationResponse(12).toJSON();
-        System.out.println(msg);
-        return Response.ok(msg).build();
+        controlTravel.createTravel(request.getCustomerName(), request.getDeparture(), request.getDestination());
+        return Response.ok("Travel created.").build();
     }
 
     @PUT()
     @Path("{travelId}")
-    public Response addItemToTravel(@PathParam("travelId") String travelId, AddItemRequest request){
-        //todo: remove mock
-        System.out.println(travelId + "\n" + request);
-        return Response.ok("Response ok").build();
+    public Response addItemToTravel(@PathParam("travelId") String travelId, AddItemRequest request) {
+        Item item = new Item();
+        item.setName(request.getItemName());
+        controlTravel.addItemToTravel(item, travelId);
+        return Response.ok("Item " + request.getItemName() + " added.").build();
     }
 
     @Override
-    public Response listTravels(String departure, String destinaton) {
-        //todo: remove mock
-        Travel o = new Travel();
-        o.setId(1);
-        o.setStart("start");
-
-        o.setEnd("end");
-
-        List<Travel> entity = Collections.singletonList(o);
-        return Response.ok(new Gson().toJson(entity)).build();
+    public Response listTravels() {
+        ListTravel result = new ListTravel();
+        result.setTravels(controlTravel.findTravel("*", "*"));
+        return Response.ok(result).build();
     }
 
     @Override
     public Response endTravel(String travelId) {
-        System.out.println("Travel " + travelId + "is finished");
-        return Response.ok("Response ok").build();
-
+        controlTravel.finishTravel(travelId);
+        return Response.ok("Travel " + travelId + " finished.").build();
     }
 
     @Override
     public Response selectTravel(String travelId, TravelSelectRequest request) {
-        //todo: remove mock
-        System.out.println("Select travel " + travelId + "\n" + request);
-        return Response.ok().build();
-
+        controlTravel.chooseTravel(travelId, request.getTransporterName());
+        return Response.ok("Travel " + travelId + "selected.").build();
     }
 }

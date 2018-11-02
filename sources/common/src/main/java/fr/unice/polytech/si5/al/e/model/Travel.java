@@ -2,6 +2,8 @@ package fr.unice.polytech.si5.al.e.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class Travel {
 
     @NotNull
     private String start;
+
     @NotNull
     private String end;
 
@@ -81,9 +84,5 @@ public class Travel {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) { //todo: method used for mock: we need to remove it
-        this.id = id;
     }
 }

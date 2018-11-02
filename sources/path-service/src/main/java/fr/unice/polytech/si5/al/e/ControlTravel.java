@@ -9,9 +9,9 @@ import java.util.List;
 
 @Local
 public interface ControlTravel {
-    Travel createTravel(Customer customer, String departure, String destination);
-    Travel addItemToTravel(Item item, Travel travel);
+    Travel createTravel(String customerName, String departure, String destination);
+    Travel addItemToTravel(Item item, String travelId);
     List<Travel> findTravel(String departure, String destination);
-    Travel chooseTravel(Customer transporter, Travel travel);
-    void finishTravel(Travel travel);
+    Travel chooseTravel(String transporterName, String travelId);
+    void finishTravel(String travelId);
 }
