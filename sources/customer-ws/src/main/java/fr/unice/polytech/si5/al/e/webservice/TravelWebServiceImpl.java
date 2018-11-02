@@ -42,7 +42,7 @@ public class TravelWebServiceImpl implements TravelService {
 
         ListTravel result = new ListTravel();
         result.setTravels(controlTravel.findTravel(departure, destinaton));
-        return Response.ok(result).build();
+        return Response.ok(result.toJSON()).build();
     }
 
     @Override

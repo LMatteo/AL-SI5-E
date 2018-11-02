@@ -1,5 +1,8 @@
 package fr.unice.polytech.si5.al.e.model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -84,5 +87,20 @@ public class Travel {
 
     public int getId() {
         return id;
+    }
+
+    public String  toJSON() {
+        JSONObject object = new JSONObject();
+        object.put("id", id);
+        object.put("departure",departure);
+        object.put("destination",destination);
+        JSONArray itemsJson = new JSONArray();
+        items.forEach(i-> itemsJson.put(i.getName()));
+
+        object.put("items", itemsJson);
+        object.put("state", state);
+
+        return object.toString();
+
     }
 }

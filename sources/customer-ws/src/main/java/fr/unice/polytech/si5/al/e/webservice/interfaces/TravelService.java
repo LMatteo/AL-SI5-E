@@ -24,8 +24,7 @@ public interface TravelService {
     Response addItemToTravel(@PathParam("travelId") String travelId, AddItemRequest request);
 
     @GET()
-    @Path("{departure}/{destination}")
-    Response listTravels(@PathParam("departure") String departure,@PathParam("destination") String destinaton);
+    Response listTravels(@QueryParam("departure") String departure,@QueryParam("destination") String destination);
 
     @DELETE
     @Path("{travelId}")

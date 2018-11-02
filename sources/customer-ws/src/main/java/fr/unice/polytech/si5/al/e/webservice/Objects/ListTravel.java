@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @XmlRootElement(name = "travels")
 public class ListTravel {
@@ -23,5 +24,9 @@ public class ListTravel {
 
     public void setTravels(List<Travel> travels) {
         this.travels = travels;
+    }
+
+    public String toJSON(){
+        return "[" + travels.stream().map(Travel::toJSON).collect(Collectors.joining(",")) + "]";
     }
 }

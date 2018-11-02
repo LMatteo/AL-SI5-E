@@ -67,8 +67,8 @@ public class Main {
     public static int createTravel(String from, String to, String customer) throws IOException {
         TravelCreation tc = new TravelCreation(customer, from, to);
         String creationResponse = call(MethodType.POST, customerWsUrl + "travels/", "{\"travel\":"+new Gson().toJson(tc)+"}");
-        JSONObject object = new JSONObject(creationResponse);
-        return object.getInt("id");
+
+        return Integer.parseInt(creationResponse);
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -81,20 +81,24 @@ public class Main {
 
             String resp2 = call(MethodType.PUT, customerWsUrl + "travels/" + travelId, "{\"item\":{\"itemName\":\"Ordinateur gameur\"}}");
 
-            System.out.println("Céline interroge les types de contrats d'assurance avec des critères : \n\tPour son ordinateur, elle cherche un contrat high-tech\n\tPour sa commode, elle choisit un contrat lourd");
+            System.out.println("Céline interroge les types de contrats d'assurance avec des critères : \n\tPour son ordinateur, elle cherche un contrat high-tech");
             sc.nextLine();
-            String resp3 = call(MethodType.GET, customerWsUrl + "contracts/hightech", "{}");
+            String resp3 = call(MethodType.GET, customerWsUrl + "contracts/?type=hightech", "{}");
+            System.out.println("\tPour sa commode, elle choisit un contrat lourd");
             sc.nextLine();
-            String resp4 = call(MethodType.GET, customerWsUrl + "contracts/heavy", "{}");
+            String resp4 = call(MethodType.GET, customerWsUrl + "contracts/?type=heavy", "{}");
 
             System.out.println("N’ayant pas d’assurance alors que celle ci est obligatoire, elle décide de souscrire à un contrat d’assurance.");
             sc.nextLine();
 
             String res = call(MethodType.POST, customerWsUrl + "subscribe", "{\"contract\" : {}}");
 
+            System.out.println("\tJean recherche les déménagements qui suivent son trajet");
+            sc.nextLine();
+            String travelsList = call(MethodType.GET, customerWsUrl + "travels?departure=Paris&destination=Nice", "");
+
             System.out.println("Jean décide de prendre l’ordinateur de Celine et a déjà sa propre assurance.");
             sc.nextLine();
-            System.out.println("\tJean recherche les déménagements qui suivent son trajet");
 
             String tt = call(MethodType.GET, customerWsUrl + "subscribe", "{\"contract\" : {}}");
 
@@ -104,7 +108,7 @@ public class Main {
             sc.nextLine();
             System.out.println("\tJulien recherche les déménagements qui suivent son trajet");
 
-            String dd = call(MethodType.GET, customerWsUrl + "subscribe", "{\"contract\" : {}}");
+            String dd = call(MethodType.GET, customerWsUrl + "travels?departure=Paris&destination=Nice", "");
 
             System.out.println("Jean se définit en tant que déménageur pour le trajet avec l'ordinateur");
             String test = call(MethodType.POST, customerWsUrl + "travels/", "{}");

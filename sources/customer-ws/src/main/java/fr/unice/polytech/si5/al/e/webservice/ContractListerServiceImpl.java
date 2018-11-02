@@ -24,9 +24,9 @@ public class ContractListerServiceImpl implements ContractListerService {
     private static final Logger log = Logger.getLogger(Logger.class.getName());
 
     @Override
-    public Response getContractByType(String typeName) {
+    public Response getContractByType(String type) {
         try {
-            List<Contract> contracts = new ArrayList<Contract>(listContract.getContractByType(Types.getTypeFromString(typeName)));
+            List<Contract> contracts = new ArrayList<Contract>(listContract.getContractByType(Types.getTypeFromString(type)));
             List<ContractHolder> contractHolders = new ArrayList<>();
 
             for (Contract contract : contracts) {
