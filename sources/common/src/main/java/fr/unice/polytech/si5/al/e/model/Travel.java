@@ -78,4 +78,12 @@ public class Travel {
     public void setState(String state) {
         this.state = state;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) { //todo: method used for mock: we need to remove it
+        this.id = id;
+    }
 }
