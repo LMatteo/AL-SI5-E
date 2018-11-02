@@ -18,6 +18,9 @@ public class Travel {
 
     private String state;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Validator validator;
+
     @OneToMany
     private List<Item> items;
 
@@ -29,6 +32,7 @@ public class Travel {
 
     public Travel() {
         this.items = new ArrayList<>();
+        validator = new Validator();
     }
 
     public void addItem(Item item) {
@@ -77,5 +81,9 @@ public class Travel {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Validator getValidator() {
+        return validator;
     }
 }
