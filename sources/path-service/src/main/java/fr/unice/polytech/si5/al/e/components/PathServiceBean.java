@@ -14,8 +14,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Stateless
@@ -33,13 +31,14 @@ public class PathServiceBean implements ControlTravel {
         if (customers.isEmpty()) {
             customer = new Customer();
             customer.setName(customerName);
+            entityManager.persist(customer);
         } else {
             customer = customers.get(0);
         }
         Travel travel = new Travel();
         travel.setCustomer(customer);
-        travel.setStart(departure);
-        travel.setEnd(destination);
+        travel.setDeparture(departure);
+        travel.setDestination(destination);
         customer.addTravel(travel);
         entityManager.persist(travel);
         return travel;
@@ -66,8 +65,27 @@ public class PathServiceBean implements ControlTravel {
     }
 
     @Override
+    public List<Travel> findTravel() {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Travel> criteria = builder.createQuery(Travel.class);
+        Root<Travel> root = criteria.from(Travel.class);
+
+        criteria.select(root);
+        TypedQuery<Travel> query = entityManager.createQuery(criteria);
+        return query.getResultList();
+    }
+
+    @Override
     public Travel chooseTravel(String transporterName, String travelId) {
-        Customer transporter = findEntityByName(Customer.class, transporterName).get(0);
+        Customer transporter;
+        List<Customer> customers = findEntityByName(Customer.class, transporterName);
+        if (customers.isEmpty()) {
+            transporter = new Customer();
+            transporter.setName(transporterName);
+            entityManager.persist(transporter);
+        } else {
+            transporter = customers.get(0);
+        }
         Travel travel = findEntityById(Travel.class, travelId).get(0);
         travel.setTransporter(transporter);
         transporter.chooseTravel(travel);

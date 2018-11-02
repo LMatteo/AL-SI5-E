@@ -5,7 +5,6 @@ import fr.unice.polytech.si5.al.e.components.PathServiceBean;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
-import org.apache.jasper.tagplugins.jstl.core.Out;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
@@ -67,8 +66,8 @@ public class ControlTravelTest {
 
         travelA = new Travel();
         travelA.setCustomer(christophe);
-        travelA.setStart("startA");
-        travelA.setEnd("endA");
+        travelA.setDeparture("startA");
+        travelA.setDestination("endA");
         entityManager.persist(travelA);
 
         itemA = new Item();
@@ -101,8 +100,8 @@ public class ControlTravelTest {
         Travel travel2 = entityManager.merge(travel1);
         assertEquals(travel1, travel2);
         assertEquals(christophe, travel2.getCustomer());
-        assertEquals("startpoint", travel2.getStart());
-        assertEquals("endpoint", travel2.getEnd());
+        assertEquals("startpoint", travel2.getDeparture());
+        assertEquals("endpoint", travel2.getDestination());
         entityManager.remove(travel1);
     }
 
@@ -114,8 +113,8 @@ public class ControlTravelTest {
         assertEquals(travelA, travel1);
         assertEquals(travel1, travel2);
         assertEquals(christophe, travel2.getCustomer());
-        assertEquals(travel1.getStart(), travel2.getStart());
-        assertEquals(travel1.getEnd(), travel2.getEnd());
+        assertEquals(travel1.getDeparture(), travel2.getDeparture());
+        assertEquals(travel1.getDestination(), travel2.getDestination());
         assertTrue(travel2.getItems().contains(itemA));
         assertTrue(travel2.getCustomer().getItems().contains(itemA));
     }
@@ -135,6 +134,8 @@ public class ControlTravelTest {
         List<Travel> travels4 = controlTravel.findTravel("startB", "endB");
         assertEquals(2, travels3.size());
         assertEquals(1, travels4.size());
+
+
     }
 
     @Test
@@ -145,8 +146,8 @@ public class ControlTravelTest {
         assertEquals(travel1, travel2);
         assertEquals(christophe, travel2.getCustomer());
         assertEquals(johan, travel2.getTransporter());
-        assertEquals(travel1.getStart(), travel2.getStart());
-        assertEquals(travel1.getEnd(), travel2.getEnd());
+        assertEquals(travel1.getDeparture(), travel2.getDeparture());
+        assertEquals(travel1.getDestination(), travel2.getDestination());
 
     }
 

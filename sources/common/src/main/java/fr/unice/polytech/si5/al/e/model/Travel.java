@@ -2,8 +2,6 @@ package fr.unice.polytech.si5.al.e.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +12,10 @@ public class Travel {
     private int id;
 
     @NotNull
-    private String start;
+    private String departure;
 
     @NotNull
-    private String end;
+    private String destination;
 
     private String state;
 
@@ -58,20 +56,20 @@ public class Travel {
         this.transporter = transporter;
     }
 
-    public String getStart() {
-        return start;
+    public String getDeparture() {
+        return departure;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setDeparture(String departure) {
+        this.departure = departure;
     }
 
-    public String getEnd() {
-        return end;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setEnd(String end) {
-        this.end = end;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     public String getState() {
