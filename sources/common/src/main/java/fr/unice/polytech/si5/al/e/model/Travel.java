@@ -24,10 +24,10 @@ public class Travel {
     @OneToMany
     private List<Item> items;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Customer customer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Customer transporter;
 
     public Travel() {
