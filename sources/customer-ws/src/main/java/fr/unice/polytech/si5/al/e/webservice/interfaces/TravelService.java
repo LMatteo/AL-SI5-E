@@ -28,7 +28,7 @@ public interface TravelService {
     Response endTravel(@PathParam("travelId") String travelId);
 
 
-    @HEAD
-    @Path("{travelId}")
+    @PUT
+    @Path("{travelId}/transporter")
     Response selectTravel(@PathParam("travelId") String travelId, TravelSelectRequest request);
 }

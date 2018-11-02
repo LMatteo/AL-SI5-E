@@ -22,15 +22,13 @@ public class TravelWebServiceImpl implements TravelService {
     private ControlTravel controlTravel;
 
     @Override
-    @POST
     public Response createTravel(TravelCreationRequest request) {
         Travel travel = controlTravel.createTravel(request.getCustomerName(), request.getDeparture(), request.getDestination());
         return Response.ok(travel.getId()).build();
     }
 
-    @PUT()
-    @Path("{travelId}")
-    public Response addItemToTravel(@PathParam("travelId") String travelId, AddItemRequest request) {
+    @Override
+    public Response addItemToTravel(String travelId, AddItemRequest request) {
         Item item = new Item();
         item.setName(request.getItemName());
         controlTravel.addItemToTravel(item, travelId);
@@ -52,7 +50,7 @@ public class TravelWebServiceImpl implements TravelService {
 
     @Override
     public Response selectTravel(String travelId, TravelSelectRequest request) {
-        controlTravel.chooseTravel(travelId, request.getTransporterName());
+        controlTravel.chooseTravel(request.getTransporterName(), travelId);
         return Response.ok().build();
     }
 }

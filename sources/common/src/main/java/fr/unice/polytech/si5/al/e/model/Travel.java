@@ -21,6 +21,7 @@ public class Travel {
 
     private String state;
 
+    @OneToMany(cascade = CascadeType.PERSIST)
     private Set<Item> items;
 
     @ManyToOne
