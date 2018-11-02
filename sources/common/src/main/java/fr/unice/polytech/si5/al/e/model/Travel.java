@@ -3,7 +3,9 @@ package fr.unice.polytech.si5.al.e.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Travel {
@@ -19,8 +21,7 @@ public class Travel {
 
     private String state;
 
-    @OneToMany
-    private List<Item> items;
+    private Set<Item> items;
 
     @ManyToOne
     private Customer customer;
@@ -29,14 +30,14 @@ public class Travel {
     private Customer transporter;
 
     public Travel() {
-        this.items = new ArrayList<>();
+        this.items = new HashSet<>();
     }
 
     public void addItem(Item item) {
         items.add(item);
     }
 
-    public List<Item> getItems() {
+    public Set<Item> getItems() {
         return items;
     }
 
