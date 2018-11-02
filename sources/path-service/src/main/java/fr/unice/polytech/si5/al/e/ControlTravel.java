@@ -12,6 +12,7 @@ public interface ControlTravel {
     Travel createTravel(String customerName, String departure, String destination);
     Travel addItemToTravel(Item item, String travelId);
     List<Travel> findTravel(String departure, String destination);
+    List<Travel> findTravel();
     Travel chooseTravel(String transporterName, String travelId);
     void finishTravel(String travelId);
 }
