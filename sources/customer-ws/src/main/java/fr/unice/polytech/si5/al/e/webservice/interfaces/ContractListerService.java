@@ -11,6 +11,5 @@ public interface ContractListerService {
 
 
     @GET
-    @Path("{type}")
-    Response getContractByType(@PathParam("type")String typeName);
+    Response getContractByType(@QueryParam("type") String type);
 }

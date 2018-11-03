@@ -25,18 +25,28 @@ public class PathServiceBean implements ControlTravel {
     private EntityManager entityManager;
 
     @Override
-    public Travel createTravel(Customer customer, String departure, String destination) {
+    public Travel createTravel(String customerName, String departure, String destination) {
+        Customer customer;
+        List<Customer> customers = findEntityByName(Customer.class, customerName);
+        if (customers.isEmpty()) {
+            customer = new Customer();
+            customer.setName(customerName);
+            entityManager.persist(customer);
+        } else {
+            customer = customers.get(0);
+        }
         Travel travel = new Travel();
         travel.setCustomer(customer);
-        travel.setStart(departure);
-        travel.setEnd(destination);
+        travel.setDeparture(departure);
+        travel.setDestination(destination);
         customer.addTravel(travel);
         entityManager.persist(travel);
         return travel;
     }
 
     @Override
-    public Travel addItemToTravel(Item item, Travel travel) {
+    public Travel addItemToTravel(Item item, String travelId) {
+        Travel travel = entityManager.find(Travel.class, travelId);
         travel.addItem(item);
         travel.getCustomer().addItem(item);
         entityManager.merge(travel);
@@ -49,22 +59,55 @@ public class PathServiceBean implements ControlTravel {
         CriteriaQuery<Travel> criteria = builder.createQuery(Travel.class);
         Root<Travel> root = criteria.from(Travel.class);
 
-        criteria.select(root).where(builder.and(builder.like(root.get("start"), "%" + departure + "%"), builder.like(root.get("end"), "%" + destination + "%")));
+        criteria.select(root).where(builder.and(builder.like(root.get("departure"), "%" + departure + "%"), builder.like(root.get("destination"), "%" + destination + "%")));
         TypedQuery<Travel> query = entityManager.createQuery(criteria);
         return query.getResultList();
     }
 
     @Override
-    public Travel chooseTravel(Customer transporter, Travel travel) {
+    public List<Travel> findTravel() {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Travel> criteria = builder.createQuery(Travel.class);
+        Root<Travel> root = criteria.from(Travel.class);
+
+        criteria.select(root);
+        TypedQuery<Travel> query = entityManager.createQuery(criteria);
+        return query.getResultList();
+    }
+
+    @Override
+    public Travel chooseTravel(String transporterName, String travelId) {
+        Customer transporter;
+        List<Customer> transporters = findEntityByName(Customer.class, transporterName);
+        if (transporters.isEmpty()) {
+            transporter = new Customer();
+            transporter.setName(transporterName);
+            entityManager.persist(transporter);
+        } else {
+            transporter = transporters.get(0);
+        }
+        entityManager.merge(transporter);
+        Travel travel = entityManager.find(Travel.class, travelId);
+        entityManager.merge(travel);
         travel.setTransporter(transporter);
         transporter.chooseTravel(travel);
-        entityManager.merge(travel);
-        entityManager.merge(transporter);
         return travel;
     }
 
     @Override
-    public void finishTravel(Travel travel) {
+    public void finishTravel(String travelId) {
+        Travel travel = entityManager.find(Travel.class, travelId);
         ContractInstance.finishTravel(travel);
+    }
+
+    private <T> List<T> findEntityByName(Class<T> clazz, String name) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<T> criteria = builder.createQuery(clazz);
+        Root<T> root = criteria.from(clazz);
+
+        criteria.select(root).where(builder.like(root.get("name"), "%" + name + "%"));
+        TypedQuery<T> query = entityManager.createQuery(criteria);
+        return query.getResultList();
     }
 }

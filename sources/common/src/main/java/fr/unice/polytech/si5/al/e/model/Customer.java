@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,17 +15,17 @@ public class Customer {
     @NotNull
     private String name;
 
-    @OneToMany
-    private List<Item> items;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private Set<Item> items;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST)
     private Set<Travel> shipments;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "transporter", cascade = CascadeType.PERSIST)
     private Set<Travel> transports;
 
     public Customer() {
-        this.items = new ArrayList<>();
+        this.items = new HashSet<>();
         this.shipments = new HashSet<>();
         this.transports = new HashSet<>();
     }
@@ -43,7 +42,7 @@ public class Customer {
         items.add(item);
     }
 
-    public List<Item> getItems() {
+    public Set<Item> getItems() {
         return items;
     }
 

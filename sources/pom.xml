@@ -18,6 +18,8 @@
         <module>common</module>
         <module>insurer-ws</module>
         <module>dist</module>
+        <module>scenario</module>
+        <module>travelValidator</module>
     </modules>
 
     <properties>

@@ -4,3 +4,8 @@ services:
     image: hsy20000118/blablamove
     ports: 
       - "9090:9090"
+  extern_mailer:
+    image: extern_mailer
+    build: ./mailer
+    ports:
+      - "8080:8080"

@@ -53,8 +53,8 @@ public class ValidatorBeanTest {
     @Before
     public void init(){
         this.travel = new Travel();
-        travel.setStart("sal");
-        travel.setEnd("sal");
+        travel.setDestination("sal");
+        travel.setDeparture("sal");
     }
 
     @Test

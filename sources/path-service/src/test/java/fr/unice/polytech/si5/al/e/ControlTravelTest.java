@@ -2,10 +2,10 @@ package fr.unice.polytech.si5.al.e;
 
 
 import fr.unice.polytech.si5.al.e.components.PathServiceBean;
+import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
-import org.apache.jasper.tagplugins.jstl.core.Out;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
@@ -26,6 +26,10 @@ import static org.junit.Assert.assertTrue;
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @RunWith(Arquillian.class)
@@ -67,8 +71,8 @@ public class ControlTravelTest {
 
         travelA = new Travel();
         travelA.setCustomer(christophe);
-        travelA.setStart("startA");
-        travelA.setEnd("endA");
+        travelA.setDeparture("startA");
+        travelA.setDestination("endA");
         entityManager.persist(travelA);
 
         itemA = new Item();
@@ -78,44 +82,41 @@ public class ControlTravelTest {
 
     @After
     public void cleanup() {
-        christophe = entityManager.merge(christophe);
         entityManager.remove(christophe);
         christophe = null;
 
-        johan = entityManager.merge(johan);
         entityManager.remove(johan);
         johan = null;
 
-        travelA = entityManager.merge(travelA);
         entityManager.remove(travelA);
         travelA = null;
 
-        itemA = entityManager.merge(itemA);
         entityManager.remove(itemA);
         itemA = null;
+
     }
 
     @Test
     public void createTravelTest() {
-        Travel travel1 = controlTravel.createTravel(christophe, "startpoint", "endpoint");
+        Travel travel1 = controlTravel.createTravel("christophe", "startpoint", "endpoint");
         Travel travel2 = entityManager.merge(travel1);
         assertEquals(travel1, travel2);
         assertEquals(christophe, travel2.getCustomer());
-        assertEquals("startpoint", travel2.getStart());
-        assertEquals("endpoint", travel2.getEnd());
+        assertEquals("startpoint", travel2.getDeparture());
+        assertEquals("endpoint", travel2.getDestination());
         entityManager.remove(travel1);
     }
 
     @Test
     public void addItemToTravelTest() {
-        Travel travel1 = controlTravel.addItemToTravel(itemA, travelA);
+        Travel travel1 = controlTravel.addItemToTravel(itemA, Integer.toString(travelA.getId()));
         Travel travel2 = entityManager.merge(travel1);
 
         assertEquals(travelA, travel1);
         assertEquals(travel1, travel2);
         assertEquals(christophe, travel2.getCustomer());
-        assertEquals(travel1.getStart(), travel2.getStart());
-        assertEquals(travel1.getEnd(), travel2.getEnd());
+        assertEquals(travel1.getDeparture(), travel2.getDeparture());
+        assertEquals(travel1.getDestination(), travel2.getDestination());
         assertTrue(travel2.getItems().contains(itemA));
         assertTrue(travel2.getCustomer().getItems().contains(itemA));
     }
@@ -126,33 +127,35 @@ public class ControlTravelTest {
         List<Travel> travels = controlTravel.findTravel("startA", "endA");
         assertEquals(1, travels.size());
 
-        controlTravel.createTravel(christophe, "startA", "endA");
+        controlTravel.createTravel("christophe", "startA", "endA");
         List<Travel> travels2 = controlTravel.findTravel("startA", "endA");
         assertEquals(2, travels2.size());
 
-        controlTravel.createTravel(christophe, "startB", "endB");
+        controlTravel.createTravel("christophe", "startB", "endB");
         List<Travel> travels3 = controlTravel.findTravel("startA", "endA");
         List<Travel> travels4 = controlTravel.findTravel("startB", "endB");
         assertEquals(2, travels3.size());
         assertEquals(1, travels4.size());
+
+
     }
 
     @Test
     public void chooseTravelTest() {
-        Travel travel1 = controlTravel.chooseTravel(johan, travelA);
+        Travel travel1 = controlTravel.chooseTravel("johan", Integer.toString(travelA.getId()));
         Travel travel2 = entityManager.merge(travel1);
         assertEquals(travelA, travel1);
         assertEquals(travel1, travel2);
         assertEquals(christophe, travel2.getCustomer());
         assertEquals(johan, travel2.getTransporter());
-        assertEquals(travel1.getStart(), travel2.getStart());
-        assertEquals(travel1.getEnd(), travel2.getEnd());
+        assertEquals(travel1.getDeparture(), travel2.getDeparture());
+        assertEquals(travel1.getDestination(), travel2.getDestination());
 
     }
 
     @Ignore
     @Test
     public void finishTravel() {
-        controlTravel.finishTravel(travelA);
+        controlTravel.finishTravel(Integer.toString(travelA.getId()));
     }
 }

@@ -1,9 +1,14 @@
 package fr.unice.polytech.si5.al.e.model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Travel {
@@ -12,34 +17,36 @@ public class Travel {
     private int id;
 
     @NotNull
-    private String start;
+    private String departure;
+
     @NotNull
-    private String end;
+    private String destination;
 
     private String state;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Validator validator;
 
-    @OneToMany
-    private List<Item> items;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private Set<Item> items;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Customer customer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Customer transporter;
 
     public Travel() {
-        this.items = new ArrayList<>();
+
         validator = new Validator();
+        this.items = new HashSet<>();
     }
 
     public void addItem(Item item) {
         items.add(item);
     }
 
-    public List<Item> getItems() {
+    public Set<Item> getItems() {
         return items;
     }
 
@@ -59,20 +66,20 @@ public class Travel {
         this.transporter = transporter;
     }
 
-    public String getStart() {
-        return start;
+    public String getDeparture() {
+        return departure;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setDeparture(String departure) {
+        this.departure = departure;
     }
 
-    public String getEnd() {
-        return end;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setEnd(String end) {
-        this.end = end;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     public String getState() {
@@ -85,5 +92,24 @@ public class Travel {
 
     public Validator getValidator() {
         return validator;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String  toJSON() {
+        JSONObject object = new JSONObject();
+        object.put("id", id);
+        object.put("departure",departure);
+        object.put("destination",destination);
+        JSONArray itemsJson = new JSONArray();
+        items.forEach(i-> itemsJson.put(i.getName()));
+
+        object.put("items", itemsJson);
+        object.put("state", state);
+
+        return object.toString();
+
     }
 }
