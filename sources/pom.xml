@@ -17,7 +17,6 @@
         <module>customer-ws</module>
         <module>common</module>
         <module>insurer-ws</module>
-        <module>mailer</module>
         <module>dist</module>
         <module>scenario</module>
     </modules>
