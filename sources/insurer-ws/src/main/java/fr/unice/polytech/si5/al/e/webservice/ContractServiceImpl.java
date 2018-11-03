@@ -6,7 +6,7 @@ import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.HandleContract;
 import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.exceptions.HttpException;
 import fr.unice.polytech.si5.al.e.model.holderObject.ContractHolder;
-import fr.unice.polytech.si5.al.e.model.type.Types;
+import fr.unice.polytech.si5.al.e.model.type.Type;
 import holderObjects.ContractAdderHolder;
 import holderObjects.ContractUpdateHolder;
 
@@ -28,7 +28,7 @@ public class ContractServiceImpl implements ContractService {
         log.log(Level.INFO,"new contract to add " + holder.getTypeName()+ " " + holder.getDescription()+ " " + holder.getMail() );
 
         try {
-            Types type = Types.getTypeFromString(holder.getTypeName());
+            Type type = Type.getTypeFromString(holder.getTypeName());
             Contract contract = handleContract.addContract(type, holder.getDescription(), holder.getMail());
             ContractHolder responseHolder = new ContractHolder(contract.getId(), contract.getContact().getMail(), contract.getDescription());
             return Response.ok(responseHolder.toJson()).build();

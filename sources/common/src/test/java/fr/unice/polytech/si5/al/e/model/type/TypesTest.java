@@ -8,13 +8,13 @@ public class TypesTest {
 
     @Test
     public void fromStringTest() throws Exception{
-        Types fragile = Types.getTypeFromString("fragile");
+        Type fragile = Type.getTypeFromString("fragile");
 
-        Assert.assertEquals(Types.FRAGILE,fragile);
+        Assert.assertEquals(Type.FRAGILE,fragile);
     }
 
     @Test(expected = NoSuchTypeException.class)
     public void noTypesTest() throws Exception{
-        Types noSuchType = Types.getTypeFromString("azeazeaz");
+        Type noSuchType = Type.getTypeFromString("azeazeaz");
     }
 }

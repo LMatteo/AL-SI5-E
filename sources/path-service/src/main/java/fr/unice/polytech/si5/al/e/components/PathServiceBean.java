@@ -1,7 +1,7 @@
 package fr.unice.polytech.si5.al.e.components;
 
 import fr.unice.polytech.si5.al.e.ControlTravel;
-import fr.unice.polytech.si5.al.e.interfaces.FinishContract;
+import fr.unice.polytech.si5.al.e.interfaces.GetContract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
@@ -19,7 +19,7 @@ import java.util.List;
 @Stateless
 public class PathServiceBean implements ControlTravel {
     @EJB
-    private FinishContract ContractInstance;
+    private GetContract ContractInstance;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -97,7 +97,7 @@ public class PathServiceBean implements ControlTravel {
     @Override
     public void finishTravel(String travelId) {
         Travel travel = entityManager.find(Travel.class, travelId);
-        ContractInstance.finishTravel(travel);
+        //ContractInstance.finishTravel(travel);
     }
 
     private <T> List<T> findEntityByName(Class<T> clazz, String name) {

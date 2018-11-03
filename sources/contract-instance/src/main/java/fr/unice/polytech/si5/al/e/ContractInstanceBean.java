@@ -1,12 +1,11 @@
 package fr.unice.polytech.si5.al.e;
 
 
-import fr.unice.polytech.si5.al.e.interfaces.FinishContract;
+import fr.unice.polytech.si5.al.e.interfaces.GetContract;
 import fr.unice.polytech.si5.al.e.interfaces.Subscribe;
 import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.ContractSubscription;
 import fr.unice.polytech.si5.al.e.model.Customer;
-import fr.unice.polytech.si5.al.e.model.Travel;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,11 +13,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Stateless
-public class contractInstanceBean implements Subscribe, FinishContract {
+public class ContractInstanceBean implements Subscribe, GetContract {
 
     @PersistenceContext
     private EntityManager manager;
@@ -27,11 +28,31 @@ public class contractInstanceBean implements Subscribe, FinishContract {
     public Collection<ContractSubscription> getContract() {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<ContractSubscription> criteria = builder.createQuery(ContractSubscription.class);
+        Root<ContractSubscription> root =  criteria.from(ContractSubscription.class);
         TypedQuery<ContractSubscription> query = manager.createQuery(criteria);
         List<ContractSubscription> contracts = query.getResultList();
         return contracts;
     }
 
+    @Override
+    public Collection<Contract> getContractByCustomer(Customer customer) {
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<ContractSubscription> criteria = builder.createQuery(ContractSubscription.class);
+
+        Root<ContractSubscription> root =  criteria.from(ContractSubscription.class);
+        criteria.select(root).where(builder.equal(root.get("customer"),customer));
+
+        TypedQuery<ContractSubscription> query = manager.createQuery(criteria);
+        List<ContractSubscription> contracts = query.getResultList();
+
+        List<Contract> res = new ArrayList<>();
+
+        for(ContractSubscription subs : contracts){
+            res.add(subs.getContract());
+        }
+
+        return res;
+    }
 
 
     @Override
@@ -61,16 +82,13 @@ public class contractInstanceBean implements Subscribe, FinishContract {
     public void clear() {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<ContractSubscription> criteria = builder.createQuery(ContractSubscription.class);
+        Root<ContractSubscription> root =  criteria.from(ContractSubscription.class);
+
         TypedQuery<ContractSubscription> query = manager.createQuery(criteria);
         List<ContractSubscription> contracts = query.getResultList();
         for(ContractSubscription contract : contracts){
             manager.remove(contract);
         }
-    }
-
-    @Override
-    public void finishTravel(Travel travel) {
-        // TODO
     }
 
 }
