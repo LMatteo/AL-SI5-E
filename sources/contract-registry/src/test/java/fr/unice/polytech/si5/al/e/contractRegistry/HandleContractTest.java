@@ -56,10 +56,15 @@ public class HandleContractTest {
 
         Contract contract = handleContract.addContract(Type.FRAGILE,"salut","salut");
         Contract contract1 = handleContract.addContract(Type.FRAGILE,"salut","salut");
+        Contract contract2 = handleContract.addContract(Type.FRAGILE,"salut","salut");
+        Contract contract3 = handleContract.addContract(Type.FRAGILE,"salut","salut");
+        Contract contract4 = handleContract.addContract(Type.FRAGILE,"salut","salut");
+        Contract contract5 = handleContract.addContract(Type.FRAGILE,"salut","salut");
+        Contract contract6 = handleContract.addContract(Type.FRAGILE,"salut","salut");
 
         Collection<Contract> contracts = listContract.getContractByType(Type.FRAGILE);
 
-        Assert.assertEquals(2,contracts.size());
+        Assert.assertEquals(7,contracts.size());
         Assert.assertEquals(0,listContract.getContractByType(Type.HEAVY).size());
 
 
@@ -94,6 +99,15 @@ public class HandleContractTest {
         handleContract.updateContractDescription(100,"changement");
 
 
+    }
+
+    @Test
+    public void getByIdTest(){
+        Contract contract = handleContract.addContract(Type.FRAGILE,"salut","salut");
+
+        Contract byId = listContract.getContractById(contract.getId());
+
+        Assert.assertEquals(contract,byId);
     }
 
 

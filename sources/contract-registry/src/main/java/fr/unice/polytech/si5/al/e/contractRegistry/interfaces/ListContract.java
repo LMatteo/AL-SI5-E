@@ -9,4 +9,5 @@ import java.util.Collection;
 @Local
 public interface ListContract {
     Collection<Contract> getContractByType(Type type);
+    Contract getContractById(int id);
 }

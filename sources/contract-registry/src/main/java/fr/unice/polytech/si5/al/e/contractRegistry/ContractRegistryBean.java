@@ -45,6 +45,19 @@ public class ContractRegistryBean implements HandleContract, ListContract {
     }
 
     @Override
+    public Contract getContractById(int id) {
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<Contract> criteria = builder.createQuery(Contract.class);
+        Root<Contract> root =  criteria.from(Contract.class);
+
+        criteria.select(root).where(builder.equal(root.get("id"), id));
+        TypedQuery<Contract> query = manager.createQuery(criteria);
+
+        Contract contract = query.getSingleResult();
+        return contract;
+    }
+
+    @Override
     public Contract addContract(Type type, String description, String mail) {
 
         Contract contract = new Contract();
