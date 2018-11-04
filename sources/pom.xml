@@ -20,6 +20,7 @@
         <module>dist</module>
         <module>scenario</module>
         <module>travelValidator</module>
+        <module>mailer</module>
     </modules>
 
     <properties>

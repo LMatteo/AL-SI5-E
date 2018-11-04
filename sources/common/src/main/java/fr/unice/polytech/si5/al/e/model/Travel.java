@@ -103,10 +103,12 @@ public class Travel {
         object.put("id", id);
         object.put("departure",departure);
         object.put("destination",destination);
-        JSONArray itemsJson = new JSONArray();
-        items.forEach(i-> itemsJson.put(i.getName()));
+        if(items != null){
 
-        object.put("items", itemsJson);
+            JSONArray itemsJson = new JSONArray();
+            items.forEach(i-> itemsJson.put(i.getName()));
+            object.put("items", itemsJson);
+        }
         object.put("state", state);
 
         return object.toString();
