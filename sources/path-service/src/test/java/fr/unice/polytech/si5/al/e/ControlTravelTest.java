@@ -2,6 +2,7 @@ package fr.unice.polytech.si5.al.e;
 
 
 import fr.unice.polytech.si5.al.e.components.PathServiceBean;
+import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
@@ -25,6 +26,10 @@ import static org.junit.Assert.assertTrue;
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @RunWith(Arquillian.class)
@@ -77,21 +82,18 @@ public class ControlTravelTest {
 
     @After
     public void cleanup() {
-        christophe = entityManager.merge(christophe);
         entityManager.remove(christophe);
         christophe = null;
 
-        johan = entityManager.merge(johan);
         entityManager.remove(johan);
         johan = null;
 
-        travelA = entityManager.merge(travelA);
         entityManager.remove(travelA);
         travelA = null;
 
-        itemA = entityManager.merge(itemA);
         entityManager.remove(itemA);
         itemA = null;
+
     }
 
     @Test

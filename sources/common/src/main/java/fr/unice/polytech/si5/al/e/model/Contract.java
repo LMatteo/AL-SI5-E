@@ -1,6 +1,6 @@
 package fr.unice.polytech.si5.al.e.model;
 
-import fr.unice.polytech.si5.al.e.model.type.Types;
+import fr.unice.polytech.si5.al.e.model.type.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,7 +17,7 @@ public class Contract implements Serializable {
     private int id;
 
     @NotNull
-    private Types type;
+    private Type type;
 
     @NotNull
     private String description;
@@ -25,11 +25,11 @@ public class Contract implements Serializable {
     public Contract() {
     }
 
-    public Types getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(Types type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -58,5 +58,18 @@ public class Contract implements Serializable {
         return "Contract{" +
                 ", id=" + id +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+        if(!(obj instanceof Contract)) return false;
+
+        return ((Contract) obj).id == this.id;
     }
 }

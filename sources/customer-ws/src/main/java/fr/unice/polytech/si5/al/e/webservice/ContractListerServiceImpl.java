@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.ListContract;
 import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.exceptions.HttpException;
-import fr.unice.polytech.si5.al.e.model.type.Types;
+import fr.unice.polytech.si5.al.e.model.type.Type;
 import fr.unice.polytech.si5.al.e.model.holderObject.ContractHolder;
 import fr.unice.polytech.si5.al.e.webservice.interfaces.ContractListerService;
 
@@ -26,7 +26,7 @@ public class ContractListerServiceImpl implements ContractListerService {
     @Override
     public Response getContractByType(String type) {
         try {
-            List<Contract> contracts = new ArrayList<Contract>(listContract.getContractByType(Types.getTypeFromString(type)));
+            List<Contract> contracts = new ArrayList<Contract>(listContract.getContractByType(Type.getTypeFromString(type)));
             List<ContractHolder> contractHolders = new ArrayList<>();
 
             for (Contract contract : contracts) {

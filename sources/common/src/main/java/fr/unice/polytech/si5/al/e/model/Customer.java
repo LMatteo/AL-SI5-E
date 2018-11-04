@@ -53,4 +53,17 @@ public class Customer {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public int hashCode() {
+        return this.id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+        if(!(obj instanceof Customer)) return false;
+
+        return ((Customer) obj).id == this.id;
+    }
 }

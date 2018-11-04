@@ -2,19 +2,19 @@ package fr.unice.polytech.si5.al.e.model.type;
 
 import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchTypeException;
 
-public enum Types {
+public enum Type {
     HIGHTECH("hightech"),
     FRAGILE("fragile"),
     HEAVY("heavy");
 
     private String name;
 
-    Types(String type){
+    Type(String type){
         this.name = type;
     }
 
-    public static Types getTypeFromString(String name) throws NoSuchTypeException {
-        for(Types type : Types.values()){
+    public static Type getTypeFromString(String name) throws NoSuchTypeException {
+        for(Type type : Type.values()){
             if(type.name.equals(name)){
                 return type;
             }

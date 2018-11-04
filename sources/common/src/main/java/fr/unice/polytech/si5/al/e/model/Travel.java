@@ -24,6 +24,9 @@ public class Travel {
 
     private String state;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Validator validator;
+
     @OneToMany(cascade = CascadeType.PERSIST)
     private Set<Item> items;
 
@@ -34,6 +37,8 @@ public class Travel {
     private Customer transporter;
 
     public Travel() {
+
+        validator = new Validator();
         this.items = new HashSet<>();
     }
 
@@ -83,6 +88,10 @@ public class Travel {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Validator getValidator() {
+        return validator;
     }
 
     public int getId() {

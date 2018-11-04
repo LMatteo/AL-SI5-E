@@ -5,7 +5,7 @@ import fr.unice.polytech.si5.al.e.contractRegistry.exceptions.NoSuchContractIdEx
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.HandleContract;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.ListContract;
 import fr.unice.polytech.si5.al.e.model.Contract;
-import fr.unice.polytech.si5.al.e.model.type.Types;
+import fr.unice.polytech.si5.al.e.model.type.Type;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -54,22 +54,22 @@ public class HandleContractTest {
     @Test
     public void addingAndListingTest(){
 
-        Contract contract = handleContract.addContract(Types.FRAGILE,"salut","salut");
-        Contract contract1 = handleContract.addContract(Types.FRAGILE,"salut","salut");
+        Contract contract = handleContract.addContract(Type.FRAGILE,"salut","salut");
+        Contract contract1 = handleContract.addContract(Type.FRAGILE,"salut","salut");
 
-        Collection<Contract> contracts = listContract.getContractByType(Types.FRAGILE);
+        Collection<Contract> contracts = listContract.getContractByType(Type.FRAGILE);
 
         Assert.assertEquals(2,contracts.size());
-        Assert.assertEquals(0,listContract.getContractByType(Types.HEAVY).size());
+        Assert.assertEquals(0,listContract.getContractByType(Type.HEAVY).size());
 
 
     }
 
     @Test
     public void updatingTest(){
-        Contract contract = handleContract.addContract(Types.FRAGILE,"salut","salut");
+        Contract contract = handleContract.addContract(Type.FRAGILE,"salut","salut");
 
-        List<Contract> contracts = new ArrayList<>(listContract.getContractByType(Types.FRAGILE));
+        List<Contract> contracts = new ArrayList<>(listContract.getContractByType(Type.FRAGILE));
 
         Assert.assertEquals(contracts.size(),1);
 
@@ -82,7 +82,7 @@ public class HandleContractTest {
             e.printStackTrace();
         }
 
-        contracts = new ArrayList<>(listContract.getContractByType(Types.FRAGILE));
+        contracts = new ArrayList<>(listContract.getContractByType(Type.FRAGILE));
         Assert.assertEquals(contracts.size(),1);
         persistingContract = contracts.get(0);
 

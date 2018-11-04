@@ -6,7 +6,7 @@ import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.HandleContract;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.ListContract;
 import fr.unice.polytech.si5.al.e.model.Contact;
 import fr.unice.polytech.si5.al.e.model.Contract;
-import fr.unice.polytech.si5.al.e.model.type.Types;
+import fr.unice.polytech.si5.al.e.model.type.Type;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,7 +31,7 @@ public class ContractRegistryBean implements HandleContract, ListContract {
 
 
     @Override
-    public Collection<Contract> getContractByType(Types type) {
+    public Collection<Contract> getContractByType(Type type) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Contract> criteria = builder.createQuery(Contract.class);
         Root<Contract> root =  criteria.from(Contract.class);
@@ -45,7 +45,7 @@ public class ContractRegistryBean implements HandleContract, ListContract {
     }
 
     @Override
-    public Contract addContract(Types type, String description, String mail) {
+    public Contract addContract(Type type, String description, String mail) {
 
         Contract contract = new Contract();
         log.log(Level.INFO,"NEW CONTRACT : type : " + type.name() + " description : " + description + " mail : "+mail );
