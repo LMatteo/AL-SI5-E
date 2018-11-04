@@ -40,6 +40,7 @@ public class Main {
             case POST:
                 req = new HttpPost(route);
                 ((HttpPost) req).setEntity(postingString);
+                req.setHeader("Content-type", "application/json");
                 break;
             case GET:
                 req = new HttpGet(route);
@@ -47,6 +48,7 @@ public class Main {
             case PUT:
                 req = new HttpPut(route);
                 ((HttpPut) req).setEntity(postingString);
+                req.setHeader("Content-type", "application/json");
                 break;
             case DELETE:
                 req = new HttpDelete(route);
@@ -55,7 +57,6 @@ public class Main {
                 throw new RuntimeException();
         }
 
-        req.setHeader("Content-type", "application/json");
         HttpResponse execute = httpClient.execute(req);
 
 
@@ -83,10 +84,10 @@ public class Main {
 
             System.out.println("Céline interroge les types de contrats d'assurance avec des critères : \n\tPour son ordinateur, elle cherche un contrat high-tech");
             sc.nextLine();
-            String resp3 = call(MethodType.GET, customerWsUrl + "contracts/?type=hightech", "{}");
+            String resp3 = call(MethodType.GET, customerWsUrl + "contracts/hightech", "{}");
             System.out.println("\tPour sa commode, elle choisit un contrat lourd");
             sc.nextLine();
-            String resp4 = call(MethodType.GET, customerWsUrl + "contracts/?type=heavy", "{}");
+            String resp4 = call(MethodType.GET, customerWsUrl + "contracts/heavy", "{}");
 
             System.out.println("N’ayant pas d’assurance alors que celle ci est obligatoire, elle décide de souscrire à un contrat d’assurance.");
             sc.nextLine();
