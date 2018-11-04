@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Entity
 public class Contract implements Serializable {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private Contact contact;
 
     @Id

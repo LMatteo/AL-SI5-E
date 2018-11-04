@@ -32,10 +32,6 @@ public class ContractSubscription {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public Contract getContract() {
         return contract;
     }
