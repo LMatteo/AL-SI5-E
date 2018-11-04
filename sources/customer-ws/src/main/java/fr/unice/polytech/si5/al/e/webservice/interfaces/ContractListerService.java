@@ -8,8 +8,7 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface ContractListerService {
-
-
     @GET
-    Response getContractByType(@QueryParam("type") String type);
+    @Path("{type}")
+    Response getContractByType(@PathParam("type") String type);
 }
