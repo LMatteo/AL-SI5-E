@@ -9,13 +9,14 @@ import fr.unice.polytech.si5.al.e.model.holderObject.ContractHolder;
 import fr.unice.polytech.si5.al.e.webservice.interfaces.ContractListerService;
 
 import javax.ejb.EJB;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+@Path("/contracts")
 public class ContractListerServiceImpl implements ContractListerService {
 
     @EJB
