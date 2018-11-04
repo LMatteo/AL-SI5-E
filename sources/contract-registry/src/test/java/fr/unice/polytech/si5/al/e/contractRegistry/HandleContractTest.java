@@ -102,12 +102,18 @@ public class HandleContractTest {
     }
 
     @Test
-    public void getByIdTest(){
+    public void getByIdTest() throws NoSuchContractIdException{
         Contract contract = handleContract.addContract(Type.FRAGILE,"salut","salut");
 
         Contract byId = listContract.getContractById(contract.getId());
 
         Assert.assertEquals(contract,byId);
+    }
+
+    @Test(expected = NoSuchContractIdException.class)
+    public void getByWrongIdTest() throws NoSuchContractIdException{
+        Contract contract = listContract.getContractById(10);
+        System.out.println(contract);
     }
 
 

@@ -2,10 +2,7 @@ package fr.unice.polytech.si5.al.e.agencynotifier.bean;
 
 import fr.unice.polytech.si5.al.e.agencynotifier.interfaces.Notify;
 import fr.unice.polytech.si5.al.e.agencynotifier.interfaces.RegisterInsurer;
-import fr.unice.polytech.si5.al.e.model.Contact;
-import fr.unice.polytech.si5.al.e.model.Contract;
-import fr.unice.polytech.si5.al.e.model.ContractSubscription;
-import fr.unice.polytech.si5.al.e.model.ItineraryStatus;
+import fr.unice.polytech.si5.al.e.model.*;
 
 import javax.ejb.Stateful;
 import java.util.HashMap;
@@ -32,6 +29,13 @@ public class AgencyNotifierBean implements Notify, RegisterInsurer {
         int contractId = contractSubscription.getContract().getId();
         Contact contact = contacts.get(contractId);
         System.out.println("AgencyNotifier : send notification to "+ contact.getMail() + " for subscription "+ contractSubscription);
+    }
+
+    @Override
+    public void notifyContractReport(Customer customer, Contract contract, Travel travel) {
+        int contractId = contract.getId();
+        Contact contact = contacts.get(contractId);
+        System.out.println("AgencyNotifier : send notification to "+ contact.getMail());
     }
 
     @Override
