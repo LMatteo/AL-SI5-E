@@ -5,9 +5,7 @@ import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,7 +25,7 @@ public class Travel {
     @OneToOne(cascade = CascadeType.ALL)
     private Validator validator;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Item> items;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -98,15 +96,14 @@ public class Travel {
         return id;
     }
 
-    public String  toJSON() {
+    public String toJSON() {
         JSONObject object = new JSONObject();
         object.put("id", id);
-        object.put("departure",departure);
-        object.put("destination",destination);
-        if(items != null){
-
+        object.put("departure", departure);
+        object.put("destination", destination);
+        if (!items.isEmpty()) {
             JSONArray itemsJson = new JSONArray();
-            items.forEach(i-> itemsJson.put(i.getName()));
+            items.forEach(i -> itemsJson.put(i.getName()));
             object.put("items", itemsJson);
         }
         object.put("state", state);
