@@ -1,7 +1,6 @@
 package fr.unice.polytech.si5.al.e.agencynotifier.interfaces;
 
-import fr.unice.polytech.si5.al.e.model.ContractSubscription;
-import fr.unice.polytech.si5.al.e.model.ItineraryStatus;
+import fr.unice.polytech.si5.al.e.model.*;
 
 import javax.ejb.Local;
 
@@ -9,5 +8,6 @@ import javax.ejb.Local;
 public interface Notify {
 
     void notifyContractReport(ContractSubscription contractSubscription, ItineraryStatus status);
+    void notifyContractReport(Customer customer, Contract contract, Travel travel);
     void notifyContractRegister( ContractSubscription newSubscribtion);
 }
