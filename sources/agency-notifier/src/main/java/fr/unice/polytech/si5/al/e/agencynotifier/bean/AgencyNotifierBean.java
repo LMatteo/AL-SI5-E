@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Stateful
 public class AgencyNotifierBean implements Notify, RegisterInsurer {
-    private final Map<Integer,Contact> contacts = new HashMap<>();
+    private static final Map<Integer,Contact> contacts = new HashMap<>();
     @Override
     public void registerInsurerContact(Contract contract) {
         contacts.put(contract.getId(), contract.getContact());
