@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.al.e.contractRegistry;
 
 
+import fr.unice.polytech.si5.al.e.agencynotifier.bean.AgencyNotifierBean;
 import fr.unice.polytech.si5.al.e.contractRegistry.exceptions.NoSuchContractIdException;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.HandleContract;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.ListContract;
@@ -40,6 +41,7 @@ public class HandleContractTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 // Message-Driven beans
                 .addPackage(ContractRegistryBean.class.getPackage())
+                .addPackage(AgencyNotifierBean.class.getPackage())
                 .addPackage(Contract.class.getPackage())
                 // Persistence file
                 .addAsManifestResource(new ClassLoaderAsset("META-INF/persistence.xml"), "persistence.xml");

@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.al.e.contractRegistry;
 
 
+import fr.unice.polytech.si5.al.e.agencynotifier.interfaces.RegisterInsurer;
 import fr.unice.polytech.si5.al.e.contractRegistry.exceptions.NoSuchContractIdException;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.HandleContract;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.ListContract;
@@ -8,6 +9,7 @@ import fr.unice.polytech.si5.al.e.model.Contact;
 import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.type.Type;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -26,6 +28,9 @@ public class ContractRegistryBean implements HandleContract, ListContract {
 
     @PersistenceContext
     private EntityManager manager;
+
+    @EJB
+    private RegisterInsurer register;
 
     private static final Logger log = Logger.getLogger(Logger.class.getName());
 
@@ -72,6 +77,8 @@ public class ContractRegistryBean implements HandleContract, ListContract {
         contract.setContact(new Contact(mail));
 
         manager.persist(contract);
+
+        register.registerInsurerContact(contract);
 
         return contract;
     }
