@@ -124,7 +124,7 @@ public class Main {
             String dd = call(MethodType.GET, customerWsUrl + "travels?departure=Paris&destination=Nice", "");
 
             pause("Jean se définit en tant que déménageur pour le trajet avec l'ordinateur");
-            String testee = call(MethodType.POST, customerWsUrl + "travels/" + travelIds.get(0) + "/transporter",
+            String testee = call(MethodType.PUT, customerWsUrl + "travels/" + travelIds.get(0) + "/transporter",
                     "{'travel':{'transporterName':'Jean'}}");
 
 
