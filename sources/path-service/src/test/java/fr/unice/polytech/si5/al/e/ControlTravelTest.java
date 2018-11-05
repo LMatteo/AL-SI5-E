@@ -2,6 +2,7 @@ package fr.unice.polytech.si5.al.e;
 
 
 import fr.unice.polytech.si5.al.e.components.PathServiceBean;
+import fr.unice.polytech.si5.al.e.messageReceiver.MessageReceiver;
 import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
@@ -55,6 +56,7 @@ public class ControlTravelTest {
                 .addPackage(Travel.class.getPackage())
                 .addPackage(Customer.class.getPackage())
                 .addPackage(Item.class.getPackage())
+                .addPackage(MessageReceiver.class.getPackage())
                 // Persistence file
                 .addAsManifestResource(new ClassLoaderAsset("META-INF/persistence.xml"), "persistence.xml");
     }
@@ -153,7 +155,6 @@ public class ControlTravelTest {
 
     }
 
-    @Ignore
     @Test
     public void finishTravel() {
         controlTravel.finishTravel(Integer.toString(travelA.getId()));
