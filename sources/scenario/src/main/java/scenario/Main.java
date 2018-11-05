@@ -1,27 +1,32 @@
 package scenario;
 
 import com.google.gson.Gson;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import scenario.pojo.TravelCreation;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     private enum MethodType {
         POST, GET, PUT, DELETE
     }
-
+    private static Scanner scanner = new Scanner(System.in);
+    private static void pause(String message){
+        System.out.println(message);
+        scanner.nextLine();
+    }
     private static String customerWsUrl = "http://localhost:9090/blabla-move-backend/";
 
     public static String call(MethodType type, String route, String jsonData) throws IOException {
@@ -65,64 +70,75 @@ public class Main {
         return s;
 
     }
-    public static int createTravel(String from, String to, String customer) throws IOException {
-        TravelCreation tc = new TravelCreation(customer, from, to);
-        String creationResponse = call(MethodType.POST, customerWsUrl + "travels/", "{\"travel\":"+new Gson().toJson(tc)+"}");
 
-        return Integer.parseInt(creationResponse);
+    public static List<Integer> createTravels(String from, String to, String customer, List<String> objects) throws IOException {
+        List<Integer> travelsIds = new ArrayList<>();
+        objects.forEach(ob -> {
+            try {
+                pause("Celine crée le trajet pour son objet " + ob);
+                TravelCreation tc = new TravelCreation(customer, from, to);
+                String creationResponse = call(MethodType.POST, customerWsUrl + "travels/", "{\"travel\":" + new Gson().toJson(tc) + "}");
+                int travelId = Integer.parseInt(creationResponse);
+                travelsIds.add(travelId);
+                String resp2 = call(MethodType.PUT, customerWsUrl + "travels/" + travelId, "{\"item\":{\"itemName\":\"" + ob + "\"}}");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        return travelsIds;
     }
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Celine souhaite faire transporter son ordinateur et sa commode vers sa nouvelle ville.");
+
+    public static void main(String[] args) throws IOException {
+        pause("Celine souhaite faire transporter son ordinateur et sa commode vers sa nouvelle ville.\nElle définit les objets à transporter dans notre système.");
         try {
-            sc.nextLine();
-            int travelId = createTravel("Paris", "Nice", "Celine");
-            System.out.println("Celine ajoute les objets qu'elle souhaite transporter.");
-            sc.nextLine();
+            List<Integer> travelIds = createTravels("Paris", "Nice", "Celine", Arrays.asList("Ordinateur gameur","Commode"));
 
-            String resp2 = call(MethodType.PUT, customerWsUrl + "travels/" + travelId, "{\"item\":{\"itemName\":\"Ordinateur gameur\"}}");
-
-            System.out.println("Céline interroge les types de contrats d'assurance avec des critères : \n\tPour son ordinateur, elle cherche un contrat high-tech");
-            sc.nextLine();
+            pause("Céline interroge les types de contrats d'assurance avec des critères : \n\tPour son ordinateur, elle cherche un contrat high-tech");
             String resp3 = call(MethodType.GET, customerWsUrl + "contracts/hightech", "{}");
-            System.out.println("\tPour sa commode, elle choisit un contrat lourd");
-            sc.nextLine();
+            JSONArray contractsResp = new JSONArray(resp3);
+            JSONObject firstContract = contractsResp.getJSONObject(0);
+            firstContract.put("typeName", "hightech");
+            firstContract.put("idCustomer", "celine");
+            pause("Il y a " + contractsResp.length() + " contrat d'assurance qui correspond à ce critère");
+
+            pause("\tPour sa commode, elle choisit un contrat lourd");
             String resp4 = call(MethodType.GET, customerWsUrl + "contracts/heavy", "{}");
 
-            System.out.println("N’ayant pas d’assurance alors que celle ci est obligatoire, elle décide de souscrire à un contrat d’assurance.");
-            sc.nextLine();
+            pause("N’ayant pas d’assurance alors que celle ci est obligatoire, elle décide de souscrire à un contrat d’assurance.");
 
-            String res = call(MethodType.POST, customerWsUrl + "subscribe", "{\"contract\" : {}}");
+            String res = call(MethodType.POST, customerWsUrl + "subscribe", "{\"contract\" : " + firstContract.toString() + "}");
 
-            System.out.println("\tJean recherche les déménagements qui suivent son trajet");
-            sc.nextLine();
+            pause("Celine n'a plus qu'à attendre ...\n-------------------------");
+
+            pause("Jean recherche les déménagements qui suivent son trajet");
             String travelsList = call(MethodType.GET, customerWsUrl + "travels?departure=Paris&destination=Nice", "");
+            JSONArray travels = new JSONArray(travelsList);
+            pause("Jean décide de prendre l’ordinateur de Celine et a déjà sa propre assurance.");
+            pause("\tJean se définit en tant que déménageur pour le trajet avec l'ordinateur");
+            String test2 = call(MethodType.PUT, customerWsUrl + "travels/" + travelIds.get(1) + "/transporter",
+                    "{'travel':{'transporterName':'Jean'}}");
 
-            System.out.println("Jean décide de prendre l’ordinateur de Celine et a déjà sa propre assurance.");
-            sc.nextLine();
-
-            String tt = call(MethodType.GET, customerWsUrl + "subscribe", "{\"contract\" : {}}");
-
-            System.out.println("\tJean se définit en tant que déménageur pour le trajet avec l'ordinateur");
-
-            System.out.println("Julien décide de prendre commode de Celine et décide de souscrire à un contrat d’assurance sur BlaBlaMove.");
-            sc.nextLine();
-            System.out.println("\tJulien recherche les déménagements qui suivent son trajet");
+            pause("Julien décide de prendre la commode de Celine et décide de souscrire à un contrat d’assurance sur BlaBlaMove.");
+            pause("\tJulien recherche les déménagements qui suivent son trajet");
 
             String dd = call(MethodType.GET, customerWsUrl + "travels?departure=Paris&destination=Nice", "");
 
-            System.out.println("Jean se définit en tant que déménageur pour le trajet avec l'ordinateur");
-            String test = call(MethodType.POST, customerWsUrl + "travels/", "{}");
+            pause("Jean se définit en tant que déménageur pour le trajet avec l'ordinateur");
+            String testee = call(MethodType.POST, customerWsUrl + "travels/" + travelIds.get(0) + "/transporter",
+                    "{'travel':{'transporterName':'Jean'}}");
 
 
-            System.out.println("Jean liste les contrats pour choisir un adapté");
-            String resp11 = call(MethodType.GET, customerWsUrl + "contracts/heavy", "{}");
+            pause("Jean liste les contrats pour choisir un adapté");
 
-            String jeanSub = call(MethodType.POST, customerWsUrl + "subscribe", "{}");
+            String resp11 = call(MethodType.GET, customerWsUrl + "contracts/heavy", null);
+            contractsResp = new JSONArray(resp3);
+            JSONObject jeanContract = contractsResp.getJSONObject(0);
+            jeanContract.put("typeName", "heavy");
+            jeanContract.put("idCustomer", "jean");
+            pause("Julien et Jean effectuent le transport.");
 
-            System.out.println("Julien et Jean effectuent le transport.");
-
-            String finishTravelResp = call(MethodType.DELETE, customerWsUrl + "travels/" + travelId, "{}");
+            String finishTravelResp = call(MethodType.DELETE, customerWsUrl + "travels/" + travelIds.get(0), "{}");
+            String finishTravel2Resp = call(MethodType.DELETE, customerWsUrl + "travels/" + travelIds.get(1), "{}");
 
         } catch (IOException e) {
             e.printStackTrace();
