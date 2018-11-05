@@ -26,12 +26,7 @@
             <version>1.0-SNAPSHOT</version>
             <classifier>classes</classifier>
         </dependency>
-        <dependency>
-            <groupId>fr.unice.polytech.si5.al.e</groupId>
-            <artifactId>mailer</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <classifier>classes</classifier>
-        </dependency>
+
     </dependencies>
     <build>
         <finalName>blabla-move-backend</finalName>

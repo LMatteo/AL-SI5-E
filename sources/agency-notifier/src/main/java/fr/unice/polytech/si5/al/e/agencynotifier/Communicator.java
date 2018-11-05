@@ -25,7 +25,7 @@ public class Communicator {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        req = new HttpPost("http://localhost:9090/blabla-move-backend/mail/");
+        req = new HttpPost("http://localhost:9091/sendmail");
         ((HttpPost) req).setEntity(postingString);
 
 
