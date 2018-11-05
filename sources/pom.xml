@@ -22,6 +22,7 @@
         <module>travelValidator</module>
         <module>insurance-validator</module>
         <module>mailer</module>
+        <module>messageReceiver</module>
     </modules>
 
     <properties>

@@ -6,8 +6,11 @@ import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.jms.*;
+import javax.jms.IllegalStateException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -15,11 +18,16 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Stateless
 public class PathServiceBean implements ControlTravel {
     @EJB
     private GetContract ContractInstance;
+
+    private static final Logger log = Logger.getLogger(Logger.class.getName());
+
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -97,7 +105,11 @@ public class PathServiceBean implements ControlTravel {
     @Override
     public void finishTravel(String travelId) {
         Travel travel = entityManager.find(Travel.class, travelId);
-        //ContractInstance.finishTravel(travel);
+        try {
+            send("VALIDATION", travel);
+        } catch (Exception e){
+            log.log(Level.WARNING,e.toString());
+        }
     }
 
     private <T> List<T> findEntityByName(Class<T> clazz, String name) {
@@ -109,5 +121,30 @@ public class PathServiceBean implements ControlTravel {
         criteria.select(root).where(builder.like(root.get("name"), "%" + name + "%"));
         TypedQuery<T> query = entityManager.createQuery(criteria);
         return query.getResultList();
+    }
+
+    @Resource private ConnectionFactory connectionFactory;
+    @Resource(name = "MessageReceiver") private Queue acknowledgmentQueue;
+
+
+    private void send(String goal,Travel travel) throws JMSException {
+        Connection connection = null;
+        Session session = null;
+        try {
+            connection = connectionFactory.createConnection();
+            connection.start();
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+            MessageProducer producer = session.createProducer(acknowledgmentQueue);
+
+
+            producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+            producer.send(session.createTextMessage("salut"));
+        } finally {
+            if (session != null)
+                session.close();
+            if (connection != null)
+                connection.close();
+        }
     }
 }
