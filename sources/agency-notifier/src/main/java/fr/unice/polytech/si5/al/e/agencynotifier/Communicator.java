@@ -10,33 +10,52 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Communicator {
-    public static void sendToMailer(String from, String to, String message)  {
-        try {
+    private static class Email{
+        String from;
+        String to;
+        String message;
 
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
-        HttpRequestBase req;
-        StringEntity postingString = null;//gson.tojson() converts your pojo to json
-        try {
-            postingString = new StringEntity("{'email':{'from':'" + from + "', 'to': '" + to + "' ,'message':'" + message + "'}}");
-            System.out.println(postingString.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        public Email(String from, String to, String message) {
+            this.from = from;
+            this.to = to;
+            this.message = message;
         }
-        req = new HttpPost("http://localhost:9091/sendmail");
-        ((HttpPost) req).setEntity(postingString);
+    }
+    private static List<Email> emails = new ArrayList<>();
+    private static boolean send(Email email) {
+        try {
+
+            HttpClient httpClient = HttpClientBuilder.create().build();
+
+            HttpRequestBase req;
+            StringEntity postingString = null;//gson.tojson() converts your pojo to json
+                postingString = new StringEntity("{'email':{'from':'" + email.from + "', 'to': '" + email.to + "' ,'message':'" + email.message + "'}}");
+                System.out.println(postingString.toString());
+            req = new HttpPost("http://localhost:9091/sendmail");
+            ((HttpPost) req).setEntity(postingString);
 
 
-        req.setHeader("Content-type", "application/json");
-        HttpResponse execute = httpClient.execute(req);
+            req.setHeader("Content-type", "application/json");
+            HttpResponse execute = httpClient.execute(req);
 
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
 
-        String s = EntityUtils.toString(execute.getEntity());
-            System.out.println("Response : " + s);
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+    public static void sendToMailer(String from, String to, String message)  {
+        Email e = new Email(from,to,message);
+        if(send(e)) {
+            if(!emails.isEmpty()) {
+                emails.forEach(Communicator::send);
+            }
+        }else{
+            emails.add(e);
         }
     }
 }
