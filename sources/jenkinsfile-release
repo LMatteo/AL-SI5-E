@@ -1,6 +1,6 @@
 pipeline {
     agent  { 
-        label 'slave-3.23-maven-3.5.4'
+        label 'slave2-3.23-maven-3.5.4'
     }
     stages {
         stage('Build images') {
