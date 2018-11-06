@@ -8,6 +8,11 @@ pipeline {
                 build 'component/BlaBlaMove_Commons'
             }
         }
+        stage("mailer"){
+            steps {
+                build 'component/BlaBlaMove_Mailer'
+            }
+        }
         stage("agency-notifier"){
             steps {
                 build 'component/BlaBlaMove_Agency_Notifier'

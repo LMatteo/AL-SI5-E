@@ -12,6 +12,12 @@ pipeline {
                 build 'component/BlaBlaMove_Commons'
             }
         }
+        stage("mailer"){
+            when { changeset "sources/mailer/*" }
+            steps {
+                build 'component/BlaBlaMove_Mailer'
+            }
+        }
         stage("agency-notifier"){
             when { changeset "sources/agency-notifier/*" }
             steps {
