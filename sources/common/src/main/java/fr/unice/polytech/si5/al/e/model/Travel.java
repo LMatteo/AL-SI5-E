@@ -106,6 +106,10 @@ public class Travel {
             items.forEach(i -> itemsJson.put(i.getName()));
             object.put("items", itemsJson);
         }
+        object.put("customer", customer.getName());
+        if (transporter != null) {
+            object.put("transporter", transporter.getName());
+        }
         object.put("state", state);
 
         return object.toString();
