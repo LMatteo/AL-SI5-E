@@ -139,7 +139,7 @@ public class PathServiceBean implements ControlTravel {
 
 
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-            producer.send(session.createTextMessage("salut"));
+            producer.send(session.createTextMessage(Integer.toString(travel.getId())));
         } finally {
             if (session != null)
                 session.close();

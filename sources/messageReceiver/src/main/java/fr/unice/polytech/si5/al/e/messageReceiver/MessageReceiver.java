@@ -61,6 +61,7 @@ public class MessageReceiver implements MessageListener {
             log.log(Level.WARNING,"RECEIVED TRAVEL CAN'T BE PROCESSED : MISSING INFORMATION");
 
         } catch (Exception e){
+            log.log(Level.WARNING,e.toString());
             log.log(Level.WARNING,"RECEIVED TRAVEL CAN'T BE PROCESSED : ID CAN'T BE PROCESSED");
         }
 
