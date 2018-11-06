@@ -96,6 +96,10 @@ public class Main {
             pause("Céline interroge les types de contrats d'assurance avec des critères : \n\tPour son ordinateur, elle cherche un contrat high-tech");
             String resp3 = call(MethodType.GET, customerWsUrl + "contracts/hightech", "{}");
             JSONArray contractsResp = new JSONArray(resp3);
+            if(contractsResp.length() < 1){
+                System.out.println("Aucun contrat n'est disponible dans le système.");
+                System.exit(0);
+            }
             JSONObject firstContract = contractsResp.getJSONObject(0);
             firstContract.put("typeName", "hightech");
             firstContract.put("idCustomer", "celine");
