@@ -30,6 +30,10 @@ public class Customer {
         this.transports = new HashSet<>();
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void addTravel(Travel travel) {
         shipments.add(travel);
     }

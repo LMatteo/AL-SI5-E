@@ -101,14 +101,17 @@ public class Travel {
         object.put("id", id);
         object.put("departure", departure);
         object.put("destination", destination);
+        object.put("validation", validator.isValid());
         if (!items.isEmpty()) {
             JSONArray itemsJson = new JSONArray();
             items.forEach(i -> itemsJson.put(i.getName()));
             object.put("items", itemsJson);
         }
         object.put("customer", customer.getName());
+        object.put("customerId",customer.getId());
         if (transporter != null) {
             object.put("transporter", transporter.getName());
+            object.put("transporterId", transporter.getId());
         }
         object.put("state", state);
 

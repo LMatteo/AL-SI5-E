@@ -10,46 +10,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ContractSubscribeObject {
 
     @XmlElement
-    private String typeName;
+    private int idContract;
 
     @XmlElement
-    private String description;
+    private int idCustomer;
 
-    @XmlElement
-    private String mail;
-
-    @XmlElement
-    private String idCustomer;
-
-    public String getTypeName() {
-        return typeName;
+    public int getIdContract() {
+        return idContract;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getIdCustomer() {
+    public int getIdCustomer() {
         return idCustomer;
-    }
-
-    public void setIdCustomer(String idCustomer) {
-        this.idCustomer = idCustomer;
     }
 }

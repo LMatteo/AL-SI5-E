@@ -3,10 +3,10 @@ package fr.unice.polytech.si5.al.e;
 
 import fr.unice.polytech.si5.al.e.components.PathServiceBean;
 import fr.unice.polytech.si5.al.e.messageReceiver.MessageReceiver;
-import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
+import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchCustomerIdException;
 import fr.unice.polytech.si5.al.e.travelValidator.ValidatorBean;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -18,7 +18,6 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,10 +27,6 @@ import static org.junit.Assert.assertTrue;
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 @RunWith(Arquillian.class)
@@ -160,5 +155,19 @@ public class ControlTravelTest {
     @Test
     public void finishTravel() {
         controlTravel.finishTravel(Integer.toString(travelA.getId()));
+    }
+
+    @Test
+    public void getCustoByIdTest() throws NoSuchCustomerIdException {
+        int id = christophe.getId();
+
+        Customer byId = controlTravel.getCustomerById(id);
+
+        assertEquals(christophe,byId);
+    }
+
+    @Test(expected = NoSuchCustomerIdException.class)
+    public void getCustoByMissingIdTest() throws NoSuchCustomerIdException {
+        controlTravel.getCustomerById(56);
     }
 }

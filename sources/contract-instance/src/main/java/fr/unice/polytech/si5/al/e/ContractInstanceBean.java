@@ -70,19 +70,23 @@ public class ContractInstanceBean implements Subscribe, GetContract {
         contractSubscription.setContract(contract);
         manager.persist(contractSubscription);
 
-        for(Travel travel : customer.getShipments()){
-            try {
-                send("VALIDATION", travel);
-            } catch (Exception e){
-                log.log(Level.WARNING,"CANNOT SEND TRAVEL FOR VALIDATION IN SUBSCRIPTION");
+        if(customer.getShipments() != null) {
+            for (Travel travel : customer.getShipments()) {
+                try {
+                    send("VALIDATION", travel);
+                } catch (Exception e) {
+                    log.log(Level.WARNING, "CANNOT SEND TRAVEL FOR VALIDATION IN SUBSCRIPTION");
+                }
             }
         }
 
-        for(Travel travel : customer.getTransports()){
-            try {
-                send("VALIDATION", travel);
-            } catch (Exception e){
-                log.log(Level.WARNING,"CANNOT SEND TRAVEL FOR VALIDATION IN SUBSCRIPTION");
+        if(customer.getTransports() != null) {
+            for (Travel travel : customer.getTransports()) {
+                try {
+                    send("VALIDATION", travel);
+                } catch (Exception e) {
+                    log.log(Level.WARNING, "CANNOT SEND TRAVEL FOR VALIDATION IN SUBSCRIPTION");
+                }
             }
         }
 

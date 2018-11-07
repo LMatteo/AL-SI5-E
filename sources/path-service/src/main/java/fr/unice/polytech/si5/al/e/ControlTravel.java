@@ -3,6 +3,7 @@ package fr.unice.polytech.si5.al.e;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
+import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchCustomerIdException;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -22,4 +23,6 @@ public interface ControlTravel {
     Travel chooseTravel(String transporterName, String travelId);
 
     void finishTravel(String travelId);
+
+    Customer getCustomerById(int id) throws NoSuchCustomerIdException;
 }

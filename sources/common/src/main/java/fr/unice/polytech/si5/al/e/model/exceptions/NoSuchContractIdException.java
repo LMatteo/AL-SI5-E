@@ -1,4 +1,4 @@
-package fr.unice.polytech.si5.al.e.contractRegistry.exceptions;
+package fr.unice.polytech.si5.al.e.model.exceptions;
 
 import fr.unice.polytech.si5.al.e.model.exceptions.HttpException;
 

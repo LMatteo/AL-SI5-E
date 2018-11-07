@@ -5,13 +5,13 @@ import fr.unice.polytech.si5.al.e.interfaces.GetContract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
+import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchCustomerIdException;
 import fr.unice.polytech.si5.al.e.travelValidator.PathValidate;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jms.*;
-import javax.jms.IllegalStateException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -53,6 +53,13 @@ public class PathServiceBean implements ControlTravel {
         customer.addTravel(travel);
         entityManager.persist(travel);
         validator.pathValidate(travel);
+
+        try {
+            send("VALIDATION", travel);
+        } catch (Exception e) {
+            log.log(Level.WARNING, e.toString());
+        }
+
         return travel;
     }
 
@@ -109,6 +116,13 @@ public class PathServiceBean implements ControlTravel {
         travel.setTransporter(transporter);
         transporter.chooseTravel(travel);
         validator.pathValidate(travel);
+
+        try {
+            send("VALIDATION", travel);
+        } catch (Exception e) {
+            log.log(Level.WARNING, e.toString());
+        }
+
         return travel;
     }
 
@@ -119,6 +133,22 @@ public class PathServiceBean implements ControlTravel {
             send("VALIDATION", travel);
         } catch (Exception e) {
             log.log(Level.WARNING, e.toString());
+        }
+    }
+
+    @Override
+    public Customer getCustomerById(int id) throws NoSuchCustomerIdException {
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+            CriteriaQuery<Customer> criteria = builder.createQuery(Customer.class);
+            Root<Customer> root = criteria.from(Customer.class);
+
+            criteria.select(root).where(builder.equal(root.get("id"), id));
+            TypedQuery<Customer> query = entityManager.createQuery(criteria);
+            return query.getSingleResult();
+        } catch (Exception e){
+            throw new NoSuchCustomerIdException();
         }
     }
 
