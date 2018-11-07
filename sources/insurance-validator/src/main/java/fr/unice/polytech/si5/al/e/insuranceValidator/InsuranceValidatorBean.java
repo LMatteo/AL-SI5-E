@@ -76,4 +76,24 @@ public class InsuranceValidatorBean implements Validate {
         }
 
     }
+
+    @Override
+    public void notify(Travel travel) {
+        Customer moved = travel.getCustomer();
+
+        Collection<Contract> movedContracts = contract.getContractByCustomer(moved);
+        movedContracts.forEach(contract -> {
+            notifier.notifyContractReport(moved,contract,travel);
+        });
+
+        Customer transporter = travel.getTransporter();
+
+        Collection<Contract> transporterContracts = contract.getContractByCustomer(moved);
+        transporterContracts.forEach(contract -> {
+            notifier.notifyContractReport(transporter,contract,travel);
+        });
+
+        return;
+
+    }
 }

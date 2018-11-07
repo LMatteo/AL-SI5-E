@@ -6,6 +6,8 @@ import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
 import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchCustomerIdException;
+import fr.unice.polytech.si5.al.e.model.holderObject.MessageHolder;
+import fr.unice.polytech.si5.al.e.model.type.MessageType;
 import fr.unice.polytech.si5.al.e.travelValidator.PathValidate;
 
 import javax.annotation.Resource;
@@ -56,7 +58,7 @@ public class PathServiceBean implements ControlTravel {
         validator.pathValidate(travel);
 
         try {
-            send("VALIDATION", travel);
+            send(MessageType.VALIDATION, travel);
         } catch (Exception e) {
             log.log(Level.WARNING, e.toString());
         }
@@ -120,7 +122,7 @@ public class PathServiceBean implements ControlTravel {
         validator.pathValidate(travel);
 
         try {
-            send("VALIDATION", travel);
+            send(MessageType.VALIDATION, travel);
         } catch (Exception e) {
             log.log(Level.WARNING, e.toString());
         }
@@ -132,7 +134,7 @@ public class PathServiceBean implements ControlTravel {
     public void finishTravel(String travelId) {
         Travel travel = entityManager.find(Travel.class, travelId);
         try {
-            send("VALIDATION", travel);
+            send(MessageType.END_NOTIFICATION, travel);
         } catch (Exception e) {
             log.log(Level.WARNING, e.toString());
         }
@@ -171,7 +173,7 @@ public class PathServiceBean implements ControlTravel {
     private Queue acknowledgmentQueue;
 
 
-    private void send(String goal, Travel travel) throws JMSException {
+    private void send(MessageType type, Travel travel) throws JMSException {
         Connection connection = null;
         Session session = null;
         try {
@@ -181,9 +183,9 @@ public class PathServiceBean implements ControlTravel {
 
             MessageProducer producer = session.createProducer(acknowledgmentQueue);
 
-
+            MessageHolder holder = new MessageHolder(type,travel.getId());
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-            producer.send(session.createTextMessage(Integer.toString(travel.getId())));
+            producer.send(session.createTextMessage(holder.toJsonString()));
         } finally {
             if (session != null)
                 session.close();

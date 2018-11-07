@@ -47,7 +47,7 @@ public class SubscribeWebServiceImpl implements SubscribeService {
 
             subscriber.subscribeToContract(customer,contract);
 
-            return Response.ok("Ok").build();
+            return Response.ok("{\"status\" : \"OK\"").build();
         } catch (NoSuchCustomerIdException e){
             return Response.status(400).entity("No such customer id found").build();
         } catch (NoSuchContractIdException e) {

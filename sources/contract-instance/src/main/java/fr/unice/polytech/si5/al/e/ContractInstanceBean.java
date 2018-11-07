@@ -7,6 +7,8 @@ import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.ContractSubscription;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Travel;
+import fr.unice.polytech.si5.al.e.model.holderObject.MessageHolder;
+import fr.unice.polytech.si5.al.e.model.type.MessageType;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -73,7 +75,7 @@ public class ContractInstanceBean implements Subscribe, GetContract {
         if(customer.getShipments() != null) {
             for (Travel travel : customer.getShipments()) {
                 try {
-                    send("VALIDATION", travel);
+                    send(MessageType.VALIDATION, travel);
                 } catch (Exception e) {
                     log.log(Level.WARNING, "CANNOT SEND TRAVEL FOR VALIDATION IN SUBSCRIPTION");
                 }
@@ -83,7 +85,7 @@ public class ContractInstanceBean implements Subscribe, GetContract {
         if(customer.getTransports() != null) {
             for (Travel travel : customer.getTransports()) {
                 try {
-                    send("VALIDATION", travel);
+                    send(MessageType.VALIDATION, travel);
                 } catch (Exception e) {
                     log.log(Level.WARNING, "CANNOT SEND TRAVEL FOR VALIDATION IN SUBSCRIPTION");
                 }
@@ -126,7 +128,7 @@ public class ContractInstanceBean implements Subscribe, GetContract {
     private Queue acknowledgmentQueue;
 
 
-    private void send(String goal, Travel travel) throws JMSException {
+    private void send(MessageType type, Travel travel) throws JMSException {
         Connection connection = null;
         Session session = null;
         try {
@@ -136,9 +138,9 @@ public class ContractInstanceBean implements Subscribe, GetContract {
 
             MessageProducer producer = session.createProducer(acknowledgmentQueue);
 
-
+            MessageHolder holder = new MessageHolder(type,travel.getId());
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-            producer.send(session.createTextMessage(Integer.toString(travel.getId())));
+            producer.send(session.createTextMessage(holder.toJsonString()));
         } finally {
             if (session != null)
                 session.close();

@@ -1,8 +1,11 @@
 package fr.unice.polytech.si5.al.e.messageReceiver;
 
 
+import fr.unice.polytech.si5.al.e.agencynotifier.interfaces.Notify;
 import fr.unice.polytech.si5.al.e.insuranceValidator.Validate;
 import fr.unice.polytech.si5.al.e.model.Travel;
+import fr.unice.polytech.si5.al.e.model.holderObject.MessageHolder;
+import fr.unice.polytech.si5.al.e.model.type.MessageType;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
@@ -35,6 +38,7 @@ public class MessageReceiver implements MessageListener {
     @EJB
     private Validate validate;
 
+
     private static final Logger log = Logger.getLogger(Logger.class.getName());
 
 
@@ -51,10 +55,17 @@ public class MessageReceiver implements MessageListener {
     protected void handleMessage(Message message) throws JMSException {
 
         try {
-            String id = ((TextMessage) message).getText();
-            Travel travel = findTravelById(Integer.parseInt(id));
+            MessageHolder holder = MessageHolder.fromJson(((TextMessage) message).getText());
+            int id = holder.getTravelId();
+            Travel travel = findTravelById(id);
+            if(holder.getType() == MessageType.VALIDATION){
+                log.log(Level.INFO,"VALIDATION");
+                validate.validate(travel);
+            } else if(holder.getType() == MessageType.END_NOTIFICATION){
+                log.log(Level.INFO,"NOTIFICATION");
+                validate.notify(travel);
+            }
 
-            validate.validate(travel);
 
         } catch (Exception e){
             log.log(Level.WARNING,e.toString());
