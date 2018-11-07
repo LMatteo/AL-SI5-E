@@ -54,11 +54,7 @@ public class MessageReceiver implements MessageListener {
             String id = ((TextMessage) message).getText();
             Travel travel = findTravelById(Integer.parseInt(id));
 
-            if(travel.getCustomer() != null && travel.getTransporter() != null){
-                validate.validate(travel);
-            }
-
-            log.log(Level.WARNING,"RECEIVED TRAVEL CAN'T BE PROCESSED : MISSING INFORMATION");
+            validate.validate(travel);
 
         } catch (Exception e){
             log.log(Level.WARNING,e.toString());

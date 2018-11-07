@@ -5,6 +5,7 @@ import fr.unice.polytech.si5.al.e.interfaces.GetContract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
+import fr.unice.polytech.si5.al.e.travelValidator.PathValidate;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -28,6 +29,8 @@ public class PathServiceBean implements ControlTravel {
 
     private static final Logger log = Logger.getLogger(Logger.class.getName());
 
+    @EJB
+    private PathValidate validator;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -49,6 +52,7 @@ public class PathServiceBean implements ControlTravel {
         travel.setDestination(destination);
         customer.addTravel(travel);
         entityManager.persist(travel);
+        validator.pathValidate(travel);
         return travel;
     }
 
@@ -99,6 +103,7 @@ public class PathServiceBean implements ControlTravel {
         entityManager.merge(travel);
         travel.setTransporter(transporter);
         transporter.chooseTravel(travel);
+        validator.pathValidate(travel);
         return travel;
     }
 

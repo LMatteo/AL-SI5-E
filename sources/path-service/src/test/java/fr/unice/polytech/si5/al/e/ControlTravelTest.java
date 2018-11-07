@@ -7,6 +7,7 @@ import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
+import fr.unice.polytech.si5.al.e.travelValidator.ValidatorBean;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
@@ -57,6 +58,7 @@ public class ControlTravelTest {
                 .addPackage(Customer.class.getPackage())
                 .addPackage(Item.class.getPackage())
                 .addPackage(MessageReceiver.class.getPackage())
+                .addPackage(ValidatorBean.class.getPackage())
                 // Persistence file
                 .addAsManifestResource(new ClassLoaderAsset("META-INF/persistence.xml"), "persistence.xml");
     }

@@ -34,40 +34,46 @@ public class InsuranceValidatorBean implements Validate {
 
     @Override
     public void validate(Travel travel) {
-        log.log(Level.INFO,"new travel validation beginning");
-        Customer moved = travel.getCustomer();
+        try {
+            log.log(Level.INFO, "new travel validation beginning");
+            Customer moved = travel.getCustomer();
 
-        Collection<Contract> contracts= contract.getContractByCustomer(moved);
+            Collection<Contract> contracts = contract.getContractByCustomer(moved);
 
-        if(contracts.size() == 0){
-            log.log(Level.INFO,"travel rejected : moved has no contract");
+            if (contracts.size() == 0) {
+                log.log(Level.INFO, "travel rejected : moved has no contract");
 
+                validator.insuranceInvalidate(travel);
+                return;
+            }
+
+            Customer transporter = travel.getTransporter();
+
+            Collection<Contract> transporterContract = contract.getContractByCustomer(transporter);
+
+            if (transporterContract.size() == 0) {
+                log.log(Level.INFO, "travel rejected : transport has no contract");
+
+                validator.insuranceInvalidate(travel);
+                return;
+            }
+
+            validator.insuranceValidate(travel);
+
+            for (Contract contract : contracts) {
+                notifier.notifyContractReport(moved, contract, travel);
+            }
+
+            for (Contract contract : transporterContract) {
+                notifier.notifyContractReport(transporter, contract, travel);
+            }
+
+            log.log(Level.INFO, "travel ACCEPTED");
+        } catch (Exception e){
+            log.log(Level.WARNING,"VALIDATION FAILED FOR UNKNOWN REASON");
+            log.log(Level.WARNING,e.toString());
             validator.insuranceInvalidate(travel);
-            return;
         }
-
-        Customer transporter = travel.getTransporter();
-
-        Collection<Contract> transporterContract = contract.getContractByCustomer(transporter);
-
-        if(transporterContract.size() == 0){
-            log.log(Level.INFO,"travel rejected : transport has no contract");
-
-            validator.insuranceInvalidate(travel);
-            return;
-        }
-
-        validator.insuranceValidate(travel);
-
-        for(Contract contract : contracts){
-            notifier.notifyContractReport(moved,contract,travel);
-        }
-
-        for(Contract contract : transporterContract){
-            notifier.notifyContractReport(transporter,contract,travel);
-        }
-
-        log.log(Level.INFO,"travel ACCEPTED");
 
     }
 }
