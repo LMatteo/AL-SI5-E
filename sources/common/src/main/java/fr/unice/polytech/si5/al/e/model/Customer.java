@@ -42,6 +42,14 @@ public class Customer {
         items.add(item);
     }
 
+    public Set<Travel> getShipments() {
+        return shipments;
+    }
+
+    public Set<Travel> getTransports() {
+        return transports;
+    }
+
     public Set<Item> getItems() {
         return items;
     }
