@@ -52,7 +52,6 @@ public class ControlTravelTest {
                 .addPackage(Travel.class.getPackage())
                 .addPackage(Customer.class.getPackage())
                 .addPackage(Item.class.getPackage())
-                .addPackage(MessageReceiver.class.getPackage())
                 .addPackage(ValidatorBean.class.getPackage())
                 // Persistence file
                 .addAsManifestResource(new ClassLoaderAsset("META-INF/persistence.xml"), "persistence.xml");
@@ -96,13 +95,21 @@ public class ControlTravelTest {
     }
 
     @Test
-    public void createTravelTest() {
+    public void createTravelTest() throws Exception{
         Travel travel1 = controlTravel.createTravel("christophe", "startpoint", "endpoint");
         Travel travel2 = entityManager.merge(travel1);
         assertEquals(travel1, travel2);
         assertEquals(christophe, travel2.getCustomer());
         assertEquals("startpoint", travel2.getDeparture());
         assertEquals("endpoint", travel2.getDestination());
+
+        assertTrue(christophe.getShipments().contains(travel1));
+
+        Customer moved = controlTravel.getCustomerById(christophe.getId());
+
+        assertTrue(moved.getShipments().contains(travel2));
+        assertTrue(moved.getShipments().contains(travel1));
+
         entityManager.remove(travel1);
     }
 
@@ -140,7 +147,7 @@ public class ControlTravelTest {
     }
 
     @Test
-    public void chooseTravelTest() {
+    public void chooseTravelTest() throws Exception{
         Travel travel1 = controlTravel.chooseTravel("johan", Integer.toString(travelA.getId()));
         Travel travel2 = entityManager.merge(travel1);
         assertEquals(travelA, travel1);
@@ -149,6 +156,12 @@ public class ControlTravelTest {
         assertEquals(johan, travel2.getTransporter());
         assertEquals(travel1.getDeparture(), travel2.getDeparture());
         assertEquals(travel1.getDestination(), travel2.getDestination());
+
+
+        Customer transporter = controlTravel.getCustomerById(johan.getId());
+
+        assertTrue(transporter.getTransports().contains(travel2));
+        assertTrue(transporter.getTransports().contains(travel1));
 
     }
 

@@ -18,10 +18,10 @@ public class Customer {
     @OneToMany(cascade = CascadeType.PERSIST)
     private Set<Item> items;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     private Set<Travel> shipments;
 
-    @OneToMany(mappedBy = "transporter", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "transporter", cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     private Set<Travel> transports;
 
     public Customer() {

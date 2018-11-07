@@ -51,6 +51,7 @@ public class PathServiceBean implements ControlTravel {
         travel.setDeparture(departure);
         travel.setDestination(destination);
         customer.addTravel(travel);
+        entityManager.merge(customer);
         entityManager.persist(travel);
         validator.pathValidate(travel);
 
@@ -115,6 +116,7 @@ public class PathServiceBean implements ControlTravel {
         entityManager.merge(travel);
         travel.setTransporter(transporter);
         transporter.chooseTravel(travel);
+        entityManager.merge(transporter);
         validator.pathValidate(travel);
 
         try {
