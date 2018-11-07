@@ -1,7 +1,7 @@
 FROM maven:3.5.4-jdk-8 AS builder
 COPY ./ /blablamove/
 WORKDIR /blablamove/
-RUN mvn install -DskipTests
+RUN mvn clean install -DskipTests
 WORKDIR /blablamove/dist
 RUN mvn tomee:start
 

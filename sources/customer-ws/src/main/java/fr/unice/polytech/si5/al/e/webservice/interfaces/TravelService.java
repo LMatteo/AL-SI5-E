@@ -23,8 +23,12 @@ public interface TravelService {
     @Path("{travelId}")
     Response addItemToTravel(@PathParam("travelId") String travelId, AddItemRequest request);
 
-    @GET()
-    Response listTravels(@QueryParam("departure") String departure,@QueryParam("destination") String destination);
+    @GET
+    Response listTravels(@QueryParam("departure") String departure, @QueryParam("destination") String destination);
+
+    @GET
+    @Path("{travelId}")
+    Response getTravel(@PathParam("travelId") String travelId);
 
     @DELETE
     @Path("{travelId}")

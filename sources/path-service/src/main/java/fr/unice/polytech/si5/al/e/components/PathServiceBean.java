@@ -88,6 +88,11 @@ public class PathServiceBean implements ControlTravel {
     }
 
     @Override
+    public Travel findTravelById(String travelId) {
+        return entityManager.find(Travel.class, travelId);
+    }
+
+    @Override
     public Travel chooseTravel(String transporterName, String travelId) {
         Customer transporter;
         List<Customer> transporters = findEntityByName(Customer.class, transporterName);
@@ -112,8 +117,8 @@ public class PathServiceBean implements ControlTravel {
         Travel travel = entityManager.find(Travel.class, travelId);
         try {
             send("VALIDATION", travel);
-        } catch (Exception e){
-            log.log(Level.WARNING,e.toString());
+        } catch (Exception e) {
+            log.log(Level.WARNING, e.toString());
         }
     }
 
@@ -128,11 +133,13 @@ public class PathServiceBean implements ControlTravel {
         return query.getResultList();
     }
 
-    @Resource private ConnectionFactory connectionFactory;
-    @Resource(name = "MessageReceiver") private Queue acknowledgmentQueue;
+    @Resource
+    private ConnectionFactory connectionFactory;
+    @Resource(name = "MessageReceiver")
+    private Queue acknowledgmentQueue;
 
 
-    private void send(String goal,Travel travel) throws JMSException {
+    private void send(String goal, Travel travel) throws JMSException {
         Connection connection = null;
         Session session = null;
         try {

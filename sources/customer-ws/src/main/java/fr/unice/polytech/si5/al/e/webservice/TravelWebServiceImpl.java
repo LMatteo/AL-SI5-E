@@ -46,6 +46,12 @@ public class TravelWebServiceImpl implements TravelService {
     }
 
     @Override
+    public Response getTravel(String travelId) {
+        Travel travel = controlTravel.findTravelById(travelId);
+        return Response.ok(travel.toJSON()).build();
+    }
+
+    @Override
     public Response endTravel(String travelId) {
         controlTravel.finishTravel(travelId);
         return Response.ok().build();

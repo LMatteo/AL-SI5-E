@@ -10,9 +10,16 @@ import java.util.List;
 @Local
 public interface ControlTravel {
     Travel createTravel(String customerName, String departure, String destination);
+
     Travel addItemToTravel(Item item, String travelId);
+
     List<Travel> findTravel(String departure, String destination);
+
     List<Travel> findTravel();
+
+    Travel findTravelById(String travelId);
+
     Travel chooseTravel(String transporterName, String travelId);
+
     void finishTravel(String travelId);
 }
