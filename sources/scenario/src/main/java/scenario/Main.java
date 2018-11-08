@@ -189,6 +189,11 @@ public class Main {
             String finishTravelResp = call(MethodType.DELETE, customerWsUrl + "travels/" + travelIds.get(0), "{}");
             //String finishTravel2Resp = call(MethodType.DELETE, customerWsUrl + "travels/" + travelIds.get(1), "{}");
 
+            pause("Un mail 'déroulement du voyage' est envoyé à Hubbert l'assureur ");
+            call(MethodType.POST, "http://localhost:9091/sendmail",
+                    "{ 'from':'blablamove', 'to':'hubbert', 'message':'aucun incident' }");
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }

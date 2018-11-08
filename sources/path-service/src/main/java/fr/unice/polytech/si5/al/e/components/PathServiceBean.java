@@ -1,7 +1,6 @@
 package fr.unice.polytech.si5.al.e.components;
 
 import fr.unice.polytech.si5.al.e.ControlTravel;
-import fr.unice.polytech.si5.al.e.interfaces.GetContract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
@@ -26,9 +25,6 @@ import java.util.logging.Logger;
 
 @Stateless
 public class PathServiceBean implements ControlTravel {
-    @EJB
-    private GetContract ContractInstance;
-
     private static final Logger log = Logger.getLogger(Logger.class.getName());
 
     @EJB
