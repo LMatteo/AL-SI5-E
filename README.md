@@ -11,12 +11,14 @@ mvn clean install
 
 ### Run project
 
-#### run server
+#### Run server
 ``` 
 cd ./sources/dist
 mvn tomee:run
 ```
-#### run charge tests
+#### Run charge tests
+
+Prerequisites : Run server
 ```
 cd ./tests
 mvn clean install
