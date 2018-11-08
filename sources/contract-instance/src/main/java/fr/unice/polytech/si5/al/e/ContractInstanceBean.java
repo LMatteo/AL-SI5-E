@@ -124,8 +124,8 @@ public class ContractInstanceBean implements Subscribe, GetContract {
 
     @Resource
     private ConnectionFactory connectionFactory;
-    @Resource(name = "MessageReceiver")
-    private Queue acknowledgmentQueue;
+    @Resource(name = "/topic/TRAVEL_UPDATE")
+    private Topic acknowledgmentQueue;
 
 
     private void send(MessageType type, Travel travel) throws JMSException {
