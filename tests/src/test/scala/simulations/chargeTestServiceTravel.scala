@@ -29,6 +29,12 @@ class chargeTestServiceTravel extends Simulation {
               .body(StringBody(session => buildTravel(session)))
               .check(status.is(200))
           )
+          .pause(1 seconds)
+          .exec(
+            http("Consult All travels")
+              .get("travels")
+              .check(status.is(200))
+          )
       }
 
   def buildTravel(session: Session): String = {

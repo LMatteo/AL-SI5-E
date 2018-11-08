@@ -11,9 +11,22 @@ mvn clean install
 
 ### Run project
 
+#### run server
 ``` 
 cd ./sources/dist
 mvn tomee:run
+```
+#### run charge tests
+```
+cd ./tests
+mvn clean install
+```
+
+or 
+```
+cd ./tests
+mvn clean package
+mvn gatling:execute
 ```
 
 ### Repartition 

@@ -29,6 +29,12 @@ class chargeTestServiceContract extends Simulation {
               .body(StringBody(session => buildContract(session)))
               .check(status.is(200))
           )
+          .pause(1 seconds)
+          .exec(
+          http("Consult All Contract Hightech")
+            .get("contracts/hightech")
+            .check(status.is(200))
+          )
       }
 
   def buildContract(session: Session): String = {

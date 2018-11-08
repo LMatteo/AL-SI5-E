@@ -8,11 +8,6 @@
     <artifactId>blabla-move</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <parent>
-        <groupId>fr.unice.polytech.si5.al.e</groupId>
-        <artifactId>root</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
 
     <modules>
         <module>path-service</module>
