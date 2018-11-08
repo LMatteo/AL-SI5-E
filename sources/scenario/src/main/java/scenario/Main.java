@@ -157,10 +157,10 @@ public class Main {
                     "{'travel':{'transporterName':'Jean'}}");
             */
 
-            pause("Julien décide de prendre la commode de Celine et décide de souscrire à un contrat d’assurance sur BlaBlaMove.");
-            pause("\tJulien recherche les déménagements qui suivent son trajet");
+            // pause("Julien décide de prendre la commode de Celine et décide de souscrire à un contrat d’assurance sur BlaBlaMove.");
+            //pause("\tJulien recherche les déménagements qui suivent son trajet");
 
-            String dd = call(MethodType.GET, customerWsUrl + "travels?departure=Paris&destination=Nice", "");
+            //String dd = call(MethodType.GET, customerWsUrl + "travels?departure=Paris&destination=Nice", "");
 
             pause("Jean se définit en tant que déménageur pour le trajet avec l'ordinateur");
             String testee = call(MethodType.PUT, customerWsUrl + "travels/" + travelIds.get(0) + "/transporter",
@@ -169,7 +169,7 @@ public class Main {
             transporterId = new JSONObject(testee).getInt("transporterId");
 
 
-            pause("Jean liste les contrats pour en choisir un adapté");
+            pause("Jean liste les contrats d'assurance pour en choisir un adapté");
 
             String resp11 = call(MethodType.GET, customerWsUrl + "contracts/heavy", "");
             contractsResp = new JSONArray(resp11);
@@ -184,15 +184,10 @@ public class Main {
 
             pause("Tous les participants sont assurés, on verifie que le trajet est bien validé");
             call(MethodType.GET,customerWsUrl+"travels/"+travelIds.get(0),"");
-            pause("Julien et Jean effectuent le transport.");
+            pause("Jean effectue le transport.");
 
             String finishTravelResp = call(MethodType.DELETE, customerWsUrl + "travels/" + travelIds.get(0), "{}");
             //String finishTravel2Resp = call(MethodType.DELETE, customerWsUrl + "travels/" + travelIds.get(1), "{}");
-
-            pause("Un mail 'déroulement du voyage' est envoyé à Hubbert l'assureur ");
-            call(MethodType.POST, "http://localhost:9091/sendmail",
-                    "{ 'from':'blablamove', 'to':'hubbert', 'message':'aucun incident' }");
-
 
         } catch (IOException e) {
             e.printStackTrace();
