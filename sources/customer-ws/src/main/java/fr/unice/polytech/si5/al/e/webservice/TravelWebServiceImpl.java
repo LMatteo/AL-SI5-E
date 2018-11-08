@@ -17,6 +17,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 
 @Path("/travels")
 public class TravelWebServiceImpl implements TravelService {
@@ -26,7 +27,7 @@ public class TravelWebServiceImpl implements TravelService {
     @Override
     public Response createTravel(TravelCreationRequest request) {
         Travel travel = controlTravel.createTravel(request.getCustomerName(), request.getDeparture(), request.getDestination());
-        return Response.ok(travel.getId()).build();
+        return Response.ok(travel.toJSON()).build();
     }
 
     @Override
@@ -46,6 +47,12 @@ public class TravelWebServiceImpl implements TravelService {
     }
 
     @Override
+    public Response getTravel(String travelId) {
+        Travel travel = controlTravel.findTravelById(travelId);
+        return Response.ok(travel.toJSON()).build();
+    }
+
+    @Override
     public Response endTravel(String travelId) {
         controlTravel.finishTravel(travelId);
         return Response.ok().build();
@@ -53,7 +60,7 @@ public class TravelWebServiceImpl implements TravelService {
 
     @Override
     public Response selectTravel(String travelId, TravelSelectRequest request) {
-        controlTravel.chooseTravel(request.getTransporterName(), travelId);
-        return Response.ok().build();
+        Travel travel = controlTravel.chooseTravel(request.getTransporterName(), travelId);
+        return Response.ok(travel.toJSON()).build();
     }
 }

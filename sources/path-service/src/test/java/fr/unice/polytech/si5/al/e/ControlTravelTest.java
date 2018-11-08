@@ -3,10 +3,11 @@ package fr.unice.polytech.si5.al.e;
 
 import fr.unice.polytech.si5.al.e.components.PathServiceBean;
 import fr.unice.polytech.si5.al.e.messageReceiver.MessageReceiver;
-import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
+import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchCustomerIdException;
+import fr.unice.polytech.si5.al.e.travelValidator.ValidatorBean;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
@@ -17,7 +18,6 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -27,10 +27,6 @@ import static org.junit.Assert.assertTrue;
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 @RunWith(Arquillian.class)
@@ -56,7 +52,7 @@ public class ControlTravelTest {
                 .addPackage(Travel.class.getPackage())
                 .addPackage(Customer.class.getPackage())
                 .addPackage(Item.class.getPackage())
-                .addPackage(MessageReceiver.class.getPackage())
+                .addPackage(ValidatorBean.class.getPackage())
                 // Persistence file
                 .addAsManifestResource(new ClassLoaderAsset("META-INF/persistence.xml"), "persistence.xml");
     }
@@ -99,13 +95,21 @@ public class ControlTravelTest {
     }
 
     @Test
-    public void createTravelTest() {
+    public void createTravelTest() throws Exception{
         Travel travel1 = controlTravel.createTravel("christophe", "startpoint", "endpoint");
         Travel travel2 = entityManager.merge(travel1);
         assertEquals(travel1, travel2);
         assertEquals(christophe, travel2.getCustomer());
         assertEquals("startpoint", travel2.getDeparture());
         assertEquals("endpoint", travel2.getDestination());
+
+        assertTrue(christophe.getShipments().contains(travel1));
+
+        Customer moved = controlTravel.getCustomerById(christophe.getId());
+
+        assertTrue(moved.getShipments().contains(travel2));
+        assertTrue(moved.getShipments().contains(travel1));
+
         entityManager.remove(travel1);
     }
 
@@ -143,7 +147,7 @@ public class ControlTravelTest {
     }
 
     @Test
-    public void chooseTravelTest() {
+    public void chooseTravelTest() throws Exception{
         Travel travel1 = controlTravel.chooseTravel("johan", Integer.toString(travelA.getId()));
         Travel travel2 = entityManager.merge(travel1);
         assertEquals(travelA, travel1);
@@ -153,10 +157,30 @@ public class ControlTravelTest {
         assertEquals(travel1.getDeparture(), travel2.getDeparture());
         assertEquals(travel1.getDestination(), travel2.getDestination());
 
+
+        Customer transporter = controlTravel.getCustomerById(johan.getId());
+
+        assertTrue(transporter.getTransports().contains(travel2));
+        assertTrue(transporter.getTransports().contains(travel1));
+
     }
 
     @Test
     public void finishTravel() {
         controlTravel.finishTravel(Integer.toString(travelA.getId()));
+    }
+
+    @Test
+    public void getCustoByIdTest() throws NoSuchCustomerIdException {
+        int id = christophe.getId();
+
+        Customer byId = controlTravel.getCustomerById(id);
+
+        assertEquals(christophe,byId);
+    }
+
+    @Test(expected = NoSuchCustomerIdException.class)
+    public void getCustoByMissingIdTest() throws NoSuchCustomerIdException {
+        controlTravel.getCustomerById(56);
     }
 }

@@ -2,7 +2,7 @@ package fr.unice.polytech.si5.al.e.contractRegistry;
 
 
 import fr.unice.polytech.si5.al.e.agencynotifier.interfaces.RegisterInsurer;
-import fr.unice.polytech.si5.al.e.contractRegistry.exceptions.NoSuchContractIdException;
+import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchContractIdException;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.HandleContract;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.ListContract;
 import fr.unice.polytech.si5.al.e.model.Contact;

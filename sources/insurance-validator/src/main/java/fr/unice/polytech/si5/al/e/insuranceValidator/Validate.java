@@ -8,4 +8,5 @@ import javax.ejb.Local;
 public interface Validate {
 
     void validate(Travel travel);
+    void notify(Travel travel);
 }

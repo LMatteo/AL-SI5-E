@@ -2,7 +2,7 @@ package fr.unice.polytech.si5.al.e.contractRegistry;
 
 
 import fr.unice.polytech.si5.al.e.agencynotifier.bean.AgencyNotifierBean;
-import fr.unice.polytech.si5.al.e.contractRegistry.exceptions.NoSuchContractIdException;
+import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchContractIdException;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.HandleContract;
 import fr.unice.polytech.si5.al.e.contractRegistry.interfaces.ListContract;
 import fr.unice.polytech.si5.al.e.model.Contract;
@@ -85,7 +85,7 @@ public class HandleContractTest {
 
         try {
             handleContract.updateContractDescription(persistingContract.getId(),"changement");
-        } catch (fr.unice.polytech.si5.al.e.contractRegistry.exceptions.NoSuchContractIdException e) {
+        } catch (NoSuchContractIdException e) {
             e.printStackTrace();
         }
 

@@ -1,16 +1,18 @@
 package fr.unice.polytech.si5.al.e.components;
 
 import fr.unice.polytech.si5.al.e.ControlTravel;
-import fr.unice.polytech.si5.al.e.interfaces.GetContract;
 import fr.unice.polytech.si5.al.e.model.Customer;
 import fr.unice.polytech.si5.al.e.model.Item;
 import fr.unice.polytech.si5.al.e.model.Travel;
+import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchCustomerIdException;
+import fr.unice.polytech.si5.al.e.model.holderObject.MessageHolder;
+import fr.unice.polytech.si5.al.e.model.type.MessageType;
+import fr.unice.polytech.si5.al.e.travelValidator.PathValidate;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jms.*;
-import javax.jms.IllegalStateException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -23,11 +25,10 @@ import java.util.logging.Logger;
 
 @Stateless
 public class PathServiceBean implements ControlTravel {
-    @EJB
-    private GetContract ContractInstance;
-
     private static final Logger log = Logger.getLogger(Logger.class.getName());
 
+    @EJB
+    private PathValidate validator;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -48,7 +49,16 @@ public class PathServiceBean implements ControlTravel {
         travel.setDeparture(departure);
         travel.setDestination(destination);
         customer.addTravel(travel);
+        entityManager.merge(customer);
         entityManager.persist(travel);
+        validator.pathValidate(travel);
+
+        try {
+            send(MessageType.VALIDATION, travel);
+        } catch (Exception e) {
+            log.log(Level.WARNING, e.toString());
+        }
+
         return travel;
     }
 
@@ -84,6 +94,11 @@ public class PathServiceBean implements ControlTravel {
     }
 
     @Override
+    public Travel findTravelById(String travelId) {
+        return entityManager.find(Travel.class, travelId);
+    }
+
+    @Override
     public Travel chooseTravel(String transporterName, String travelId) {
         Customer transporter;
         List<Customer> transporters = findEntityByName(Customer.class, transporterName);
@@ -99,6 +114,15 @@ public class PathServiceBean implements ControlTravel {
         entityManager.merge(travel);
         travel.setTransporter(transporter);
         transporter.chooseTravel(travel);
+        entityManager.merge(transporter);
+        validator.pathValidate(travel);
+
+        try {
+            send(MessageType.VALIDATION, travel);
+        } catch (Exception e) {
+            log.log(Level.WARNING, e.toString());
+        }
+
         return travel;
     }
 
@@ -106,9 +130,25 @@ public class PathServiceBean implements ControlTravel {
     public void finishTravel(String travelId) {
         Travel travel = entityManager.find(Travel.class, travelId);
         try {
-            send("VALIDATION", travel);
+            send(MessageType.END_NOTIFICATION, travel);
+        } catch (Exception e) {
+            log.log(Level.WARNING, e.toString());
+        }
+    }
+
+    @Override
+    public Customer getCustomerById(int id) throws NoSuchCustomerIdException {
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+            CriteriaQuery<Customer> criteria = builder.createQuery(Customer.class);
+            Root<Customer> root = criteria.from(Customer.class);
+
+            criteria.select(root).where(builder.equal(root.get("id"), id));
+            TypedQuery<Customer> query = entityManager.createQuery(criteria);
+            return query.getSingleResult();
         } catch (Exception e){
-            log.log(Level.WARNING,e.toString());
+            throw new NoSuchCustomerIdException();
         }
     }
 
@@ -123,11 +163,13 @@ public class PathServiceBean implements ControlTravel {
         return query.getResultList();
     }
 
-    @Resource private ConnectionFactory connectionFactory;
-    @Resource(name = "MessageReceiver") private Queue acknowledgmentQueue;
+    @Resource
+    private ConnectionFactory connectionFactory;
+    @Resource(name = "/topic/TRAVEL_UPDATE")
+    private Topic acknowledgmentQueue;
 
 
-    private void send(String goal,Travel travel) throws JMSException {
+    private void send(MessageType type, Travel travel) throws JMSException {
         Connection connection = null;
         Session session = null;
         try {
@@ -137,9 +179,9 @@ public class PathServiceBean implements ControlTravel {
 
             MessageProducer producer = session.createProducer(acknowledgmentQueue);
 
-
+            MessageHolder holder = new MessageHolder(type,travel.getId());
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-            producer.send(session.createTextMessage(Integer.toString(travel.getId())));
+            producer.send(session.createTextMessage(holder.toJsonString()));
         } finally {
             if (session != null)
                 session.close();

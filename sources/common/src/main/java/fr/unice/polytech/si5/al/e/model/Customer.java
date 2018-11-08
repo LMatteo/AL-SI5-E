@@ -18,16 +18,20 @@ public class Customer {
     @OneToMany(cascade = CascadeType.PERSIST)
     private Set<Item> items;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     private Set<Travel> shipments;
 
-    @OneToMany(mappedBy = "transporter", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "transporter", cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     private Set<Travel> transports;
 
     public Customer() {
         this.items = new HashSet<>();
         this.shipments = new HashSet<>();
         this.transports = new HashSet<>();
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void addTravel(Travel travel) {
@@ -40,6 +44,14 @@ public class Customer {
 
     public void addItem(Item item) {
         items.add(item);
+    }
+
+    public Set<Travel> getShipments() {
+        return shipments;
+    }
+
+    public Set<Travel> getTransports() {
+        return transports;
     }
 
     public Set<Item> getItems() {

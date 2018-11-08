@@ -27,6 +27,9 @@ public class Main {
         System.out.println(message);
         scanner.nextLine();
     }
+
+    private static int customerId = 0;
+    private static int transporterId = 1;
     private static String customerWsUrl = "http://localhost:9090/blabla-move-backend/";
 
     public static String call(MethodType type, String route, String jsonData) throws IOException {
@@ -71,6 +74,20 @@ public class Main {
 
     }
 
+    public static boolean createContractJson(String type,String description, String mail) throws IOException{
+        JSONObject jsonObject = new JSONObject();
+        JSONObject contract = new JSONObject();
+        contract.put("typeName",type);
+        contract.put("description",description);
+        contract.put("mail",mail);
+
+        jsonObject.put("contract",contract);
+
+        String s =call(MethodType.POST,customerWsUrl+"cont",jsonObject.toString());
+
+        return s!= null;
+    }
+
     public static List<Integer> createTravels(String from, String to, String customer, List<String> objects) throws IOException {
         List<Integer> travelsIds = new ArrayList<>();
         objects.forEach(ob -> {
@@ -78,7 +95,10 @@ public class Main {
                 pause("Celine crée le trajet pour son objet " + ob);
                 TravelCreation tc = new TravelCreation(customer, from, to);
                 String creationResponse = call(MethodType.POST, customerWsUrl + "travels/", "{\"travel\":" + new Gson().toJson(tc) + "}");
-                int travelId = Integer.parseInt(creationResponse);
+
+                JSONObject travelResponse = new JSONObject(creationResponse);
+                int travelId = travelResponse.getInt("id");
+                customerId = travelResponse.getInt("customerId");
                 travelsIds.add(travelId);
                 String resp2 = call(MethodType.PUT, customerWsUrl + "travels/" + travelId, "{\"item\":{\"itemName\":\"" + ob + "\"}}");
             } catch (IOException e) {
@@ -89,9 +109,20 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        pause("Celine souhaite faire transporter son ordinateur et sa commode vers sa nouvelle ville.\nElle définit les objets à transporter dans notre système.");
         try {
-            List<Integer> travelIds = createTravels("Paris", "Nice", "Celine", Arrays.asList("Ordinateur gameur","Commode"));
+            pause("L'assureur envoie une liste de contrat a ajouter a l'application");
+            createContractJson("hightech","Pour les objets HIGHTECH","lassureur@bg.06");
+            createContractJson("hightech","Pour les objets TRES HIGHTECH","lassureur2@bg.06");
+
+            createContractJson("fragile","Pour les objets FRAGILE","lassureurFragile@bgAssurance.06");
+            createContractJson("fragile","Pour les objets TRES FRAGILE","lassureurTRESFragile@bgAssurance.06");
+
+            createContractJson("heavy","TRES LOURD","lourd@ance.06");
+            createContractJson("heavy","LOURD","WOW@ance.06");
+
+            pause("Celine souhaite faire transporter son ordinateur et sa commode vers sa nouvelle ville.\nElle définit les objets à transporter dans notre système.");
+
+            List<Integer> travelIds = createTravels("Paris", "Nice", "Celine", Arrays.asList("Commode"));
 
             pause("Céline interroge les types de contrats d'assurance avec des critères : \n\tPour son ordinateur, elle cherche un contrat high-tech");
             String resp3 = call(MethodType.GET, customerWsUrl + "contracts/hightech", "{}");
@@ -110,10 +141,17 @@ public class Main {
 
             pause("N’ayant pas d’assurance alors que celle ci est obligatoire, elle décide de souscrire à un contrat d’assurance.");
 
-            String res = call(MethodType.POST, customerWsUrl + "subscribe", "{\"contract\" : " + firstContract.toString() + "}");
+            JSONObject subscription = new JSONObject();
+            JSONObject contractSub = new JSONObject();
+            contractSub.put("idContract",firstContract.getInt("id"));
+            contractSub.put("idCustomer",customerId);
+            subscription.put("contract",contractSub);
+
+            String res = call(MethodType.POST, customerWsUrl + "subscribe", subscription.toString());
 
             pause("Celine n'a plus qu'à attendre ...\n-------------------------");
 
+            /*
             pause("Jean recherche les déménagements qui suivent son trajet");
             String travelsList = call(MethodType.GET, customerWsUrl + "travels?departure=Paris&destination=Nice", "");
             JSONArray travels = new JSONArray(travelsList);
@@ -121,28 +159,39 @@ public class Main {
             pause("\tJean se définit en tant que déménageur pour le trajet avec l'ordinateur");
             String test2 = call(MethodType.PUT, customerWsUrl + "travels/" + travelIds.get(1) + "/transporter",
                     "{'travel':{'transporterName':'Jean'}}");
+            */
 
-            pause("Julien décide de prendre la commode de Celine et décide de souscrire à un contrat d’assurance sur BlaBlaMove.");
-            pause("\tJulien recherche les déménagements qui suivent son trajet");
+            // pause("Julien décide de prendre la commode de Celine et décide de souscrire à un contrat d’assurance sur BlaBlaMove.");
+            //pause("\tJulien recherche les déménagements qui suivent son trajet");
 
-            String dd = call(MethodType.GET, customerWsUrl + "travels?departure=Paris&destination=Nice", "");
+            //String dd = call(MethodType.GET, customerWsUrl + "travels?departure=Paris&destination=Nice", "");
 
             pause("Jean se définit en tant que déménageur pour le trajet avec l'ordinateur");
             String testee = call(MethodType.PUT, customerWsUrl + "travels/" + travelIds.get(0) + "/transporter",
                     "{'travel':{'transporterName':'Jean'}}");
 
+            transporterId = new JSONObject(testee).getInt("transporterId");
 
-            pause("Jean liste les contrats pour choisir un adapté");
 
-            String resp11 = call(MethodType.GET, customerWsUrl + "contracts/heavy", null);
-            contractsResp = new JSONArray(resp3);
-            JSONObject jeanContract = contractsResp.getJSONObject(0);
-            jeanContract.put("typeName", "heavy");
-            jeanContract.put("idCustomer", "jean");
-            pause("Julien et Jean effectuent le transport.");
+            pause("Jean liste les contrats d'assurance pour en choisir un adapté");
+
+            String resp11 = call(MethodType.GET, customerWsUrl + "contracts/heavy", "");
+            contractsResp = new JSONArray(resp11);
+
+            JSONObject transporterSub = new JSONObject();
+            JSONObject transporterContractSub = new JSONObject();
+            transporterContractSub.put("idContract",contractsResp.getJSONObject(0).getInt("id"));
+            transporterContractSub.put("idCustomer",transporterId);
+            transporterSub.put("contract",transporterContractSub);
+
+            res = call(MethodType.POST, customerWsUrl + "subscribe", transporterSub.toString());
+
+            pause("Tous les participants sont assurés, on verifie que le trajet est bien validé");
+            call(MethodType.GET,customerWsUrl+"travels/"+travelIds.get(0),"");
+            pause("Jean effectue le transport.");
 
             String finishTravelResp = call(MethodType.DELETE, customerWsUrl + "travels/" + travelIds.get(0), "{}");
-            String finishTravel2Resp = call(MethodType.DELETE, customerWsUrl + "travels/" + travelIds.get(1), "{}");
+            //String finishTravel2Resp = call(MethodType.DELETE, customerWsUrl + "travels/" + travelIds.get(1), "{}");
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,6 +1,6 @@
 package fr.unice.polytech.si5.al.e.contractRegistry.interfaces;
 
-import fr.unice.polytech.si5.al.e.contractRegistry.exceptions.NoSuchContractIdException;
+import fr.unice.polytech.si5.al.e.model.exceptions.NoSuchContractIdException;
 import fr.unice.polytech.si5.al.e.model.Contract;
 import fr.unice.polytech.si5.al.e.model.type.Type;
 

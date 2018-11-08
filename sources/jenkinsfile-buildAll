@@ -2,24 +2,18 @@ pipeline {
     agent  { 
         label 'slave-3.23-maven-3.5.4'
     }
-    triggers {
-        cron('H * * * * ')
-    }
     stages {
         stage("common"){
-            when { changeset "sources/common/*" }
             steps {
                 build 'component/BlaBlaMove_Commons'
             }
         }
         stage("mailer"){
-            when { changeset "sources/mailer/*" }
             steps {
                 build 'component/BlaBlaMove_Mailer'
             }
         }
         stage("agency-notifier"){
-            when { changeset "sources/agency-notifier/*" }
             steps {
                 build 'component/BlaBlaMove_Agency_Notifier'
             }
@@ -27,19 +21,16 @@ pipeline {
         stage("contract-registry & contract-instance & travelValidator"){
             parallel{
                 stage("contract-registry"){
-                    when { changeset "sources/contract-registry/*" }
                     steps {
                         build 'component/BlaBlaMove_Contract_Registry'
                     }
                 }
                 stage("contract-instance"){
-                    when { changeset "sources/contract-instance/*" }
                     steps {
                         build 'component/BlaBlaMove_Contract_Instance'
                     }
                 }
                 stage("travelValidator"){
-                    when { changeset "sources/travelValidator/*" }
                     steps {
                         build 'component/BlaBlaMove_TravelValidator'
                     }
@@ -47,19 +38,16 @@ pipeline {
             }
         }
         stage("insurance-validator"){
-            when { changeset "sources/insurance-validator/*" }
             steps {
                 build 'component/BlaBlaMove_InsuranceValidator'
             }
         }
         stage("messageReceiver"){
-            when { changeset "sources/messageReceiver/*" }
             steps {
                 build 'component/BlaBlaMove_MessageReceiver'
             }
         }
         stage("path-service"){
-            when { changeset "sources/path-service/*" }
             steps {
                 build 'component/BlaBlaMove_Path_Service'
             }
@@ -67,13 +55,11 @@ pipeline {
         stage("webservice"){
             parallel{
                 stage("customer-ws"){
-                    when { changeset "sources/customer-ws/*" }
                     steps {
                         build 'component/BlaBlaMove_CustomerWS'
                     }
                 }
                 stage("insurer-ws"){
-                    when { changeset "sources/insurer-ws/*" }
                     steps {
                         build 'component/BlaBlaMove_InsurerWS'
                     }

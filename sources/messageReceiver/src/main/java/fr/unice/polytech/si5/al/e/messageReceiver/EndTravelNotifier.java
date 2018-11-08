@@ -31,7 +31,7 @@ import java.util.logging.Logger;
         @ActivationConfigProperty( propertyName = "destination", propertyValue = "/topic/TRAVEL_UPDATE"),
 })
 
-public class MessageReceiver implements MessageListener {
+public class EndTravelNotifier implements MessageListener {
 
     @PersistenceContext
     private EntityManager memory;
@@ -59,12 +59,10 @@ public class MessageReceiver implements MessageListener {
             MessageHolder holder = MessageHolder.fromJson(((TextMessage) message).getText());
             int id = holder.getTravelId();
             Travel travel = findTravelById(id);
-            if(holder.getType() == MessageType.VALIDATION){
-                log.log(Level.INFO,"VALIDATION");
-                validate.validate(travel);
+            if(holder.getType() == MessageType.END_NOTIFICATION){
+                log.log(Level.INFO,"NOTIFICATION");
+                validate.notify(travel);
             }
-
-
         } catch (Exception e){
             log.log(Level.WARNING,e.toString());
             log.log(Level.WARNING,"RECEIVED TRAVEL CAN'T BE PROCESSED : ID CAN'T BE PROCESSED");
