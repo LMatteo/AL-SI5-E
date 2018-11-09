@@ -1,5 +1,6 @@
 package extern.mailer;
 import com.google.gson.Gson;
+import org.json.JSONObject;
 import spark.Spark;
 
 import static spark.Spark.*;
@@ -8,11 +9,11 @@ public class MailServer {
     public static void main(String[] args) {
         Spark.port(9091);
         post("/sendmail", (request, response) -> {
-            Email mail = new Gson().fromJson(request.body(),Email.class);
-            System.out.println("From: " + mail.getFrom());
-            System.out.println("To: " + mail.getTo());
-            System.out.println("Body :" + mail.getMessage());
-            System.out.println("-------------------");
+            JSONObject object = new JSONObject(request.body()).getJSONObject("email");
+            System.out.println("From: " + object.getString("from"));
+            System.out.println("To: " +  object.getString("to"));
+            System.out.println("Body :" +  object.getString("message"));
+            System.out.println("----------------------------------");
             response.status(200);
             return "Sent";
         });

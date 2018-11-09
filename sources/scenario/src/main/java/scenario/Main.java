@@ -7,6 +7,7 @@ import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.PropertyConfigurator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import scenario.pojo.TravelCreation;
@@ -33,7 +34,7 @@ public class Main {
     private static String customerWsUrl = "http://localhost:9090/blabla-move-backend/";
 
     public static String call(MethodType type, String route, String jsonData) throws IOException {
-
+        PropertyConfigurator.configure(System.getProperty("user.dir") + "/src/main/resources/log4j.properties");
         HttpClient httpClient = HttpClientBuilder.create().build();
 
         HttpRequestBase req;

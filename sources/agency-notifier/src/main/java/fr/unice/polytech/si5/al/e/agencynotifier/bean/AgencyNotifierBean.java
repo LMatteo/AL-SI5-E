@@ -6,10 +6,11 @@ import fr.unice.polytech.si5.al.e.agencynotifier.interfaces.RegisterInsurer;
 import fr.unice.polytech.si5.al.e.model.*;
 
 import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import java.util.HashMap;
 import java.util.Map;
 
-@Stateful
+@Stateless
 public class AgencyNotifierBean implements Notify, RegisterInsurer {
     private static final Map<Integer,Contact> contacts = new HashMap<>();
     @Override
@@ -29,6 +30,9 @@ public class AgencyNotifierBean implements Notify, RegisterInsurer {
     public void notifyContractReport(ContractSubscription contractSubscription, ItineraryStatus status) {
         int contractId = contractSubscription.getContract().getId();
         Contact contact = contacts.get(contractId);
+        if(contact == null){
+            throw new RuntimeException("Contract " + contractId + " not found");
+        }
         Communicator.sendToMailer("noreply@blablamove.fr",contact.getMail(),"The contract subscription" + contractSubscription +" has ended with status"+ status ) ;
     }
 
@@ -36,6 +40,9 @@ public class AgencyNotifierBean implements Notify, RegisterInsurer {
     public void notifyContractReport(Customer customer, Contract contract, Travel travel) {
         int contractId = contract.getId();
         Contact contact = contacts.get(contractId);
+        if(contact == null){
+            throw new RuntimeException("Contract " + contractId + " not found");
+        }
         System.out.println("AgencyNotifier : send notification to "+ contact.getMail());
         Communicator.sendToMailer("noreply@blablamove.fr",contact.getMail(),"The contract" + contract +" on travel "+ travel + "\n customer : " + customer) ;
 
@@ -45,6 +52,9 @@ public class AgencyNotifierBean implements Notify, RegisterInsurer {
     public void notifyContractRegister(ContractSubscription newSubscription) {
         int contractId = newSubscription.getContract().getId();
         Contact contact = contacts.get(contractId);
+        if(contact == null){
+            throw new RuntimeException("Contract " + contractId + " not found");
+        }
         Communicator.sendToMailer("noreply@blablamove.fr",contact.getMail(),"The contract" + newSubscription.getContract() +" has been taken by customer " + newSubscription.getCustomer()) ;
     }
 }
