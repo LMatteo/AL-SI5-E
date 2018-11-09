@@ -33,7 +33,7 @@ public class Communicator {
 
             HttpRequestBase req;
             StringEntity postingString = null;//gson.tojson() converts your pojo to json
-                postingString = new StringEntity("{'email':{'from':'" + email.from + "', 'to': '" + email.to + "' ,'message':'" + email.message + "'}}");
+                postingString = new StringEntity("{'email':{'from':'" + email.from.replace("'","") + "', 'to': '" + email.to.replace("'","") + "' ,'message':'" + email.message.replace("'","") + "'}}");
                 System.out.println(postingString.toString());
             req = new HttpPost("http://localhost:9091/sendmail");
             ((HttpPost) req).setEntity(postingString);

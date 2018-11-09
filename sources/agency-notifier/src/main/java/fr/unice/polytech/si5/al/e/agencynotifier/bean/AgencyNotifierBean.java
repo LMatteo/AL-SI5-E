@@ -22,7 +22,7 @@ public class AgencyNotifierBean implements Notify, RegisterInsurer {
     @Override
     public void updateInsurerContact(Contract newContract) {
         contacts.replace(newContract.getId(), newContract.getContact());
-        Communicator.sendToMailer("noreply@blablamove.fr",newContract.getContact().getMail(),"The contract has been updated "+ newContract.toString()) ;
+        Communicator.sendToMailer("noreply@blablamove.fr",newContract.getContact().getMail(),"The contract has been updated "+ newContract.getId()) ;
 
     }
 
@@ -44,7 +44,7 @@ public class AgencyNotifierBean implements Notify, RegisterInsurer {
             throw new RuntimeException("Contract " + contractId + " not found");
         }
         System.out.println("AgencyNotifier : send notification to "+ contact.getMail());
-        Communicator.sendToMailer("noreply@blablamove.fr",contact.getMail(),"The contract" + contract +" on travel "+ travel + "\n customer : " + customer) ;
+        Communicator.sendToMailer("noreply@blablamove.fr",contact.getMail(),"The contract" + contract +" on travel "+ travel.getDeparture()+" "+travel.getDestination() + " customer : " + customer) ;
 
     }
 
