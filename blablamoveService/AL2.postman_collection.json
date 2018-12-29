@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "67deba5b-214c-44d9-8619-6b95596dbbc5",
+		"name": "AL2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AddContract",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"contract\" :\n\t{\n\t\t\"typeName\" : \"heavy\",\n\t\t\"description\" : \"salut\",\n\t\t\"mail\" : \"test@hotmail.com\"\n\t}\n\t\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/blabla-move-backend/contracts/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"blabla-move-backend",
+						"contracts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetContractsByType",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/blabla-move-backend/contracts/heavy",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"blabla-move-backend",
+						"contracts",
+						"heavy"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

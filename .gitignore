@@ -150,3 +150,8 @@ buildNumber.properties
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+### npm ###
+package-lock.json
+/dist
+/node_modules

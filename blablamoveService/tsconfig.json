@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "rootDir": "./typescript",
+    "declaration": true,
+    "declarationDir": "dist/typing",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": "./typescript/main/src",
+    "lib": ["es6", "es2017", "dom"],
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "src/types/*"
+      ]
+    }
+  },
+  "include": [
+    "typescript/main/src/**/*",
+    "typescript/test/src/**/*"
+  ]
+}
