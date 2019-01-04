@@ -5,6 +5,9 @@ import {HandleContract} from "../contract-registry/HandleContract";
 import {Type} from "../entity/Type";
 import {Logger} from "../logging/Logger";
 import Level = require('../logging/Level');
+import {Subscribe} from "../entity/Subscribe";
+import { ContractInstance } from '../contract-instance/ContractInstance';
+import {GetSubscription} from "../contract-instance/GetSubscription";
 
 let router : express.Router = express.Router();
 const logger : Logger = new Logger();
@@ -20,6 +23,21 @@ router.post("/contracts", (req: express.Request,res: express.Response) => {
 
     logger.log(Level.info, "new contract added");
 
+});
+
+
+router.get("/subscriptions", (req: express.Request,res: express.Response) => {
+    logger.log(Level.info, "listing subscriptions");
+
+    let instanceSubscriptions : GetSubscription = new ContractInstance();
+    let subscriptions : Array<Subscribe> = instanceSubscriptions.getSubscriptions();
+    let result : Array<any> = new Array<any>();
+
+    subscriptions.forEach(function (value: Subscribe) {result.push(value.toJson())});
+
+    res.send(result);
+
+    logger.log(Level.info, "subscriptions listed");
 });
 
 export = router;
