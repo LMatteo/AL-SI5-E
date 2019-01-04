@@ -1,3 +1,5 @@
+import { createUuid } from "../entityManager/UuidGenerator";
+
 export class Customer {
     
     private id : number;
@@ -13,7 +15,7 @@ export class Customer {
 
     toJson(): any {
         let j : any = {};
-        j.id = 1;
+        j.id = createUuid();
         j.email = this.email;
         j.name = this.name;
         j.phone = this.phone;

@@ -1,0 +1,59 @@
+{
+	"id": "080b1e01-02fb-417b-a172-3918dbbd9b1d",
+	"name": "requestSubscription",
+	"description": "ok",
+	"auth": null,
+	"events": null,
+	"variables": [],
+	"order": [
+		"fd66ae1e-d5eb-40fc-9a0b-4bfb03dffb10",
+		"7329bdf5-124c-446b-8e8f-a13463420f46"
+	],
+	"folders_order": [],
+	"folders": [],
+	"requests": [
+		{
+			"id": "7329bdf5-124c-446b-8e8f-a13463420f46",
+			"name": "r2",
+			"url": "http://localhost:8080/blabla-move-backend/subscriptions",
+			"description": "post sub",
+			"data": null,
+			"dataMode": null,
+			"headerData": [],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "fd66ae1e-d5eb-40fc-9a0b-4bfb03dffb10",
+			"name": "r1",
+			"url": "http://localhost:8080/blabla-move-backend/subscriptions",
+			"description": "sub",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"name": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"type": "text"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"rawModeData": "{ \"subcribe\" : {\"name\" : \"momo\", \"email\": \"test\", \"phone\": 1233222, \"description\":\"eeeeeee\", \"typeName\" : \"heavy\" } }",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		}
+	]
+}
