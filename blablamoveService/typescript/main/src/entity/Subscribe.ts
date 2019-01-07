@@ -1,25 +1,38 @@
-import {Contract} from "./Contract";
-import {Customer} from "./Customer";
+import { Contract } from "./Contract";
+import { Customer } from "./Customer";
 import { createUuid } from "../entityManager/UuidGenerator";
 
 export class Subscribe {
-    
-    private id : number;
-    private customer : Customer;
-    private contract : Contract;
+    private id: string;
+    private customer: Customer;
+    private contract: Contract;
 
-    constructor(customer : Customer, contract: Contract) {
+    public get $id(): string {
+        return this.id;
+    }
+
+    public set $id(value: string) {
+        this.id = value;
+    }
+
+    public get $customer(): Customer {
+        return this.customer;
+    }
+
+    public set $customer(value: Customer) {
+        this.customer = value;
+    }
+
+    public get $contract(): Contract {
+        return this.contract;
+    }
+
+    public set $contract(value: Contract) {
+        this.contract = value;
+    }
+
+    constructor(customer: Customer, contract: Contract) {
         this.customer = customer;
         this.contract = contract;
     }
-
-
-    toJson(): any {
-        let j : any = {};
-        j.id = createUuid();
-        j.customer = this.customer.toJson();
-        j.contract = this.contract.toJson();
-        return j;
-    }
-
 }

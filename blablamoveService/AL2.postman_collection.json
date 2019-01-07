@@ -1,13 +1,16 @@
 {
+	"variables": [],
 	"info": {
-		"_postman_id": "67deba5b-214c-44d9-8619-6b95596dbbc5",
 		"name": "AL2",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "32675aad-6992-589e-10bd-5090f62b38e2",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "AddContract",
 			"request": {
+				"url": "localhost:8080/blabla-move-backend/contracts/",
 				"method": "POST",
 				"header": [
 					{
@@ -19,42 +22,128 @@
 					"mode": "raw",
 					"raw": "{ \"contract\" :\n\t{\n\t\t\"typeName\" : \"heavy\",\n\t\t\"description\" : \"salut\",\n\t\t\"mail\" : \"test@hotmail.com\"\n\t}\n\t\n}"
 				},
-				"url": {
-					"raw": "localhost:8080/blabla-move-backend/contracts/",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"blabla-move-backend",
-						"contracts",
-						""
-					]
-				}
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "GetContractsByType",
 			"request": {
+				"url": "localhost:8080/blabla-move-backend/contracts/heavy",
 				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "createTravel",
+			"request": {
+				"url": "localhost:8080/blabla-move-backend/travels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"customerName\":\"customerA\",\n\t\"departure\":\"nice\",\n\t\"destination\":\"paris\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "addItemToTravel",
+			"request": {
+				"url": "localhost:8080/blabla-move-backend/travels/fc61bbaf-6d65-43d5-b784-77203c3fa41c",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"itemName\":\"itemA\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "findTravel depart&dest",
+			"request": {
 				"url": {
-					"raw": "localhost:8080/blabla-move-backend/contracts/heavy",
+					"raw": "localhost:8080/blabla-move-backend/travels?departure=nice&destinaton=paris",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"blabla-move-backend",
-						"contracts",
-						"heavy"
-					]
-				}
+						"travels"
+					],
+					"query": [
+						{
+							"key": "departure",
+							"value": "nice",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "destinaton",
+							"value": "paris",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "findTravelById",
+			"request": {
+				"url": "localhost:8080/blabla-move-backend/travels/5514a7f5-572a-4c0a-ae97-14b26e4860fa",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "chooseTravel",
+			"request": {
+				"url": "localhost:8080/blabla-move-backend/travels/c3dd1f81-d038-4a52-9080-b5f7478f07b0/transporter",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"transporterName\":\"transporterA\"\n}"
+				},
+				"description": ""
 			},
 			"response": []
 		}

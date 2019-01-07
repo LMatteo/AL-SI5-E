@@ -11,9 +11,8 @@
   "scripts": {
     "test": "mocha dist/test/src/**/*.js",
     "build": "tsc",
-    "start": "node $NODE_DEBUG_OPTION dist/main/src/Main.js"
+    "start": "node dist/main/src/Main.js"
   },
-
   "author": "",
   "license": "ISC",
   "dependencies": {

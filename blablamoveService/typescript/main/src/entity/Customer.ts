@@ -1,25 +1,68 @@
-import { createUuid } from "../entityManager/UuidGenerator";
+import { Comparable } from "./Comparable";
+import { Item } from "./Item";
+import { Travel } from "./Travel";
 
-export class Customer {
-    
-    private id : number;
-    private name : string;
-    private email : string;
-    private phone : number;
+export class Customer implements Comparable {
+    private id: string;
+    private name: string;
+    private email: string;
+    private phone: number;
+    private items: Item[];
+    private shipments: Travel[];
+    private transports: Travel[];
 
-    constructor(name : string, email: string, phone : number) {
-        this.email = email;
-        this.name = name;
-        this.phone = phone;
+    public get $id(): string {
+        return this.id;
     }
 
-    toJson(): any {
-        let j : any = {};
-        j.id = createUuid();
-        j.email = this.email;
-        j.name = this.name;
-        j.phone = this.phone;
-        return j;
+    public set $id(value: string) {
+        this.id = value;
     }
 
+    public get $name(): string {
+        return this.name;
+    }
+
+    public set $name(value: string) {
+        this.name = value;
+    }
+
+    public get $email(): string {
+        return this.email;
+    }
+
+    public set $email(value: string) {
+        this.email = value;
+    }
+
+    public get $phone(): number {
+        return this.phone;
+    }
+
+    public set $phone(value: number) {
+        this.phone = value;
+    }
+
+    constructor() {
+        this.items = [];
+        this.shipments = [];
+        this.transports = [];
+    }
+
+    public addTravel(travel: Travel): void {
+        this.shipments.push(travel);
+    }
+
+    public chooseTravel(travel: Travel): void {
+        this.transports.push(travel);
+    }
+
+    public addItem(item: Item): void {
+        this.items.push(item);
+    }
+
+    equal(object: any): boolean {
+        if (!(object instanceof Customer)) return false;
+        return this.id === object.id;
+    }
 }

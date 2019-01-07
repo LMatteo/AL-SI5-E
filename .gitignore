@@ -153,5 +153,5 @@ buildNumber.properties
 
 ### npm ###
 package-lock.json
-/dist
-/node_modules
+dist/
+node_modules/
