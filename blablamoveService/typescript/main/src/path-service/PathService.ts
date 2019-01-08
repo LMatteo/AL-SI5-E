@@ -4,16 +4,17 @@ import { Item } from "../entity/Item";
 import { Customer } from "../entity/Customer";
 import { TravelStore } from "../entityManager/TravelStore";
 import { CustomerStore } from "../entityManager/CustomerStore";
-import { Logger } from "../logging/Logger";
-import Level = require("../logging/Level");
-
+import { TravelValidator } from "../travelValidator/TravelValidator";
+import { CustomerDoNotExist } from "../error/CustomerDoNotExist";
 export class PathService implements ControlTravels {
     private travelStore: TravelStore;
+    private validator: TravelValidator;
     private customerStore: CustomerStore;
 
     constructor() {
         this.travelStore = new TravelStore();
         this.customerStore = new CustomerStore();
+        this.validator = new TravelValidator();
     }
 
     createTravel(
@@ -21,12 +22,10 @@ export class PathService implements ControlTravels {
         departure: string,
         destination: string
     ): Travel {
-        const logger: Logger = new Logger();
-
         let customer: Customer;
-        let customers = this.customerStore.get().filter(c => {
-            c.$name === customerName;
-        });
+        let customers = this.customerStore
+            .get()
+            .filter(c => c.$name === customerName);
         if (customers.length > 0) {
             customer = customers[0];
         } else {
@@ -41,13 +40,12 @@ export class PathService implements ControlTravels {
         customer.addTravel(travel);
         this.customerStore.merge(customer);
         this.travelStore.persist(travel);
-        // validator.pathValidate(travel);
+        this.validator.pathValidate(travel);
         return travel;
     }
 
     addItemToTravel(item: Item, travelId: string): Travel {
-        let travels = this.travelStore.get().filter(t => t.$id === travelId);
-        let travel = travels[0];
+        let travel = this.travelStore.get().filter(t => t.$id === travelId)[0];
         travel.addItem(item);
         travel.$customer.addItem(item);
         this.travelStore.merge(travel);
@@ -83,14 +81,20 @@ export class PathService implements ControlTravels {
         transporter.chooseTravel(travel);
         this.travelStore.merge(travel);
         this.customerStore.merge(transporter);
-        // validator.pathValidate(travel);
+        this.validator.pathValidate(travel);
         return travel;
     }
 
-    finishTravel(travelId: string): void {}
+    finishTravel(travelId: string): void {
+        // TODO
+    }
 
     getCustomerById(id: string): Customer {
-        let customer = this.customerStore.get().filter(c => c.$id === id)[0];
-        return customer;
+        let customers = this.customerStore.get().filter(c => c.$id === id);
+        if (customers.length > 0) {
+            return customers[0];
+        } else {
+            throw new CustomerDoNotExist();
+        }
     }
 }

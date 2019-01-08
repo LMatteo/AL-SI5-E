@@ -43,6 +43,18 @@ export class Customer implements Comparable {
         this.phone = value;
     }
 
+    public get $items(): Item[] {
+        return this.items;
+    }
+
+    public get $shipments(): Travel[] {
+        return this.shipments;
+    }
+
+    public get $transports(): Travel[] {
+        return this.transports;
+    }
+
     constructor() {
         this.items = [];
         this.shipments = [];
