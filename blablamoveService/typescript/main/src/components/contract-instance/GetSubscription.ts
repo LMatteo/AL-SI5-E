@@ -1,4 +1,4 @@
-import {Subscribe} from "../entity/Subscribe";
+import {Subscribe} from "../../entity/Subscribe";
 
 export interface GetSubscription {
     getSubscriptions() : Array<Subscribe>;

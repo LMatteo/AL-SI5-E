@@ -1,5 +1,5 @@
 import "mocha";
-import { PathService } from "../../../main/src/path-service/PathService";
+import { PathService } from "../../../main/src/components/path-service/PathService";
 import { TravelStore } from "../../../main/src/entityManager/TravelStore";
 import { CustomerStore } from "../../../main/src/entityManager/CustomerStore";
 import * as Assert from "assert";
