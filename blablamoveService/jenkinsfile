@@ -1,0 +1,23 @@
+pipeline {
+    agent  { 
+        label 'slave-3.23-node-10.15'
+    }
+    stages {
+        stage('Build & Test') {
+            steps {
+                sh '''
+                    cd blablamoveService
+                    npm run build
+                '''
+            }
+        }
+        stage('Test'){
+            steps{
+                sh '''
+                    cd blablamoveService
+                    npm run test
+                '''
+            }
+        }
+    }
+}
