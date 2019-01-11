@@ -3,7 +3,15 @@ pipeline {
         label 'slave-3.23-node-10.15'
     }
     stages {
-        stage('Build & Test') {
+        stage('Prebuild') {
+            steps {
+                sh '''
+                    cd blablamoveService
+                    npm install
+                '''
+            }
+        }
+        stage('Build') {
             steps {
                 sh '''
                     cd blablamoveService
