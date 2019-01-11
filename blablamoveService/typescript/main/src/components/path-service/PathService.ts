@@ -1,11 +1,11 @@
 import { ControlTravels } from "./ControlTravel";
-import { Travel } from "../../entity/Travel";
-import { Item } from "../../entity/Item";
-import { Customer } from "../../entity/Customer";
-import { TravelStore } from "../../entityManager/TravelStore";
-import { CustomerStore } from "../../entityManager/CustomerStore";
+import { Item } from "../../entity/item/Item";
+import { TravelStore } from "../../entityManager/local/TravelStore";
+import { CustomerStore } from "../../entityManager/local/CustomerStore";
 import { TravelValidator } from "../travelValidator/TravelValidator";
 import { CustomerDoNotExist } from "../../error/CustomerDoNotExist";
+import {Travel} from "../../entity/travel/Travel";
+import {Customer} from "../../entity/customer/Customer";
 export class PathService implements ControlTravels {
     private travelStore: TravelStore;
     private validator: TravelValidator;

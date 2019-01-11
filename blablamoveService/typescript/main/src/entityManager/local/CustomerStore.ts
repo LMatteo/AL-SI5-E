@@ -1,7 +1,7 @@
-import { createUuid } from "./UuidGenerator";
-import { ComparableSet } from "../utils/ComparableSet";
-import { Customer } from "../entity/Customer";
-import { CustomerDoNotExist } from '../error/CustomerDoNotExist';
+import { createUuid } from "../UuidGenerator";
+import { ComparableSet } from "../../utils/ComparableSet";
+import { CustomerDoNotExist } from '../../error/CustomerDoNotExist';
+import {Customer} from "../../entity/customer/Customer";
 
 export class CustomerStore {
     private static storage: ComparableSet<Customer> = new ComparableSet<Customer>();

@@ -1,7 +1,7 @@
-import {Type} from "./Type";
-import {Comparable} from "./Comparable";
-import {Contact} from "./Contact";
-import {Jsonable} from "./Jsonable";
+import {Type} from "../Type";
+import {Comparable} from "../Comparable";
+import {Contact} from "../contact/Contact";
+import {Jsonable} from "../Jsonable";
 
 export class Contract implements Comparable, Jsonable{
     private _id: string;

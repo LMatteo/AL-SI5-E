@@ -1,10 +1,10 @@
 import {HandleContract} from "./HandleContract";
 import {ListContract} from "./ListContract";
 import {Type} from "../../entity/Type";
-import {Contract} from "../../entity/Contract";
-import {ContractStore} from "../../entityManager/ContractStore";
+import {ContractStore} from "../../entityManager/local/ContractStore";
 import {ContractDoNotExist} from "../../error/ContractDoNotExist";
-import {Contact} from "../../entity/Contact";
+import {Contact} from "../../entity/contact/Contact";
+import {Contract} from "../../entity/contract/Contract";
 
 export class ContractRegistry implements HandleContract, ListContract{
     private store: ContractStore;

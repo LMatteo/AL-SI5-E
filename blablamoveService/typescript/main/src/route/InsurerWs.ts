@@ -1,5 +1,4 @@
 import express = require("express");
-import { Contract } from "../entity/Contract";
 import { ContractRegistry } from "../components/contract-registry/ContractRegistry";
 import { HandleContract } from "../components/contract-registry/HandleContract";
 import { Type } from "../entity/Type";
@@ -8,6 +7,7 @@ import Level = require("../logging/Level");
 import { Subscribe } from "../entity/Subscribe";
 import { ContractInstance } from "../components/contract-instance/ContractInstance";
 import { GetSubscription } from "../components/contract-instance/GetSubscription";
+import {Contract} from "../entity/contract/Contract";
 
 let router: express.Router = express.Router();
 const logger: Logger = new Logger();

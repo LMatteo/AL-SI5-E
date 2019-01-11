@@ -1,11 +1,11 @@
 import "mocha";
 import { PathService } from "../../../main/src/components/path-service/PathService";
-import { TravelStore } from "../../../main/src/entityManager/TravelStore";
-import { CustomerStore } from "../../../main/src/entityManager/CustomerStore";
+import { TravelStore } from "../../../main/src/entityManager/local/TravelStore";
+import { CustomerStore } from "../../../main/src/entityManager/local/CustomerStore";
 import * as Assert from "assert";
-import { Customer } from "../../../main/src/entity/Customer";
-import { Travel } from "../../../main/src/entity/Travel";
-import { Item } from "../../../main/src/entity/Item";
+import { Customer } from "../../../main/src/entity/customer/Customer";
+import { Travel } from "../../../main/src/entity/travel/Travel";
+import { Item } from "../../../main/src/entity/item/Item";
 import { CustomerDoNotExist } from "../../../main/src/error/CustomerDoNotExist";
 
 describe("path service test", function() {

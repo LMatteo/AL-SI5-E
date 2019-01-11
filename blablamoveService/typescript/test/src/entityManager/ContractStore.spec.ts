@@ -1,11 +1,11 @@
 import 'mocha';
 import Assert = require('assert');
 
-import {ContractStore} from "../../../main/src/entityManager/ContractStore";
-import {Contract} from "../../../main/src/entity/Contract";
+import {ContractStore} from "../../../main/src/entityManager/local/ContractStore";
 import {Type} from "../../../main/src/entity/Type";
 import {ContractDoNotExist} from "../../../main/src/error/ContractDoNotExist";
-import {Contact} from "../../../main/src/entity/Contact";
+import {Contact} from "../../../main/src/entity/contact/Contact";
+import {Contract} from "../../../main/src/entity/contract/Contract";
 
 
 describe("contract store test", function () {

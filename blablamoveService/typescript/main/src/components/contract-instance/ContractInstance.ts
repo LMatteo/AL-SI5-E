@@ -1,9 +1,9 @@
 import {GetSubscription} from "./GetSubscription";
 import {Subscription} from "./Subscription";
-import {Contract} from "../../entity/Contract";
 import {Subscribe} from "../../entity/Subscribe";
-import {Customer} from "../../entity/Customer";
-import { SubscribeStore } from "../../entityManager/SubscribeStore";
+import { SubscribeStore } from "../../entityManager/local/SubscribeStore";
+import {Customer} from "../../entity/customer/Customer";
+import {Contract} from "../../entity/contract/Contract";
 
 
 export class ContractInstance implements GetSubscription, Subscription{

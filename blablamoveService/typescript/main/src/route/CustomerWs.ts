@@ -1,7 +1,7 @@
 import express = require("express");
 import { Type } from "../entity/Type";
 import { ContractRegistry } from "../components/contract-registry/ContractRegistry";
-import { Contract } from "../entity/Contract";
+import { Contract } from "../entity/contract/Contract";
 import { Subscribe } from "../entity/Subscribe";
 import { GetSubscription } from "../components/contract-instance/GetSubscription";
 import { ListContract } from "../components/contract-registry/ListContract";
@@ -9,10 +9,10 @@ import { Logger } from "../logging/Logger";
 import Level = require("../logging/Level");
 import { ContractInstance } from "../components/contract-instance/ContractInstance";
 import { Subscription } from "../components/contract-instance/Subscription";
-import { Customer } from "../entity/Customer";
-import { Contact } from "../entity/Contact";
+import { Customer } from "../entity/customer/Customer";
+import { Contact } from "../entity/contact/Contact";
 import { PathService } from "../components/path-service/PathService";
-import { Item } from "../entity/Item";
+import { Item } from "../entity/item/Item";
 
 let router: express.Router = express.Router();
 const logger: Logger = new Logger();
