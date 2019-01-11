@@ -7,7 +7,7 @@ import { CustomerDoNotExist } from "../../error/CustomerDoNotExist";
 import { MessageQueue } from "../message-queue/MessageQueue";
 import {Travel} from "../../entity/travel/Travel";
 import {Customer} from "../../entity/customer/Customer";
-import { TravelDoNotExist } from "error/TravelDoNotExist";
+import { TravelDoNotExist } from "../../error/TravelDoNotExist";
 export class PathService implements ControlTravels {
     private travelStore: TravelStore;
     private validator: TravelValidator;
