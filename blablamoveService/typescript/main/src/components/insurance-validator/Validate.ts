@@ -1,4 +1,4 @@
-import { Travel } from "../../entity/Travel";
+import { Travel } from "../../entity/travel/Travel";
 
 export interface Validate {
     validate(travel: Travel): void

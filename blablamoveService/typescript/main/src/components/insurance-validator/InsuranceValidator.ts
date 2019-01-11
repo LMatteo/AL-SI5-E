@@ -1,10 +1,10 @@
 import { Validate } from "./Validate";
-import { Travel } from "../../entity/Travel";
+import { Travel } from "../../entity/travel/Travel";
 import { TravelValidator } from "../travelValidator/TravelValidator";
 import { Logger } from "../../logging/Logger";
 import Level = require("../../logging/Level");
 import { InsuranceValidate } from "../travelValidator/InsuranceValidate";
-import { Customer } from "../../entity/Customer";
+import { Customer } from "../../entity/customer/Customer";
 import { GetSubscription } from "../contract-instance/GetSubscription";
 import { ContractInstance } from "../contract-instance/ContractInstance";
 import { Subscribe } from "../../entity/Subscribe";

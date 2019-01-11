@@ -1,6 +1,6 @@
 import { PathService } from "../path-service/PathService";
 import { Validate } from "../insurance-validator/Validate";
-import { Travel } from "../../entity/Travel";
+import { Travel } from "../../entity/travel/Travel";
 import { InsuranceValidator } from "../insurance-validator/InsuranceValidator";
 
 import { Logger } from "../../logging/Logger";

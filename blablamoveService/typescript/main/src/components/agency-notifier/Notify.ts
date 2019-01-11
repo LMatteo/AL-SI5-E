@@ -1,8 +1,8 @@
 import {Subscribe} from "../../entity/Subscribe";
 import { ItineraryStatus } from "../../entity/ItineraryStatus";
-import { Customer } from "../../entity/Customer";
-import { Contract } from "../../entity/Contract";
-import { Travel } from "../../entity/Travel";
+import { Customer } from "../../entity/customer/Customer";
+import { Contract } from "../../entity/contract/Contract";
+import { Travel } from "../../entity/travel/Travel";
 
 export interface Notify {
 
