@@ -4,4 +4,5 @@ import {Contract} from "../../entity/contract/Contract";
 export interface ListContract {
     getContractByType(type: Type) : Array<Contract>;
     getContractById(id: string): Contract;
+    getAllContract() : Array<Contract>;
 }

@@ -57,4 +57,12 @@ export class ContractRegistry implements HandleContract, ListContract{
         throw new ContractDoNotExist();
     }
 
+    getAllContract(): Array<Contract> {
+        let res : Array<Contract> = new Array<Contract>();
+        for(let contract of this.store.get()){
+            res.push(contract);
+        }
+        return res;
+    }
+
 }
