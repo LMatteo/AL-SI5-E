@@ -2,11 +2,12 @@ import express = require("express");
 import bodyParser = require("body-parser");
 import Level = require("./logging/Level");
 import {Logger} from "./logging/Logger";
+import { MessageReceiver } from "./components/message-receiver/MessageReceiver";
 
 let customerWs : express.Router = require("./route/CustomerWs");
 let insurerWs : express.Router = require("./route/InsurerWs");
 
-
+const receiver: MessageReceiver = new MessageReceiver();
 const app : express.Express = express();
 const logger : Logger = new Logger();
 
