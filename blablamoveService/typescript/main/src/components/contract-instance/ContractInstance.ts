@@ -1,14 +1,17 @@
 import {GetSubscription} from "./GetSubscription";
 import {Subscription} from "./Subscription";
+import {SubscribeStore} from "../../entityManager/local/SubscribeStore";
+import {Notify} from "../agency-notifier/Notify";
+import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 import {Subscribe} from "../../entity/Subscribe";
-import { SubscribeStore } from "../../entityManager/local/SubscribeStore";
 import {Customer} from "../../entity/customer/Customer";
 import {Contract} from "../../entity/contract/Contract";
 
 
+
 export class ContractInstance implements GetSubscription, Subscription{
     private store: SubscribeStore;
-
+    private notify: Notify = new AgencyNotifier();
     constructor(){
         this.store = new SubscribeStore();
     }
@@ -26,7 +29,9 @@ export class ContractInstance implements GetSubscription, Subscription{
     }
 
     subscribeToContract(customer: Customer , contract: Contract): Subscribe {
-        let sub : Subscribe = this.store.persist(new Subscribe(customer,contract));
+        let subscription :Subscribe = new Subscribe(customer,contract);
+        let sub : Subscribe = this.store.persist(subscription);
+        this.notify.notifyContractRegister(subscription);
         return sub;
     }
 

@@ -1,21 +1,15 @@
-# FROM TUTORIAL :https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
 
-FROM node:8
+FROM node:10.15.0-jessie AS builder
+COPY ./ /blablamove
+WORKDIR /blablamove
+RUN npm install && npm run build
 
-# Create app directory
-WORKDIR /usr/src/app
-
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-
-RUN npm install
-# If you are building your code for production
-# RUN npm install --only=production
-
-# Bundle app source
-COPY ./dist ./dist
-
-EXPOSE 3000
+FROM node:10.15.0-jessie
+COPY --from=builder /blablamove/node_modules /blablamove/node_modules
+COPY --from=builder /blablamove/package*.json /blablamove/
+COPY --from=builder /blablamove/dist /blablamove/dist
+WORKDIR /blablamove
+EXPOSE 8080
 CMD [ "npm", "start" ]
+
+
