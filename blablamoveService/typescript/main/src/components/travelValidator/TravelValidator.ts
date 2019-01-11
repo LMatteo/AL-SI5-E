@@ -1,7 +1,7 @@
 import { InsuranceValidate } from "./InsuranceValidate";
 import { PathValidate } from "./PathValidate";
-import { TravelStore } from "../entityManager/TravelStore";
-import { Travel } from "../entity/Travel";
+import { TravelStore } from "../../entityManager/TravelStore";
+import { Travel } from "../../entity/Travel";
 
 export class TravelValidator implements InsuranceValidate, PathValidate {
     private store: TravelStore;

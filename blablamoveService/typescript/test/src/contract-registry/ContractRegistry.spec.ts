@@ -1,6 +1,6 @@
 import 'mocha';
 import {ContractStore} from "../../../main/src/entityManager/ContractStore";
-import {ContractRegistry} from "../../../main/src/contract-registry/ContractRegistry";
+import {ContractRegistry} from "../../../main/src/components/contract-registry/ContractRegistry";
 import {Type} from "../../../main/src/entity/Type";
 import * as Assert from "assert";
 import {Contract} from "../../../main/src/entity/Contract";

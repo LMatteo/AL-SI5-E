@@ -1,4 +1,4 @@
-import { Travel } from "../entity/Travel";
+import { Travel } from "../../entity/Travel";
 
 export interface InsuranceValidate {
     insuranceValidate(travel: Travel): Travel;

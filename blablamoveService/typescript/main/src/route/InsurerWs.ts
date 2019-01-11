@@ -1,13 +1,13 @@
 import express = require("express");
 import { Contract } from "../entity/Contract";
-import { ContractRegistry } from "../contract-registry/ContractRegistry";
-import { HandleContract } from "../contract-registry/HandleContract";
+import { ContractRegistry } from "../components/contract-registry/ContractRegistry";
+import { HandleContract } from "../components/contract-registry/HandleContract";
 import { Type } from "../entity/Type";
 import { Logger } from "../logging/Logger";
 import Level = require("../logging/Level");
 import { Subscribe } from "../entity/Subscribe";
-import { ContractInstance } from "../contract-instance/ContractInstance";
-import { GetSubscription } from "../contract-instance/GetSubscription";
+import { ContractInstance } from "../components/contract-instance/ContractInstance";
+import { GetSubscription } from "../components/contract-instance/GetSubscription";
 
 let router: express.Router = express.Router();
 const logger: Logger = new Logger();
