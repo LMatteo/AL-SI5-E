@@ -1,7 +1,7 @@
-import {Contract} from "../entity/Contract";
-import {createUuid} from "./UuidGenerator";
-import {ComparableSet} from "../utils/ComparableSet";
-import {ContractDoNotExist} from "../error/ContractDoNotExist";
+import {createUuid} from "../UuidGenerator";
+import {ComparableSet} from "../../utils/ComparableSet";
+import {ContractDoNotExist} from "../../error/ContractDoNotExist";
+import {Contract} from "../../entity/contract/Contract";
 
 export class ContractStore{
     private static storage: ComparableSet<Contract> = new ComparableSet<Contract>();

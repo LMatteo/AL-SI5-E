@@ -1,0 +1,16 @@
+pipeline {
+    agent  { 
+        label 'slave-3.23-node-10.15'
+    }
+    triggers {
+        cron('H * * * * ')
+    }
+    stages {
+        stage("blablamoveService"){
+            when { changeset "blablamoveService/typescript/*" }
+            steps {
+                build 'BlaBlaMove_TS'
+            }
+        }
+    }
+}

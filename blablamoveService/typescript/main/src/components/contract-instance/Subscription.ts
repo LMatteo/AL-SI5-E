@@ -1,6 +1,6 @@
-import {Contract} from "../../entity/Contract";
 import {Subscribe} from "../../entity/Subscribe";
-import {Customer} from "../../entity/Customer";
+import {Customer} from "../../entity/customer/Customer";
+import {Contract} from "../../entity/contract/Contract";
 
 
 export interface Subscription {

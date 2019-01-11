@@ -1,6 +1,6 @@
-import { Contract } from "./Contract";
-import { Customer } from "./Customer";
 import { createUuid } from "../entityManager/UuidGenerator";
+import {Customer} from "./customer/Customer";
+import {Contract} from "./contract/Contract";
 
 export class Subscribe {
     private id: string;

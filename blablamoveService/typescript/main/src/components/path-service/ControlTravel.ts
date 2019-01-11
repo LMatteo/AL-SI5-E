@@ -1,6 +1,7 @@
-import { Travel } from '../../entity/Travel';
-import { Item } from "../../entity/Item";
-import { Customer } from '../../entity/Customer';
+import {Travel} from "../../entity/travel/Travel";
+import {Item} from "../../entity/item/Item";
+import {Customer} from "../../entity/customer/Customer";
+
 
 export interface ControlTravels {
     createTravel(

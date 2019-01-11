@@ -1,13 +1,13 @@
 import { RegisterInsurer } from "./RegisterInsurer";
 import { Notify } from "./Notify";
-import { Contract } from "../../entity/Contract";
 import { Subscribe } from "../../entity/Subscribe";
 import { ItineraryStatus } from "../../entity/ItineraryStatus";
 import { Logger } from "../../logging/Logger";
 import { LoggingLevel } from "../../logging/LoggingLevel";
 import Level = require("../../logging/Level");
-import { Customer } from "../../entity/Customer";
-import { Travel } from "../../entity/Travel";
+import { Customer } from "../../entity/customer/Customer";
+import { Travel } from "../../entity/travel/Travel";
+import {Contract} from "../../entity/contract/Contract";
 
 export class AgencyNotifier implements RegisterInsurer, Notify{
   

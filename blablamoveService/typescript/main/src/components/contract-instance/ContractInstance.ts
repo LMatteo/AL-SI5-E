@@ -1,12 +1,12 @@
 import {GetSubscription} from "./GetSubscription";
 import {Subscription} from "./Subscription";
-
-import {Contract} from "../../entity/Contract";
+import {SubscribeStore} from "../../entityManager/local/SubscribeStore";
+import {Notify} from "../agency-notifier/Notify";
+import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 import {Subscribe} from "../../entity/Subscribe";
-import {Customer} from "../../entity/Customer";
-import { SubscribeStore } from "../../entityManager/SubscribeStore";
-import { Notify } from "../agency-notifier/Notify";
-import { AgencyNotifier } from "../agency-notifier/AgengyNotifier";
+import {Customer} from "../../entity/customer/Customer";
+import {Contract} from "../../entity/contract/Contract";
+
 
 
 export class ContractInstance implements GetSubscription, Subscription{

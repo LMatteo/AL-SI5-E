@@ -1,5 +1,5 @@
-import {Comparable} from "./Comparable";
-import {Jsonable} from "./Jsonable";
+import {Comparable} from "../Comparable";
+import {Jsonable} from "../Jsonable";
 
 export class Contact implements Comparable, Jsonable{
     private mail : string;

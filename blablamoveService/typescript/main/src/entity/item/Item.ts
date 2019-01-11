@@ -1,4 +1,4 @@
-import { Comparable } from "./Comparable";
+import { Comparable } from "../Comparable";
 
 export class Item implements Comparable {
     private id: string;

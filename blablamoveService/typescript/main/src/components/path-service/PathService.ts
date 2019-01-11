@@ -1,12 +1,13 @@
 import { ControlTravels } from "./ControlTravel";
-import { Travel } from "../../entity/Travel";
-import { Item } from "../../entity/Item";
-import { Customer } from "../../entity/Customer";
-import { TravelStore } from "../../entityManager/TravelStore";
-import { CustomerStore } from "../../entityManager/CustomerStore";
+import { Item } from "../../entity/item/Item";
+import { TravelStore } from "../../entityManager/local/TravelStore";
+import { CustomerStore } from "../../entityManager/local/CustomerStore";
 import { TravelValidator } from "../travelValidator/TravelValidator";
 import { CustomerDoNotExist } from "../../error/CustomerDoNotExist";
 import { MessageQueue } from "../message-queue/MessageQueue";
+import {Travel} from "../../entity/travel/Travel";
+import {Customer} from "../../entity/customer/Customer";
+import { TravelDoNotExist } from "error/TravelDoNotExist";
 export class PathService implements ControlTravels {
     private travelStore: TravelStore;
     private validator: TravelValidator;
@@ -49,6 +50,9 @@ export class PathService implements ControlTravels {
 
     addItemToTravel(item: Item, travelId: string): Travel {
         let travel: Travel = this.travelStore.get().filter(t => t.$id === travelId)[0];
+        if(travel === undefined){
+            throw new TravelDoNotExist();
+        }
         travel.addItem(item);
         travel.$customer.addItem(item);
         this.travelStore.merge(travel);

@@ -1,12 +1,13 @@
 import {HandleContract} from "./HandleContract";
 import {ListContract} from "./ListContract";
 import {Type} from "../../entity/Type";
-import {Contract} from "../../entity/Contract";
-import {ContractStore} from "../../entityManager/ContractStore";
+import {ContractStore} from "../../entityManager/local/ContractStore";
 import {ContractDoNotExist} from "../../error/ContractDoNotExist";
-import {Contact} from "../../entity/Contact";
-import { RegisterInsurer } from "../agency-notifier/RegisterInsurer";
-import { AgencyNotifier } from "../agency-notifier/AgengyNotifier";
+import {RegisterInsurer} from "../agency-notifier/RegisterInsurer";
+import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
+import {Contract} from "../../entity/contract/Contract";
+import {Contact} from "../../entity/contact/Contact";
+
 
 export class ContractRegistry implements HandleContract, ListContract{
     private store: ContractStore;
@@ -54,6 +55,14 @@ export class ContractRegistry implements HandleContract, ListContract{
         }
         
         throw new ContractDoNotExist();
+    }
+
+    getAllContract(): Array<Contract> {
+        let res : Array<Contract> = new Array<Contract>();
+        for(let contract of this.store.get()){
+            res.push(contract);
+        }
+        return res;
     }
 
 }

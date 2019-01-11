@@ -1,6 +1,6 @@
-import { Comparable } from "./Comparable";
-import { Item } from "./Item";
-import { Travel } from "./Travel";
+import { Comparable } from "../Comparable";
+import {Item} from "../item/Item";
+import {Travel} from "../travel/Travel";
 
 export class Customer implements Comparable {
     private id: string;

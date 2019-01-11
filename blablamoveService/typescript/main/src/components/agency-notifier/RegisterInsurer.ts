@@ -1,4 +1,4 @@
-import { Contract } from "../../entity/Contract";
+import {Contract} from "../../entity/contract/Contract";
 
 export interface RegisterInsurer {
     
