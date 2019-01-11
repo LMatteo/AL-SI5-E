@@ -1,9 +1,10 @@
 import {GetSubscription} from "./GetSubscription";
 import {Subscription} from "./Subscription";
-import {Contract} from "../entity/Contract";
-import {Subscribe} from "../entity/Subscribe";
-import {Customer} from "../entity/Customer";
-import { SubscribeStore } from "../entityManager/SubscribeStore";
+
+import {Contract} from "../../entity/Contract";
+import {Subscribe} from "../../entity/Subscribe";
+import {Customer} from "../../entity/Customer";
+import { SubscribeStore } from "../../entityManager/SubscribeStore";
 import { Notify } from "../agency-notifier/Notify";
 import { AgencyNotifier } from "../agency-notifier/AgengyNotifier";
 

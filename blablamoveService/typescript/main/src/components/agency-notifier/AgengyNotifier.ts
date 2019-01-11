@@ -1,11 +1,11 @@
 import { RegisterInsurer } from "./RegisterInsurer";
 import { Notify } from "./Notify";
-import { Contract } from "../entity/Contract";
-import { Subscribe } from "../entity/Subscribe";
-import { ItineraryStatus } from "../entity/ItineraryStatus";
-import { Logger } from "../logging/Logger";
-import { LoggingLevel } from "../logging/LoggingLevel";
-import Level = require("../logging/Level");
+import { Contract } from "../../entity/Contract";
+import { Subscribe } from "../../entity/Subscribe";
+import { ItineraryStatus } from "../../entity/ItineraryStatus";
+import { Logger } from "../../logging/Logger";
+import { LoggingLevel } from "../../logging/LoggingLevel";
+import Level = require("../../logging/Level");
 
 export class AgencyNotifier implements RegisterInsurer, Notify{
     

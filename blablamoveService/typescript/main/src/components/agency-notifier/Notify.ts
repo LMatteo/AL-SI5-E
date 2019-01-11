@@ -1,5 +1,5 @@
-import {Subscribe} from "../entity/Subscribe";
-import { ItineraryStatus } from "../entity/ItineraryStatus";
+import {Subscribe} from "../../entity/Subscribe";
+import { ItineraryStatus } from "../../entity/ItineraryStatus";
 
 export interface Notify {
 

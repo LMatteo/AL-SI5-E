@@ -1,10 +1,10 @@
 import {HandleContract} from "./HandleContract";
 import {ListContract} from "./ListContract";
-import {Type} from "../entity/Type";
-import {Contract} from "../entity/Contract";
-import {ContractStore} from "../entityManager/ContractStore";
-import {ContractDoNotExist} from "../error/ContractDoNotExist";
-import {Contact} from "../entity/Contact";
+import {Type} from "../../entity/Type";
+import {Contract} from "../../entity/Contract";
+import {ContractStore} from "../../entityManager/ContractStore";
+import {ContractDoNotExist} from "../../error/ContractDoNotExist";
+import {Contact} from "../../entity/Contact";
 import { RegisterInsurer } from "../agency-notifier/RegisterInsurer";
 import { AgencyNotifier } from "../agency-notifier/AgengyNotifier";
 

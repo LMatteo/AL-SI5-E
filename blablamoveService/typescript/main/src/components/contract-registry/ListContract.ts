@@ -1,5 +1,5 @@
-import {Type} from "../entity/Type";
-import {Contract} from "../entity/Contract";
+import {Type} from "../../entity/Type";
+import {Contract} from "../../entity/Contract";
 
 export interface ListContract {
     getContractByType(type: Type) : Array<Contract>;
