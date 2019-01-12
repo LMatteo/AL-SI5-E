@@ -2,26 +2,28 @@ import {ComparableSet} from "../../utils/ComparableSet";
 import {ContractDoNotExist} from "../../error/ContractDoNotExist";
 import {Contract} from "../../entity/contract/Contract";
 import ContractModel = require("../../entity/contract/Contract.entity");
-import {Sequelize} from "sequelize";
-
+import { Sequelize} from "sequelize";
 
 
 export class ContractStore{
 
 
-    clear() : any {
-        return ContractModel.drop()
-            .then(() => {
-                    return ContractModel.sync();
-                }
-            )
+    async clear() : Promise<void> {
+        ContractModel.drop();
+        await ContractModel.sync();
     }
 
-    persist(obj: Contract): any{
+
+
+
+    async persist(obj: Contract): Promise<Contract>{
+        await ContractModel.sync();
+
+        ContractModel.sync()
 
     }
 
-    merge(obj: Contract) : any{
+    merge(obj: Contract) : void{
 
     }
 
