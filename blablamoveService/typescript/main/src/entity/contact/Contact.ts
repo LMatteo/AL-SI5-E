@@ -1,5 +1,6 @@
 import {Comparable} from "../Comparable";
 import {Jsonable} from "../Jsonable";
+import {ContactModel} from "./Contact.model";
 
 export class Contact implements Comparable, Jsonable{
     private mail : string;
@@ -17,5 +18,9 @@ export class Contact implements Comparable, Jsonable{
         let j : any = {};
         j.mail = this.mail;
         return j;
+    }
+
+    toModel() : ContactModel{
+        return new ContactModel(this.mail);
     }
 }

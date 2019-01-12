@@ -7,15 +7,17 @@ import contactModel = require("../contact/Contact.entity");
 
 
 let model:DefineModelAttributes<any> = {
-    id : {type: Sequelize.UUID},
+    id : {type: Sequelize.UUID, primaryKey: true},
     description : {type : Sequelize.STRING},
     type : {type : Sequelize.STRING},
 };
 
 
+
 let contract: Sequelize.Model<any, any> = connection.define('contract', model);
+let assoc = contract.hasOne(contactModel,{as : 'Contact'});
 
-contract.hasOne(contactModel);
-
-export = contract;
+export = {object : contract,
+    contactAssociation : assoc
+};
 

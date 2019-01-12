@@ -1,6 +1,6 @@
 import Sequelize = require("sequelize"); // ORM
 
-const host = process.env.dbName || 'db';
+const host = process.env.dbName || 'localhost';
 const port = 3306;
 
 

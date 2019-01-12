@@ -9,7 +9,8 @@
   },
   "typings": "dist/typing",
   "scripts": {
-    "test": "mocha dist/test/src/**/*.js",
+    "test": "mocha dist/test/src/local/**/*.js --exit",
+    "test-all": "mocha dist/test/src/**/*.js --exit",
     "build": "tsc",
     "start": "node dist/main/src/Main.js"
   },
@@ -18,6 +19,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "mocha": "^5.2.0",
+    "mysql2": "^1.6.4",
     "sequelize": "^4.42.0",
     "ts-node": "^7.0.1",
     "winston": "^3.1.0"

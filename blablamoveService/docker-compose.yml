@@ -5,7 +5,7 @@ services:
     container_name: blablamove_db
     image: lucasmatteo/db_order_soa
     ports:
-      - "10050:3306"
+      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_ROOT_HOST=%

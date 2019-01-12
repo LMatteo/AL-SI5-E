@@ -2,6 +2,7 @@ import {Type} from "../Type";
 import {Comparable} from "../Comparable";
 import {Contact} from "../contact/Contact";
 import {Jsonable} from "../Jsonable";
+import {ContractModel} from "./Contract.model";
 
 export class Contract implements Comparable, Jsonable{
     private _id: string;
@@ -61,6 +62,10 @@ export class Contract implements Comparable, Jsonable{
         j.contact = this.contact.toJson();
         j.description = this.description;
         return j;
+    }
+
+    toModel(): ContractModel{
+        return new ContractModel(this.id,this._description,this.type, this._contact)
     }
 
 

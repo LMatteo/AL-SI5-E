@@ -1,7 +1,7 @@
 import 'mocha';
 import Assert = require('assert');
-import {Comparable} from "../../../main/src/entity/Comparable";
-import {ComparableSet} from "../../../main/src/utils/ComparableSet";
+import {Comparable} from "../../../../main/src/entity/Comparable";
+import {ComparableSet} from "../../../../main/src/utils/ComparableSet";
 
 class TestComparable implements Comparable{
     private readonly id : number;
