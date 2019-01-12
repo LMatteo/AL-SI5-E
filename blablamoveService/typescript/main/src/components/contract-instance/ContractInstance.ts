@@ -10,6 +10,7 @@ import {Contract} from "../../entity/contract/Contract";
 
 
 export class ContractInstance implements GetSubscription, Subscription{
+   
     private store: SubscribeStore;
     private notify: Notify = new AgencyNotifier();
     constructor(){
@@ -23,7 +24,15 @@ export class ContractInstance implements GetSubscription, Subscription{
         }
         return res;
     }
-    
+    getSubscriptionByCustomer(customer: Customer): Subscribe[] {
+        let res : Array<Subscribe> = new Array<Subscribe>();
+        for(let sub of this.store.get()){
+            if(sub.$customer.equal(customer)){
+                res.push(sub);
+            }
+        }
+        return res;
+    }
     getSubscriptionById(id: string): Subscribe {
         throw new Error("Method not implemented.");
     }

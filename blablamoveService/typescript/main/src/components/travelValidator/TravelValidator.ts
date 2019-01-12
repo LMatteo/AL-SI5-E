@@ -5,7 +5,6 @@ import { Travel } from "../../entity/travel/Travel";
 
 export class TravelValidator implements InsuranceValidate, PathValidate {
     private store: TravelStore;
-
     constructor() {
         this.store = new TravelStore();
     }
