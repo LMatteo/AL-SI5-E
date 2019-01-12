@@ -16,10 +16,8 @@ export class ContractStore{
 
 
 
-    async persist(obj: Contract): Promise<Contract>{
+    async persist(obj: Contract): Promise<void>{
         await ContractModel.sync();
-
-        ContractModel.sync()
 
     }
 
