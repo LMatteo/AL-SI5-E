@@ -15,7 +15,7 @@ let model:DefineModelAttributes<any> = {
 
 
 let contract: Sequelize.Model<any, any> = connection.define('contract', model);
-let assoc = contract.hasOne(contactModel,{as : 'Contact'});
+let assoc = contract.belongsTo(contactModel,{as : 'contact'});
 
 export = {object : contract,
     contactAssociation : assoc

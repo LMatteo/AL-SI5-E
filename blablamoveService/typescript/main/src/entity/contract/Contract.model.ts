@@ -11,11 +11,11 @@ export class ContractModel{
     public contact : ContactModel;
 
 
-    constructor(id: string, description: string, type: Type, contact : Contact) {
+    constructor(id: string, description: string, type: Type, contact : any) {
         this.id = id;
         this.description = description;
         this.type = type;
-        this.contact = contact.toModel();
+        this.contact = ContactModel.fromObj(contact);
     }
 
     static fromObj(obj: any) : ContractModel{

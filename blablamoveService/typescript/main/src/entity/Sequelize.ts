@@ -9,7 +9,8 @@ const sequelize = new Sequelize('blablamove', 'user', 'user', {
     host: host,
     protocol: 'tcp',
     dialect: 'mysql',
-    port: port
+    port: port,
+    logging: false
 });
 
 export = sequelize;
