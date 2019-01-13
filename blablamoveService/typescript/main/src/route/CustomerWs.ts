@@ -1,4 +1,5 @@
 import express = require("express");
+import path = require("path");
 import { Type } from "../entity/Type";
 import { ContractRegistry } from "../components/contract-registry/ContractRegistry";
 import { Contract } from "../entity/contract/Contract";
@@ -17,6 +18,8 @@ import { Calculate } from "../entity/Calculate";
 
 let router: express.Router = express.Router();
 const logger: Logger = new Logger();
+let pathFile = __dirname.replace("dist","typescript");
+router.use(express.static(path.join(pathFile,'public')));
 
 router.get(
     "/contracts/:type",
@@ -189,6 +192,12 @@ router.post("/calculator", (req: express.Request, res: express.Response) => {
         result = {"error":"this action is not define"}
     }
     res.send(result);
+});
+
+router.get("/userInterfaceClient", (req: express.Request,res: express.Response) => {
+    logger.log(Level.info, "interface Client Used");
+    res.contentType("text/html");
+    res.sendFile(pathFile+"/public/interfaceClient.html");
 });
 
 export = router;

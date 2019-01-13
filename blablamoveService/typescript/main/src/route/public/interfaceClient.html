@@ -271,54 +271,14 @@
 
         <div class="margin-container">
 
-            UI Insurer: <input type="checkbox" ng-model="isInsurer">
+            <!-- UI Insurer: <input type="checkbox" ng-model="isInsurer"> -->
 
             <div class="container">
                 <h1>BlaBlaMove Assurance</h1>
                 <p ng-show="isInsurer">List of insurance contracts</p>
             </div>
 
-            <div ng-show="isInsurer">
-
-                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="x in contracts">
-                        <b>Type</b> : {{x.type}} <br>
-                        <b>Insurer contact</b> : {{x.contact.mail}} <br>
-                        <b>Description</b> : {{x.description}} <br>
-                    </li>
-                    <li class="list-group-item newcontract" ng-click="setVisibleForm()">+ new contract</li>
-                </ul>
-
-                <div id="form" class="form-visibility" ng-show="showForm">
-                    <form>
-
-                        <div class="form-group">
-                            <label for="exampleFormControlInput1">Email address</label>
-                            <input type="email" class="form-control" id="inputmail" placeholder="name@example.com">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Type</label>
-                            <select class="form-control" id="inputtype">
-                                <option>hightech</option>
-                                <option>fragile</option>
-                                <option>heavy</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="exampleFormControlTextarea1">Description</label>
-                            <textarea class="form-control" id="inputdescription" rows="3"></textarea>
-                        </div>
-
-                    </form>
-
-                    <button ng-click="addContract()">Add contract</button>
-                </div>
-
-            </div>
-
-            <div ng-show="!isInsurer">
+            <div>
 
                 <div class="form-visibility">
                     <form>

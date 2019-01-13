@@ -63,10 +63,10 @@ router.get("/subscriptions", (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "subscriptions listed");
 });
 
-router.get("/userInterface", (req: express.Request,res: express.Response) => {
-    logger.log(Level.info, "interface Used");
+router.get("/userInterfaceInsurer", (req: express.Request,res: express.Response) => {
+    logger.log(Level.info, "interface Insurer Used");
     res.contentType("text/html");
-    res.sendFile(pathFile+"/public/index.html");
+    res.sendFile(pathFile+"/public/interfaceInsurer.html");
 });
 
 export = router;
