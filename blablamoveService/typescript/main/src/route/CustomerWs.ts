@@ -13,6 +13,7 @@ import { Customer } from "../entity/customer/Customer";
 import { Contact } from "../entity/contact/Contact";
 import { PathService } from "../components/path-service/PathService";
 import { Item } from "../entity/item/Item";
+import { Calculate } from "../entity/Calculate";
 
 let router: express.Router = express.Router();
 const logger: Logger = new Logger();
@@ -34,7 +35,7 @@ router.get(
         );
         let resArr: Array<any> = new Array<any>();
 
-        contracts.forEach(function(value: Contract) {
+        contracts.forEach(function (value: Contract) {
             resArr.push(value.toJson());
         });
 
@@ -166,5 +167,28 @@ router.put(
         logger.log(Level.info, "travel selected");
     }
 );
+
+
+router.post("/calculator", (req: express.Request, res: express.Response) => {
+    logger.log(Level.info, "calculator");
+    let action = req.body.action;
+    var result;
+    if (action === "calculatePrice") {
+        let from = req.body.request.from;
+        let to = req.body.request.to;
+        let contracts = req.body.request.contracts;
+        let objects = req.body.request.objects;
+        let type = req.body.request.type;
+        let calculator: Calculate = new Calculate();
+        result = calculator.calcule(from, to, contracts, objects, type);
+    }else if(action === "searchType"){
+        let objects = req.body.request.objects;
+        let calculator: Calculate = new Calculate();
+        result = {"type":calculator.searchType(objects)}
+    }else{
+        result = {"error":"this action is not define"}
+    }
+    res.send(result);
+});
 
 export = router;
