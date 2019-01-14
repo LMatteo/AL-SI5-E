@@ -9,17 +9,16 @@ import {Travel} from "../../entity/travel/Travel";
 import {Customer} from "../../entity/customer/Customer";
 import { TravelDoNotExist } from "../../error/TravelDoNotExist";
 import {Component} from "../Component";
+import ComponentFactory = require("../../factory/ComponentFactory");
+import {PathValidate} from "../travelValidator/PathValidate";
 
 export class PathService implements ControlTravels, Component {
-    private travelStore: TravelStore;
-    private validator: TravelValidator;
-    private customerStore: CustomerStore;
+    private travelStore: TravelStore = new TravelStore();
+    private validator: PathValidate = ComponentFactory.createComponent("PathValidate");
+    private customerStore: CustomerStore = new CustomerStore();
     static messageQueue: MessageQueue = new MessageQueue();
-    constructor() {
-        this.travelStore = new TravelStore();
-        this.customerStore = new CustomerStore();
-        this.validator = new TravelValidator();
-    }
+
+
 
     createTravel(
         customerName: string,
@@ -45,7 +44,7 @@ export class PathService implements ControlTravels, Component {
         this.customerStore.merge(customer);
         this.travelStore.persist(travel);
         this.validator.pathValidate(travel);
-        console.log("tolo")
+        console.log("tolo");
         PathService.messageQueue.sendMessage("validation", travel);
         return travel;
     }

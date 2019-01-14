@@ -4,18 +4,19 @@ import {Type} from "../../entity/Type";
 import {ContractStore} from "../../entityManager/local/ContractStore";
 import {ContractDoNotExist} from "../../error/ContractDoNotExist";
 import {RegisterInsurer} from "../agency-notifier/RegisterInsurer";
-import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 import {Contract} from "../../entity/contract/Contract";
 import {Contact} from "../../entity/contact/Contact";
 import {Component} from "../Component";
+import ComponentFactory = require("../../factory/ComponentFactory");
 
 
 export class ContractRegistry implements HandleContract, ListContract, Component{
     private store: ContractStore;
-    
-    private registerInsurer: RegisterInsurer = new AgencyNotifier();
+    private registerInsurer: RegisterInsurer;
+
     constructor(){
         this.store = new ContractStore();
+        this.registerInsurer = ComponentFactory.createComponent("RegisterInsurer");
     }
 
     addContract(type: Type, description: string, mail: string): Contract {
