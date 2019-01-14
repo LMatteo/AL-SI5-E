@@ -7,9 +7,10 @@ import {RegisterInsurer} from "../agency-notifier/RegisterInsurer";
 import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 import {Contract} from "../../entity/contract/Contract";
 import {Contact} from "../../entity/contact/Contact";
+import {Component} from "../Component";
 
 
-export class ContractRegistry implements HandleContract, ListContract{
+export class ContractRegistry implements HandleContract, ListContract, Component{
     private store: ContractStore;
     
     private registerInsurer: RegisterInsurer = new AgencyNotifier();

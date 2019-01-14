@@ -6,10 +6,11 @@ import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 import {Subscribe} from "../../entity/Subscribe";
 import {Customer} from "../../entity/customer/Customer";
 import {Contract} from "../../entity/contract/Contract";
+import {Component} from "../Component";
 
 
 
-export class ContractInstance implements GetSubscription, Subscription{
+export class ContractInstance implements GetSubscription, Subscription, Component{
    
     private store: SubscribeStore;
     private notify: Notify = new AgencyNotifier();

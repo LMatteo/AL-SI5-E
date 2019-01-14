@@ -8,7 +8,9 @@ import { MessageQueue } from "../message-queue/MessageQueue";
 import {Travel} from "../../entity/travel/Travel";
 import {Customer} from "../../entity/customer/Customer";
 import { TravelDoNotExist } from "../../error/TravelDoNotExist";
-export class PathService implements ControlTravels {
+import {Component} from "../Component";
+
+export class PathService implements ControlTravels, Component {
     private travelStore: TravelStore;
     private validator: TravelValidator;
     private customerStore: CustomerStore;

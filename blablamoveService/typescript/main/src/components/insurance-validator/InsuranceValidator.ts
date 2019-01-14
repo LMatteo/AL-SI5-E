@@ -11,8 +11,9 @@ import { Subscribe } from "../../entity/Subscribe";
 import { Notify } from "../agency-notifier/Notify";
 import { AgencyNotifier } from "../agency-notifier/AgengyNotifier";
 import { ItineraryStatus } from "../../entity/ItineraryStatus";
+import {Component} from "../Component";
 
-export class InsuranceValidator implements Validate{
+export class InsuranceValidator implements Validate, Component{
   
     private logger : Logger = new Logger();
     private validator: InsuranceValidate = new TravelValidator();
