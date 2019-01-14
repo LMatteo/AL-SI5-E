@@ -7,7 +7,7 @@ pipeline {
     }
     stages {
         stage("blablamoveService"){
-            when { changeset "blablamoveService/typescript/*" }
+            when { changeset "blablamoveService/typescript/**/*" }
             steps {
                 build 'BlaBlaMove_TS'
             }
