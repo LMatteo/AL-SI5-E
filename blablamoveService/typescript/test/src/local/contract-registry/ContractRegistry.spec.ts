@@ -1,12 +1,12 @@
 import 'mocha';
 import {ContractStore} from "../../../../main/src/entityManager/local/ContractStore";
-import {ContractRegistry} from "../../../../main/src/components/contract-registry/ContractRegistry";
 import {Type} from "../../../../main/src/entity/Type";
 import * as Assert from "assert";
 import {Contract} from "../../../../main/src/entity/contract/Contract";
 import {Contact} from "../../../../main/src/entity/contact/Contact";
 import {ContractDoNotExist} from "../../../../main/src/error/ContractDoNotExist";
 import {strictEqual} from "assert";
+import {ContractRegistry} from "../../../../main/src/components/contract-registry/ContractRegistry";
 
 describe("contract registry test", function () {
 

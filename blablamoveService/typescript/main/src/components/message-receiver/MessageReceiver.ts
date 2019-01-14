@@ -5,10 +5,11 @@ import { InsuranceValidator } from "../insurance-validator/InsuranceValidator";
 
 import { Logger } from "../../logging/Logger";
 import Level = require("../../logging/Level");
+import ComponentFactory = require("../../factory/ComponentFactory");
 export class MessageReceiver{
     private logger : Logger = new Logger();
 
-    private validate: Validate = new InsuranceValidator();
+    private validate: Validate = ComponentFactory.createComponent("Validate");
     constructor(){
         let ctx = this;
         PathService.messageQueue.subScribe("validation", {

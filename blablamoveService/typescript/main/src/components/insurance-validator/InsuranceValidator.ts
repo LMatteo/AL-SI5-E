@@ -12,13 +12,14 @@ import { Notify } from "../agency-notifier/Notify";
 import { AgencyNotifier } from "../agency-notifier/AgengyNotifier";
 import { ItineraryStatus } from "../../entity/ItineraryStatus";
 import {Component} from "../Component";
+import ComponentFactory = require("../../factory/ComponentFactory");
 
 export class InsuranceValidator implements Validate, Component{
   
     private logger : Logger = new Logger();
-    private validator: InsuranceValidate = new TravelValidator();
-    private contracts: GetSubscription = new ContractInstance();
-    private notifier: Notify = new AgencyNotifier();
+    private validator: InsuranceValidate = ComponentFactory.createComponent("InsuranceValidate");
+    private contracts: GetSubscription = ComponentFactory.createComponent("GetSubscription");
+    private notifier: Notify =ComponentFactory.createComponent("Notify");
     validate(travel: Travel): void {
         
         this.logger.log(Level.info, "new travel validation beginning");

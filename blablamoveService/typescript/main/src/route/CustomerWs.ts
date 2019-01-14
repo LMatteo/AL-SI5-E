@@ -1,7 +1,6 @@
 import express = require("express");
 import path = require("path");
 import { Type } from "../entity/Type";
-import { ContractRegistry } from "../components/contract-registry/ContractRegistry";
 import { Contract } from "../entity/contract/Contract";
 import { Subscribe } from "../entity/Subscribe";
 import { GetSubscription } from "../components/contract-instance/GetSubscription";
@@ -15,6 +14,7 @@ import { Contact } from "../entity/contact/Contact";
 import { PathService } from "../components/path-service/PathService";
 import { Item } from "../entity/item/Item";
 import { Calculate } from "../entity/Calculate";
+import {ContractRegistry} from "../components/contract-registry/ContractRegistry";
 
 let router: express.Router = express.Router();
 const logger: Logger = new Logger();
