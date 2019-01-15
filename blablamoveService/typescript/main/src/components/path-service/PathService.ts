@@ -8,13 +8,11 @@ import { MessageQueue } from "../message-queue/MessageQueue";
 import {Travel} from "../../entity/travel/Travel";
 import {Customer} from "../../entity/customer/Customer";
 import { TravelDoNotExist } from "../../error/TravelDoNotExist";
-import {Component} from "../Component";
-import ComponentFactory = require("../../factory/ComponentFactory");
 import {PathValidate} from "../travelValidator/PathValidate";
 
-export class PathService implements ControlTravels, Component {
+export class PathService implements ControlTravels {
     private travelStore: TravelStore = new TravelStore();
-    private validator: PathValidate = ComponentFactory.createComponent("PathValidate");
+    private validator: PathValidate = new TravelValidator();
     private customerStore: CustomerStore = new CustomerStore();
     static messageQueue: MessageQueue = new MessageQueue();
 

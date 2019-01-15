@@ -14,8 +14,8 @@ let model: DefineModelAttributes<any> = {
 let travel: Sequelize.Model<any, any> = connection.define("travel", model);
 let validatorAssoc = travel.hasOne(validatorModel);
 let itemAssoc = travel.hasMany(itemModel);
-let customerAssoc = travel.hasOne(customerModel);
-let transporterAssoc = travel.hasOne(customerModel);
+let customerAssoc = travel.hasOne(customerModel.object);
+let transporterAssoc = travel.hasOne(customerModel.object);
 
 export = {
     object: travel,

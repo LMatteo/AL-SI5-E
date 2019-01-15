@@ -5,17 +5,17 @@ import {Notify} from "../agency-notifier/Notify";
 import {Subscribe} from "../../entity/Subscribe";
 import {Customer} from "../../entity/customer/Customer";
 import {Contract} from "../../entity/contract/Contract";
-import {Component} from "../Component";
-import ComponentFactory = require("../../factory/ComponentFactory");
+import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 
 
 
-export class ContractInstance implements GetSubscription, Subscription, Component{
+export class ContractInstance implements GetSubscription, Subscription{
    
     private store: SubscribeStore;
-    private notify: Notify = ComponentFactory.createComponent("Notify");
+    private notify: Notify;
     constructor(){
         this.store = new SubscribeStore();
+        this.notify = new AgencyNotifier();
     }
 
     getSubscriptions(): Array<Subscribe> {

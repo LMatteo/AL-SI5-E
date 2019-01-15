@@ -8,9 +8,8 @@ import Level = require("../../logging/Level");
 import { Customer } from "../../entity/customer/Customer";
 import { Travel } from "../../entity/travel/Travel";
 import {Contract} from "../../entity/contract/Contract";
-import {Component} from "../Component";
 
-export class AgencyNotifier implements RegisterInsurer, Notify, Component{
+export class AgencyNotifier implements RegisterInsurer, Notify{
   
     logger : Logger = new Logger();
     registerInsurerContact(contract: Contract): void {

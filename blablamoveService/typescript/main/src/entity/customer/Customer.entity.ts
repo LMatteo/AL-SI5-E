@@ -2,7 +2,7 @@ import Sequelize = require("sequelize");
 import connection = require("../Sequelize");
 import { DefineModelAttributes } from "sequelize";
 import itemModel = require("../item/Item.entity");
-import travelModel = require("../travel/travel.entity");
+import travelModel = require("../travel/Travel.entity");
 
 let model: DefineModelAttributes<any> = {
     id: { type: Sequelize.UUID, primaryKey: true },
@@ -13,8 +13,8 @@ let model: DefineModelAttributes<any> = {
 
 let customer: Sequelize.Model<any, any> = connection.define("customer", model);
 let itemAssoc = customer.hasMany(itemModel);
-let shipmentAssoc = customer.hasMany(travelModel);
-let transportAssoc = customer.hasMany(travelModel);
+let shipmentAssoc = customer.hasMany(travelModel.object);
+let transportAssoc = customer.hasMany(travelModel.object);
 
 export = {
     object: customer,

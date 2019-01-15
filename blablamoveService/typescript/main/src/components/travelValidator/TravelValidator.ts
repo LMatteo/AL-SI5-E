@@ -2,9 +2,8 @@ import { InsuranceValidate } from "./InsuranceValidate";
 import { PathValidate } from "./PathValidate";
 import { TravelStore } from "../../entityManager/local/TravelStore";
 import { Travel } from "../../entity/travel/Travel";
-import {Component} from "../Component";
 
-export class TravelValidator implements InsuranceValidate, PathValidate, Component {
+export class TravelValidator implements InsuranceValidate, PathValidate {
     private store: TravelStore;
     constructor() {
         this.store = new TravelStore();

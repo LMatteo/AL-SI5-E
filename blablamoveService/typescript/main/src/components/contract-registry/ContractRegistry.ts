@@ -6,17 +6,16 @@ import {ContractDoNotExist} from "../../error/ContractDoNotExist";
 import {RegisterInsurer} from "../agency-notifier/RegisterInsurer";
 import {Contract} from "../../entity/contract/Contract";
 import {Contact} from "../../entity/contact/Contact";
-import {Component} from "../Component";
-import ComponentFactory = require("../../factory/ComponentFactory");
+import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 
 
-export class ContractRegistry implements HandleContract, ListContract, Component{
+export class ContractRegistry implements HandleContract, ListContract{
     private store: ContractStore;
     private registerInsurer: RegisterInsurer;
 
     constructor(){
         this.store = new ContractStore();
-        this.registerInsurer = ComponentFactory.createComponent("RegisterInsurer");
+        this.registerInsurer = new AgencyNotifier();
     }
 
     addContract(type: Type, description: string, mail: string): Contract {

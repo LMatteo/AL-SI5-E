@@ -2,14 +2,13 @@ import { PathService } from "../path-service/PathService";
 import { Validate } from "../insurance-validator/Validate";
 import { Travel } from "../../entity/travel/Travel";
 import { InsuranceValidator } from "../insurance-validator/InsuranceValidator";
-
 import { Logger } from "../../logging/Logger";
 import Level = require("../../logging/Level");
-import ComponentFactory = require("../../factory/ComponentFactory");
+
 export class MessageReceiver{
     private logger : Logger = new Logger();
 
-    private validate: Validate = ComponentFactory.createComponent("Validate");
+    private validate: Validate = new InsuranceValidator();
     constructor(){
         let ctx = this;
         PathService.messageQueue.subScribe("validation", {
