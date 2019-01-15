@@ -4,13 +4,13 @@ import {Type} from "../../../../main/src/entity/Type";
 import * as Assert from "assert";
 import {Contract} from "../../../../main/src/entity/contract/Contract";
 import {Contact} from "../../../../main/src/entity/contact/Contact";
-import {ContractDoNotExist} from "../../../../main/src/error/ContractDoNotExist";
 import {strictEqual} from "assert";
 import {ContractRegistry} from "../../../../main/src/components/contract-registry/ContractRegistry";
 import {HandleContract} from "../../../../main/src/components/contract-registry/HandleContract";
 import {ListContract} from "../../../../main/src/components/contract-registry/ListContract";
 import container from "../../../../main/src/components/InjectionConfig";
 import COMPONENT_IDENTIFIER from "../../../../main/src/components/InjectionIdentifier";
+import {ContractDoesNotExist} from "../../../../main/src/error/ContractDoesNotExist";
 
 describe("contract registry test", function () {
 
@@ -43,7 +43,7 @@ describe("contract registry test", function () {
 
         Assert.throws(function() {
             listContract.getContractById("owowowwowo");
-        }, ContractDoNotExist)
+        }, ContractDoesNotExist)
     });
 
     it('should return the right number of contract', function () {
@@ -72,7 +72,7 @@ describe("contract registry test", function () {
     it('should throw error', function () {
         Assert.throws(function () {
             handleContract.updateContractDescription("chec","check")
-        }, ContractDoNotExist)
+        }, ContractDoesNotExist)
     });
 
 });

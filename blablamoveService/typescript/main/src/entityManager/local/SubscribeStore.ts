@@ -1,6 +1,5 @@
 import { createUuid } from "../UuidGenerator";
 import { ComparableSet } from "../../utils/ComparableSet";
-import { ContractDoNotExist } from "../../error/ContractDoNotExist";
 import { Subscribe } from "../../entity/Subscribe";
 
 export class SubscribeStore {

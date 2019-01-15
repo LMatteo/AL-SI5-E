@@ -2,13 +2,13 @@ import {HandleContract} from "./HandleContract";
 import {ListContract} from "./ListContract";
 import {Type} from "../../entity/Type";
 import {ContractStore} from "../../entityManager/local/ContractStore";
-import {ContractDoNotExist} from "../../error/ContractDoNotExist";
 import {RegisterInsurer} from "../agency-notifier/RegisterInsurer";
 import {Contract} from "../../entity/contract/Contract";
 import {Contact} from "../../entity/contact/Contact";
 import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 import {inject, injectable} from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
+import {ContractDoesNotExist} from "../../error/ContractDoesNotExist";
 
 @injectable()
 export class ContractRegistry implements HandleContract, ListContract{
@@ -33,7 +33,7 @@ export class ContractRegistry implements HandleContract, ListContract{
                 return contract;
             }
         }
-        throw new ContractDoNotExist();
+        throw new ContractDoesNotExist();
     }
 
     getContractByType(type: Type): Array<Contract> {
@@ -58,7 +58,7 @@ export class ContractRegistry implements HandleContract, ListContract{
             }
         }
         
-        throw new ContractDoNotExist();
+        throw new ContractDoesNotExist();
     }
 
     getAllContract(): Array<Contract> {

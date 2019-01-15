@@ -5,6 +5,9 @@ import ContactCon = require("../../entity/contact/Contact.entity");
 import {Model, Sequelize} from "sequelize";
 import {ContractModel} from "../../entity/contract/Contract.model";
 import {ContactModel} from "../../entity/contact/Contact.model";
+import {Type} from "../../entity/Type";
+import {Contact} from "../../entity/contact/Contact";
+import {ContractDoesNotExist} from "../../error/ContractDoesNotExist";
 
 const ContractCon = model.object;
 const Association = model.contactAssociation;
@@ -25,7 +28,7 @@ export class ContractDbStore{
 
 
 
-    async persist(obj: Contract): Promise<void>{
+    async persist(obj: Contract): Promise<Contract>{
         await ContractCon.sync();
         obj.id = createUuid();
         let result = await ContractCon.create(obj.toModel(),
@@ -33,11 +36,22 @@ export class ContractDbStore{
                     association : Association
                 }]
         });
+        return ContractModel.fromObj(result.get()).toContract();
 
     }
 
-    merge(obj: Contract) : void{
+    async merge(obj: Contract) : Promise<Contract>{
+        await ContractCon.sync();
 
+        let modificated : Array<any>  = await ContractCon.update(
+            obj.toModel(),
+            {returning : true, where : { id : obj.id} }
+        );
+        if(modificated[1] == 0){
+            throw ContractDoesNotExist;
+        }
+
+        return obj;
     }
 
     async get(): Promise<Array<Contract>> {

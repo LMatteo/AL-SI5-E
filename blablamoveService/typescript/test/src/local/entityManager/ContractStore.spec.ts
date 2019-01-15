@@ -3,9 +3,9 @@ import Assert = require('assert');
 
 import {ContractStore} from "../../../../main/src/entityManager/local/ContractStore";
 import {Type} from "../../../../main/src/entity/Type";
-import {ContractDoNotExist} from "../../../../main/src/error/ContractDoNotExist";
 import {Contact} from "../../../../main/src/entity/contact/Contact";
 import {Contract} from "../../../../main/src/entity/contract/Contract";
+import {ContractDoesNotExist} from "../../../../main/src/error/ContractDoesNotExist";
 
 
 describe("contract store test", function () {
@@ -61,7 +61,7 @@ describe("contract store test", function () {
         try{
             store.merge(new Contract("test",Type.fragile, new Contact("test@htomail.com")))
         } catch (e) {
-            Assert.strictEqual(true,e instanceof ContractDoNotExist)
+            Assert.strictEqual(true,e instanceof ContractDoesNotExist)
         }
     });
 });

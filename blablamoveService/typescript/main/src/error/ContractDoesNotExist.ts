@@ -1,6 +1,6 @@
 import {HttpCodeError} from "./HttpCodeError";
 
-export class ContractDoNotExist extends Error implements HttpCodeError{
+export class ContractDoesNotExist extends Error implements HttpCodeError{
     constructor(){
         super('No Such contract')
     }
