@@ -7,9 +7,12 @@ import { Customer } from "../../../../main/src/entity/customer/Customer";
 import { Travel } from "../../../../main/src/entity/travel/Travel";
 import { Item } from "../../../../main/src/entity/item/Item";
 import { CustomerDoNotExist } from "../../../../main/src/error/CustomerDoNotExist";
+import {ControlTravels} from "../../../../main/src/components/path-service/ControlTravel";
+import container from "../../../../main/src/components/InjectionConfig";
+import COMPONENT_IDENTIFIER from "../../../../main/src/components/InjectionIdentifier";
 
 describe("path service test", function() {
-    let pathService: PathService;
+    let pathService: ControlTravels;
     let christophe: Customer;
     let johan: Customer;
     let travelA: Travel;
@@ -18,7 +21,7 @@ describe("path service test", function() {
     beforeEach(function() {
         new TravelStore().clear();
         new CustomerStore().clear();
-        pathService = new PathService();
+        pathService = container.get(COMPONENT_IDENTIFIER.ControlTravels)
         christophe = new Customer();
         christophe.$name = "christophe";
         new CustomerStore().persist(christophe);

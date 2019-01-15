@@ -7,15 +7,18 @@ import {RegisterInsurer} from "../agency-notifier/RegisterInsurer";
 import {Contract} from "../../entity/contract/Contract";
 import {Contact} from "../../entity/contact/Contact";
 import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
+import {inject, injectable} from "inversify";
+import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 
-
+@injectable()
 export class ContractRegistry implements HandleContract, ListContract{
     private store: ContractStore;
+
+    @inject(COMPONENT_IDENTIFIER.RegisterInsurer)
     private registerInsurer: RegisterInsurer;
 
     constructor(){
         this.store = new ContractStore();
-        this.registerInsurer = new AgencyNotifier();
     }
 
     addContract(type: Type, description: string, mail: string): Contract {

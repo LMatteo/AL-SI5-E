@@ -2,7 +2,9 @@ import { InsuranceValidate } from "./InsuranceValidate";
 import { PathValidate } from "./PathValidate";
 import { TravelStore } from "../../entityManager/local/TravelStore";
 import { Travel } from "../../entity/travel/Travel";
+import {injectable} from "inversify";
 
+@injectable()
 export class TravelValidator implements InsuranceValidate, PathValidate {
     private store: TravelStore;
     constructor() {

@@ -10,6 +10,7 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
+    "experimentalDecorators": true,
     "baseUrl": "./typescript/main/src",
     "lib": ["es6", "es2017", "dom"],
     "paths": {

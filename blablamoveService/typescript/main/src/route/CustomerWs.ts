@@ -15,6 +15,9 @@ import { PathService } from "../components/path-service/PathService";
 import { Item } from "../entity/item/Item";
 import { Calculate } from "../entity/Calculate";
 import {ContractRegistry} from "../components/contract-registry/ContractRegistry";
+import container from "../components/InjectionConfig";
+import COMPONENT_IDENTIFIER from "../components/InjectionIdentifier";
+import {ControlTravels} from "../components/path-service/ControlTravel";
 
 let router: express.Router = express.Router();
 const logger: Logger = new Logger();
@@ -32,7 +35,7 @@ router.get(
             res.send("no such type");
         }
 
-        let contractLister: ListContract = new ContractRegistry();
+        let contractLister: ListContract = container.get(COMPONENT_IDENTIFIER.ListContract);
         let contracts: Array<Contract> = contractLister.getContractByType(
             Type[type]
         );
@@ -57,7 +60,7 @@ router.post("/subscriptions", (req: express.Request, res: express.Response) => {
     let description: string = req.body.subcribe.description;
     let type: keyof typeof Type = req.body.subcribe.typeName;
 
-    let contractHandler: Subscription = new ContractInstance();
+    let contractHandler: Subscription = container.get(COMPONENT_IDENTIFIER.Subscription);
     let customer: Customer = new Customer();
     let contract: Contract = new Contract(
         description,
@@ -75,7 +78,7 @@ router.post("/subscriptions", (req: express.Request, res: express.Response) => {
 
 router.post("/travels", (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "creating new travel");
-    let controlTravel = new PathService();
+    let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels);
     let travel = controlTravel.createTravel(
         req.body.customerName,
         req.body.departure,
@@ -98,7 +101,7 @@ router.put(
         logger.log(Level.info, "adding new item to a travel");
         let item = new Item();
         item.$name = req.body.itemName;
-        let controlTravel = new PathService();
+        let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
         controlTravel.addItemToTravel(item, req.params.travelId);
         res.status(200).end();
         logger.log(Level.info, "item added");
@@ -107,7 +110,7 @@ router.put(
 
 router.get("/travels", (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "getting travels");
-    let controlTravel = new PathService();
+    let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
     let travels = controlTravel.findTravel(
         req.query.departure,
         req.query.destinaton
@@ -127,7 +130,7 @@ router.get(
     "/travels/:travelId",
     (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "getting travel");
-        let controlTravel = new PathService();
+        let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
         let travel = controlTravel.findTravelById(req.params.travelId);
         if (travel) {
             res.send(travel);
@@ -143,7 +146,7 @@ router.delete(
     "/travels/:travelId",
     (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "finishing travel");
-        let controlTravel = new PathService();
+        let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
         controlTravel.finishTravel(req.params.travelId);
         res.status(200).end();
         logger.log(Level.info, "travel finished");
@@ -154,7 +157,7 @@ router.put(
     "/travels/:travelId/transporter",
     (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "selecting travel");
-        let controlTravel = new PathService();
+        let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
         let travel = controlTravel.chooseTravel(
             req.body.transporterName,
             req.params.travelId

@@ -6,16 +6,20 @@ import {Subscribe} from "../../entity/Subscribe";
 import {Customer} from "../../entity/customer/Customer";
 import {Contract} from "../../entity/contract/Contract";
 import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
+import {inject, injectable} from "inversify";
+import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 
 
-
+@injectable()
 export class ContractInstance implements GetSubscription, Subscription{
    
     private store: SubscribeStore;
+
+    @inject(COMPONENT_IDENTIFIER.Notify)
     private notify: Notify;
+
     constructor(){
         this.store = new SubscribeStore();
-        this.notify = new AgencyNotifier();
     }
 
     getSubscriptions(): Array<Subscribe> {

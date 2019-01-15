@@ -7,18 +7,22 @@ import {Contact} from "../../../../main/src/entity/contact/Contact";
 import {ContractDoNotExist} from "../../../../main/src/error/ContractDoNotExist";
 import {strictEqual} from "assert";
 import {ContractRegistry} from "../../../../main/src/components/contract-registry/ContractRegistry";
+import {HandleContract} from "../../../../main/src/components/contract-registry/HandleContract";
+import {ListContract} from "../../../../main/src/components/contract-registry/ListContract";
+import container from "../../../../main/src/components/InjectionConfig";
+import COMPONENT_IDENTIFIER from "../../../../main/src/components/InjectionIdentifier";
 
 describe("contract registry test", function () {
 
-    let registry : ContractRegistry;
+    let handleContract : HandleContract = container.get(COMPONENT_IDENTIFIER.HandleContract);
+    let listContract : ListContract = container.get(COMPONENT_IDENTIFIER.ListContract);
 
     beforeEach(function () {
         new ContractStore().clear();
-        registry = new ContractRegistry();
     });
 
     it('should add contract ', function () {
-        registry.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
 
         let store : ContractStore = new ContractStore();
 
@@ -31,43 +35,43 @@ describe("contract registry test", function () {
     });
 
     it('should return the contract with the specified id', function () {
-        let contract : Contract = registry.addContract(Type.fragile, "test","salut@hotmail.com");
-        Assert.strictEqual(true, contract.equal(registry.getContractById(contract.id)));
+        let contract : Contract = handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        Assert.strictEqual(true, contract.equal(listContract.getContractById(contract.id)));
     });
 
     it('should throw an error as the contract is unknown', function () {
 
         Assert.throws(function() {
-            registry.getContractById("owowowwowo");
+            listContract.getContractById("owowowwowo");
         }, ContractDoNotExist)
     });
 
     it('should return the right number of contract', function () {
-        registry.addContract(Type.fragile, "test","salut@hotmail.com");
-        registry.addContract(Type.fragile, "test","salut@hotmail.com");
-        registry.addContract(Type.fragile, "test","salut@hotmail.com");
-        registry.addContract(Type.fragile, "test","salut@hotmail.com");
-        registry.addContract(Type.fragile, "test","salut@hotmail.com");
-        registry.addContract(Type.fragile, "test","salut@hotmail.com");
-        registry.addContract(Type.fragile, "test","salut@hotmail.com");
-        registry.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
 
-        Assert.strictEqual(8,registry.getContractByType(Type.fragile).length);
-        Assert.strictEqual(0,registry.getContractByType(Type.heavy).length);
+        Assert.strictEqual(8,listContract.getContractByType(Type.fragile).length);
+        Assert.strictEqual(0,listContract.getContractByType(Type.heavy).length);
 
     });
 
     it('should modify a contract', function () {
-        let contract : Contract = registry.addContract(Type.fragile, "test","salut@hotmail.com");
+        let contract : Contract = handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
 
-        registry.updateContractDescription(contract.id,"new");
+        handleContract.updateContractDescription(contract.id,"new");
 
-        Assert.strictEqual("new", registry.getContractById(contract.id).description);
+        Assert.strictEqual("new", listContract.getContractById(contract.id).description);
     });
 
     it('should throw error', function () {
         Assert.throws(function () {
-            registry.updateContractDescription("chec","check")
+            handleContract.updateContractDescription("chec","check")
         }, ContractDoNotExist)
     });
 

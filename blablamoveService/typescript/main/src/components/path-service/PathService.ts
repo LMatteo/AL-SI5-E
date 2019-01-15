@@ -9,10 +9,18 @@ import {Travel} from "../../entity/travel/Travel";
 import {Customer} from "../../entity/customer/Customer";
 import { TravelDoNotExist } from "../../error/TravelDoNotExist";
 import {PathValidate} from "../travelValidator/PathValidate";
+import {inject, injectable} from "inversify";
+import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 
+@injectable()
 export class PathService implements ControlTravels {
-    private travelStore: TravelStore = new TravelStore();
-    private validator: PathValidate = new TravelValidator();
+
+
+    private travelStore: TravelStore = new TravelStore() ;
+
+    @inject(COMPONENT_IDENTIFIER.PathValidate)
+    private validator: PathValidate ;
+
     private customerStore: CustomerStore = new CustomerStore();
     static messageQueue: MessageQueue = new MessageQueue();
 

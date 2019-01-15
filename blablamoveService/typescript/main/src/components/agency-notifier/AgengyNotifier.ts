@@ -8,7 +8,9 @@ import Level = require("../../logging/Level");
 import { Customer } from "../../entity/customer/Customer";
 import { Travel } from "../../entity/travel/Travel";
 import {Contract} from "../../entity/contract/Contract";
+import {injectable} from "inversify";
 
+@injectable()
 export class AgencyNotifier implements RegisterInsurer, Notify{
   
     logger : Logger = new Logger();

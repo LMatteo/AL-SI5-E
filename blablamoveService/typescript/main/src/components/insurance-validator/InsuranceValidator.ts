@@ -1,23 +1,30 @@
 import { Validate } from "./Validate";
 import { Travel } from "../../entity/travel/Travel";
-import { TravelValidator } from "../travelValidator/TravelValidator";
 import { Logger } from "../../logging/Logger";
 import Level = require("../../logging/Level");
 import { InsuranceValidate } from "../travelValidator/InsuranceValidate";
 import { Customer } from "../../entity/customer/Customer";
 import { GetSubscription } from "../contract-instance/GetSubscription";
-import { ContractInstance } from "../contract-instance/ContractInstance";
 import { Subscribe } from "../../entity/Subscribe";
 import { Notify } from "../agency-notifier/Notify";
-import { AgencyNotifier } from "../agency-notifier/AgengyNotifier";
-import { ItineraryStatus } from "../../entity/ItineraryStatus";
+import {inject, injectable} from "inversify";
+import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 
+@injectable()
 export class InsuranceValidator implements Validate {
   
     private logger : Logger = new Logger();
-    private validator: InsuranceValidate = new TravelValidator();
-    private contracts: GetSubscription = new ContractInstance();
-    private notifier: Notify = new AgencyNotifier();
+
+    @inject(COMPONENT_IDENTIFIER.InsuranceValidate)
+    private validator: InsuranceValidate;
+
+    @inject(COMPONENT_IDENTIFIER.GetSubscription)
+    private contracts: GetSubscription;
+
+    @inject(COMPONENT_IDENTIFIER.Notify)
+    private notifier: Notify ;
+
+
     validate(travel: Travel): void {
         
         this.logger.log(Level.info, "new travel validation beginning");
