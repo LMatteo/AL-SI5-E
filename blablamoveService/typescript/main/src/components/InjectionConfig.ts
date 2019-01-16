@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import {Container} from "inversify";
 import {Notify} from "./agency-notifier/Notify";
 import COMPONENT_IDENTIFIER from "./InjectionIdentifier";

@@ -1,4 +1,6 @@
 import 'mocha';
+import "reflect-metadata";
+
 import Assert = require('assert');
 
 import {ContractStore} from "../../../../main/src/entityManager/local/ContractStore";

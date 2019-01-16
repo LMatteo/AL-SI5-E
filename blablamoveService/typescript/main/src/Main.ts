@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import express = require("express");
 import bodyParser = require("body-parser");
 import Level = require("./logging/Level");

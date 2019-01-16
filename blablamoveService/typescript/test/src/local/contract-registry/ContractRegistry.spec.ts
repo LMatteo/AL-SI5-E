@@ -1,4 +1,6 @@
 import 'mocha';
+import "reflect-metadata";
+
 import {ContractStore} from "../../../../main/src/entityManager/local/ContractStore";
 import {Type} from "../../../../main/src/entity/Type";
 import * as Assert from "assert";

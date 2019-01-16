@@ -1,4 +1,6 @@
 import "mocha";
+import "reflect-metadata";
+
 import { PathService } from "../../../../main/src/components/path-service/PathService";
 import { TravelStore } from "../../../../main/src/entityManager/local/TravelStore";
 import { CustomerStore } from "../../../../main/src/entityManager/local/CustomerStore";
