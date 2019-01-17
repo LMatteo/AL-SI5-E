@@ -22,7 +22,7 @@ export class Calculate {
         return contracts;
     }
 
-    searchType(objects: Array<any>): string { //search type of contract of list objects
+    searchType(objects: Array<any>): string { //search getType of contract of list objects
         var nbHightech = 0;
         var nbFragile = 0;
         var nbHeavy = 0;

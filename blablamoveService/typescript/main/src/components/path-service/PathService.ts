@@ -55,7 +55,7 @@ export class PathService implements ControlTravels {
         return travel;
     }
 
-    addItemToTravel(item: Item, travelId: string): Travel {
+    addItemToTravel(item: Item, travelId: number): Travel {
         let travel: Travel = this.travelStore.get().filter(t => t.$id === travelId)[0];
         if(travel === undefined){
             throw new TravelDoNotExist();
@@ -74,12 +74,12 @@ export class PathService implements ControlTravels {
         return travels;
     }
 
-    findTravelById(travelId: string): Travel {
+    findTravelById(travelId: number): Travel {
         let travels = this.travelStore.get().filter(t => t.$id === travelId);
         return travels[0];
     }
 
-    chooseTravel(transporterName: string, travelId: string): Travel {
+    chooseTravel(transporterName: string, travelId: number): Travel {
         let transporter: Customer;
         let transporters = this.customerStore
             .get()
@@ -100,11 +100,11 @@ export class PathService implements ControlTravels {
         return travel;
     }
 
-    finishTravel(travelId: string): void {
+    finishTravel(travelId: number): void {
         // TODO
     }
 
-    getCustomerById(id: string): Customer {
+    getCustomerById(id: number): Customer {
         let customers = this.customerStore.get().filter(c => c.$id === id);
         if (customers.length > 0) {
             return customers[0];

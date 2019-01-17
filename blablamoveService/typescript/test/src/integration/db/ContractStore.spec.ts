@@ -1,68 +1,49 @@
-import {ContractDbStore} from "../../../../main/src/entityManager/db/ContractDbStore";
+import "reflect-metadata";
+
+import {Contact} from "../../../../main/src/entity/contact/Contact";
+import {Connection} from "typeorm";
+import * as assert from "assert";
+import {getConnection} from "../../../../main/src/entityManager/db/DbConnection";
 import {Contract} from "../../../../main/src/entity/contract/Contract";
 import {Type} from "../../../../main/src/entity/Type";
-import {Contact} from "../../../../main/src/entity/contact/Contact";
-import assert = require('assert');
-import sequelize = require("../../../../main/src/entity/Sequelize");
-import {ContractDoesNotExist} from "../../../../main/src/error/ContractDoesNotExist";
 
 
-describe('db integration test', function () {
-    let store : ContractDbStore = new ContractDbStore();
+describe('getType orm test', function () {
 
     beforeEach(() => {
-        return sequelize.drop()
-            .then(() => {
-                return store.init()
+        return getConnection()
+            .then(async (connect : Connection) => {
+                await connect.dropDatabase();
+                await connect.close()
             })
     });
 
-    it('should create new Contract', function () {
+    it('should retrieve getContact', function () {
+        let contact : Contact = new Contact("salut");
 
-        let contract = new Contract("test",Type.fragile,new Contact("salut"));
+        return getConnection()
+            .then(async (connection : Connection) => {
+                let contactRepo = connection.getRepository(Contact);
+                await contactRepo.save(contact);
+                let entity : Contact = await contactRepo.findOne(contact.getId());
+                assert.deepStrictEqual(contact,entity);
+                await connection.close();
+            })
 
-        return store.persist(contract)
-            .then((savedContract : Contract) => {
-                assert.deepStrictEqual(contract,savedContract);
-            })
-            .then(() => {
-                return store.get()
-            })
-            .then((contracts) => {
-                assert.strictEqual(1,contracts.length);
-                assert.deepStrictEqual(contracts[0],contract);
-            })
     });
 
-    it('should merge existing contract in db', function () {
-        let contract = new Contract("test",Type.fragile,new Contact("salut"));
+    it('should retrive contract', function () {
+        let contract : Contract = new Contract("type",Type.fragile,new Contact("sal"));
 
-        return store.persist(contract)
-            .then((savedContract) => {
-                savedContract.type = Type.heavy;
-                return store.merge(savedContract);
-            })
-            .then((mergedContract : Contract) => {
-                assert.strictEqual(mergedContract.type, Type.heavy);
-                return store.get();
-            })
-            .then((contracts) => {
-                assert.strictEqual(1,contracts.length);
-                contract.type = Type.heavy;
-                assert.deepStrictEqual(contract,contracts[0])
-            })
-    });
-
-    it('should throw an error', function () {
-        let contract = new Contract("test",Type.fragile,new Contact("salut"));
-
-        return store.persist(contract)
-            .then((saved) => {
-                saved.id = '2';
-                return store.merge(saved);
-            })
-            .catch((error) => {
-                assert.strictEqual(error,ContractDoesNotExist)
+        return getConnection()
+            .then(async (connect : Connection) => {
+                let contractRepo = await connect.getRepository(Contract);
+                await contractRepo.save(contract);
+                assert.deepStrictEqual(contract, (await contractRepo.findOne({
+                    where : {id : contract.getId},
+                    relations : ['contact']
+                })));
+                await connect.close()
             })
     });
 });

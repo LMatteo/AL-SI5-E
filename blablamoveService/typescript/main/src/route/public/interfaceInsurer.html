@@ -86,7 +86,7 @@
             $scope.name = "";
             $scope.mail = "";
             $scope.phone = "";
-            $scope.type = "hightech";
+            $scope.getType = "hightech";
             $scope.from = "";
             $scope.to = "";
             $scope.bestContracts = [];
@@ -182,7 +182,7 @@
                 var data = JSON.stringify({ "action": "searchType", "request": { "objects": $scope.objects } });
                 Http.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        $scope.type = JSON.parse(this.responseText).type;  // type of contracts
+                        $scope.getType = JSON.parse(this.responseText).type;  // getType of contracts
                         console.log(this.responseText);
                         getContractsByType();
                     }
@@ -271,7 +271,7 @@
 
         <div class="margin-container">
 
-            <!-- UI Insurer: <input type="checkbox" ng-model="isInsurer"> -->
+            <!-- UI Insurer: <input getType="checkbox" ng-model="isInsurer"> -->
 
             <div class="container">
                 <h1>BlaBlaMove Assurance</h1>

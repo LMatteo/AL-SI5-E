@@ -4,7 +4,7 @@ import {Item} from "../item/Item";
 import {Customer} from "../customer/Customer";
 
 export class Travel implements Comparable {
-    private id: string;
+    private id: number;
     private departure: string;
     private destination: string;
     private validator: Validator;
@@ -17,10 +17,10 @@ export class Travel implements Comparable {
         this.items = [];
     }
 
-    public get $id(): string {
+    public get $id(): number {
         return this.id;
     }
-    public set $id(value: string) {
+    public set $id(value: number) {
         this.id = value;
     }
 

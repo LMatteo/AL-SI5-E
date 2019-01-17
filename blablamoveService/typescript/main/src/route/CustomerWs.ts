@@ -25,14 +25,14 @@ let pathFile = __dirname.replace("dist","typescript");
 router.use(express.static(path.join(pathFile,'public')));
 
 router.get(
-    "/contracts/:type",
+    "/contracts/:getType",
     (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "listing contract");
         let type: keyof typeof Type = req.params.type;
 
         if (!(req.params.type in Type)) {
             res.status(404);
-            res.send("no such type");
+            res.send("no such getType");
         }
 
         let contractLister: ListContract = container.get(COMPONENT_IDENTIFIER.ListContract);

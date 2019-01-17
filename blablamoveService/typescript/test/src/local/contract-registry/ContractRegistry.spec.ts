@@ -31,20 +31,20 @@ describe("contract registry test", function () {
         Assert.strictEqual(1,store.get().length);
         let contract : Contract = store.get()[0];
 
-        Assert.strictEqual(Type.fragile,contract.type);
-        Assert.strictEqual(true,contract.contact.equal(new Contact("salut@hotmail.com")));
-        Assert.strictEqual("test",contract.description);
+        Assert.strictEqual(Type.fragile,contract.getType);
+        Assert.strictEqual(true,contract.getContact.equal(new Contact("salut@hotmail.com")));
+        Assert.strictEqual("test",contract.getDescription);
     });
 
     it('should return the contract with the specified id', function () {
         let contract : Contract = handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        Assert.strictEqual(true, contract.equal(listContract.getContractById(contract.id)));
+        Assert.strictEqual(true, contract.equal(listContract.getContractById(contract.getId)));
     });
 
     it('should throw an error as the contract is unknown', function () {
 
         Assert.throws(function() {
-            listContract.getContractById("owowowwowo");
+            listContract.getContractById(90);
         }, ContractDoesNotExist)
     });
 
@@ -66,14 +66,14 @@ describe("contract registry test", function () {
     it('should modify a contract', function () {
         let contract : Contract = handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
 
-        handleContract.updateContractDescription(contract.id,"new");
+        handleContract.updateContractDescription(contract.getId,"new");
 
-        Assert.strictEqual("new", listContract.getContractById(contract.id).description);
+        Assert.strictEqual("new", listContract.getContractById(contract.getId).getDescription);
     });
 
     it('should throw error', function () {
         Assert.throws(function () {
-            handleContract.updateContractDescription("chec","check")
+            handleContract.updateContractDescription(10,"check")
         }, ContractDoesNotExist)
     });
 

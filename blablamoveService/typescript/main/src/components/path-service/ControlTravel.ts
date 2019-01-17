@@ -10,15 +10,15 @@ export interface ControlTravels {
         destination: string
     ): Travel;
 
-    addItemToTravel(item: Item, travelId: string): Travel;
+    addItemToTravel(item: Item, travelId: number): Travel;
 
     findTravel(departure: string, destination: string): Travel[];
 
-    findTravelById(travelId: string): Travel;
+    findTravelById(travelId: number): Travel;
 
-    chooseTravel(transporterName: string, travelId: string): Travel;
+    chooseTravel(transporterName: string, travelId: number): Travel;
 
-    finishTravel(travelId: string): void;
+    finishTravel(travelId: number): void;
 
-    getCustomerById(id: string): Customer;
+    getCustomerById(id: number): Customer;
 }

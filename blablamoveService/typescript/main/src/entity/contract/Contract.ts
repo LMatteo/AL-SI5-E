@@ -2,57 +2,68 @@ import {Type} from "../Type";
 import {Comparable} from "../Comparable";
 import {Contact} from "../contact/Contact";
 import {Jsonable} from "../Jsonable";
-import {ContractModel} from "./Contract.model";
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 
+@Entity()
 export class Contract implements Comparable, Jsonable{
-    private _id: string;
-    private _description: string;
-    private _type : Type;
-    private _contact: Contact;
 
+    @PrimaryGeneratedColumn()
+    private id: number;
+
+    @Column()
+    private description: string;
+
+    @Column()
+    private type : Type;
+
+    @OneToOne(type => Contact, {cascade : true})
+    @JoinColumn()
+    private contact: Contact;
+
+
+    get getId() : number {
+        return this.id;
+    }
+
+    set setId(id: number) {
+        this.id = id;
+    }
+
+
+    get getDescription(): string {
+        return this.description;
+    }
+
+    set getDescription(value: string) {
+        this.description = value;
+    }
+
+    get getType(): Type {
+        return this.type;
+    }
+
+    set getType(value: Type) {
+        this.type = value;
+    }
+
+    get getContact(): Contact {
+        return this.contact;
+    }
+
+    set getContact(value: Contact) {
+        this.contact = value;
+    }
 
     constructor(description: string, type: Type, contact: Contact) {
-        this._description = description;
-        this._type = type;
-        this._contact = contact;
+        this.description = description;
+        this.type = type;
+        this.contact = contact;
     }
 
-
-    get contact(): Contact {
-        return this._contact;
-    }
-
-    set contact(value: Contact) {
-        this._contact = value;
-    }
-
-    get description(): string {
-        return this._description;
-    }
-
-    set description(value: string) {
-        this._description = value;
-    }
-
-    get type(): Type {
-        return this._type;
-    }
-
-    set type(value: Type) {
-        this._type = value;
-    }
-
-    get id(): string {
-        return this._id;
-    }
-
-    set id(value: string) {
-        this._id = value;
-    }
 
     equal(object: any): boolean {
         if(!(object instanceof Contract)) return false;
-        return object.id === this._id;
+        return object.id === this.id;
     }
 
     toJson(): any {
@@ -64,9 +75,6 @@ export class Contract implements Comparable, Jsonable{
         return j;
     }
 
-    toModel(): ContractModel{
-        return new ContractModel(this.id,this._description,this.type, this._contact)
-    }
 
 
 }

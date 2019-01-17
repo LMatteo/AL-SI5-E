@@ -23,7 +23,7 @@ describe("contract store test", function () {
 
         Assert.strictEqual(1,store.get().length);
 
-        Assert.strictEqual(contract.id,store.get()[0].id);
+        Assert.strictEqual(contract.getId,store.get()[0].getId);
 
     });
 
@@ -49,12 +49,12 @@ describe("contract store test", function () {
         let store : ContractStore = new ContractStore();
         let contract: Contract = store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
 
-        contract.description = "new description";
+        contract.getDescription = "new getDescription";
 
         store.merge(contract);
 
         Assert.strictEqual(1,store.get().length);
-        Assert.strictEqual(contract.description,store.get()[0].description);
+        Assert.strictEqual(contract.getDescription,store.get()[0].getDescription);
     });
 
     it('should throw an error', function () {

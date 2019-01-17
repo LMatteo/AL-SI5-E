@@ -3,6 +3,6 @@ import {Contract} from "../../entity/contract/Contract";
 
 export interface HandleContract {
     addContract(type: Type,description: string, mail: string) : Contract
-    updateContractDescription(id: string, description: string) : Contract
+    updateContractDescription(id: number, description: string) : Contract
 
 }

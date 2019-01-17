@@ -85,7 +85,7 @@ describe("path service test", function() {
 
     it("get customer by missing id", function() {
         Assert.throws(function() {
-            pathService.getCustomerById("missingId");
+            pathService.getCustomerById(89898989);
         }, CustomerDoNotExist);
     });
 });

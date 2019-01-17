@@ -3,7 +3,7 @@ import {Item} from "../item/Item";
 import {Travel} from "../travel/Travel";
 
 export class Customer implements Comparable {
-    private id: string;
+    private id: number;
     private name: string;
     private email: string;
     private phone: number;
@@ -11,11 +11,11 @@ export class Customer implements Comparable {
     private shipments: Travel[];
     private transports: Travel[];
 
-    public get $id(): string {
+    public get $id(): number {
         return this.id;
     }
 
-    public set $id(value: string) {
+    public set $id(value: number) {
         this.id = value;
     }
 

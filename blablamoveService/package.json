@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^10.12.18",
     "express": "^4.16.4",
     "inversify": "^5.0.1",
     "mocha": "^5.2.0",
@@ -24,6 +25,7 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^4.42.0",
     "ts-node": "^7.0.1",
+    "typeorm": "^0.2.11",
     "winston": "^3.1.0"
   },
   "devDependencies": {

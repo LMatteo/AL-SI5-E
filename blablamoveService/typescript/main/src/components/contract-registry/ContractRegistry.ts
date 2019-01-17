@@ -27,9 +27,9 @@ export class ContractRegistry implements HandleContract, ListContract{
         return contract;
     }
 
-    getContractById(id: string): Contract {
+    getContractById(id: number): Contract {
         for(let contract of this.store.get()){
-            if(contract.id === id){
+            if(contract.getId === id){
                 return contract;
             }
         }
@@ -40,7 +40,7 @@ export class ContractRegistry implements HandleContract, ListContract{
         let res : Array<Contract> = new Array<Contract>();
 
         for(let contract of this.store.get()){
-            if(contract.type === type){
+            if(contract.getType === type){
                 res.push(contract);
             }
         }
@@ -48,10 +48,10 @@ export class ContractRegistry implements HandleContract, ListContract{
         return res;
     }
 
-    updateContractDescription(id: string, description: string): Contract {
+    updateContractDescription(id: number, description: string): Contract {
         for(let contract of this.store.get()){
-            if(contract.id === id){
-                contract.description = description;
+            if(contract.getId=== id){
+                contract.getDescription = description;
                 this.store.merge(contract);
                 this.registerInsurer.updateInsurerContact(contract);
                 return contract;

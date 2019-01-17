@@ -1,12 +1,23 @@
 import {Comparable} from "../Comparable";
 import {Jsonable} from "../Jsonable";
-import {ContactModel} from "./Contact.model";
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
+@Entity()
 export class Contact implements Comparable, Jsonable{
+
+
+    @PrimaryGeneratedColumn()
+    private id : number;
+
+    @Column()
     private mail : string;
 
     constructor(mail: string) {
         this.mail = mail;
+    }
+
+    getId(): number {
+        return this.id;
     }
 
     equal(object: any): boolean {
@@ -20,7 +31,4 @@ export class Contact implements Comparable, Jsonable{
         return j;
     }
 
-    toModel() : ContactModel{
-        return new ContactModel(this.mail);
-    }
 }

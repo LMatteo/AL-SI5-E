@@ -11,10 +11,8 @@ export class ContractStore{
     }
 
     persist(obj: Contract): Contract{
-        obj.id = createUuid();
-        while(ContractStore.storage.contain(obj)){
-            obj.id = createUuid();
-        }
+        let id : number = createUuid();
+        obj.setId = id;
         ContractStore.storage.push(obj);
         return obj;
     }
