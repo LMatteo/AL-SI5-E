@@ -11,6 +11,7 @@ import { TravelDoNotExist } from "../../error/TravelDoNotExist";
 import {PathValidate} from "../travelValidator/PathValidate";
 import {inject, injectable} from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
+import { MessageReceiver } from "../message-receiver/MessageReceiver";
 
 @injectable()
 export class PathService implements ControlTravels {
@@ -19,11 +20,18 @@ export class PathService implements ControlTravels {
     private travelStore: TravelStore = new TravelStore() ;
 
     @inject(COMPONENT_IDENTIFIER.PathValidate)
-    private validator: PathValidate ;
+    private validator: PathValidate;
+
+    @inject(COMPONENT_IDENTIFIER.MessageReceiver)
+    private messageReceiver: MessageReceiver;
 
     private customerStore: CustomerStore = new CustomerStore();
-    static messageQueue: MessageQueue = new MessageQueue();
+    
+    @inject(COMPONENT_IDENTIFIER.MessageQueue)
+    private messageQueue: MessageQueue;
 
+    constructor(){
+    }
 
 
     createTravel(
@@ -50,13 +58,12 @@ export class PathService implements ControlTravels {
         this.customerStore.merge(customer);
         this.travelStore.persist(travel);
         this.validator.pathValidate(travel);
-        console.log("tolo");
-        PathService.messageQueue.sendMessage("validation", travel);
+        this.messageQueue.sendMessage("validation", travel);
         return travel;
     }
 
     addItemToTravel(item: Item, travelId: number): Travel {
-        let travel: Travel = this.travelStore.get().filter(t => t.$id === travelId)[0];
+        let travel: Travel = this.travelStore.get().filter(t => {console.log("t:"+t+" id:"+t.$id);return t.$id === travelId;})[0];
         if(travel === undefined){
             throw new TravelDoNotExist();
         }
@@ -70,7 +77,7 @@ export class PathService implements ControlTravels {
         let travels = this.travelStore.get().filter(t => {
             return t.$departure === departure && t.$destination === destination;
         });
-        PathService.messageQueue.sendMessage("end_notification", travels[0]);
+        this.messageQueue.sendMessage("end_notification", travels[0]);
         return travels;
     }
 
@@ -92,6 +99,9 @@ export class PathService implements ControlTravels {
             this.customerStore.persist(transporter);
         }
         let travel = this.travelStore.get().filter(t => t.$id === travelId)[0];
+        if(travel === undefined){
+            throw new TravelDoNotExist();
+        }
         travel.$transporter = transporter;
         transporter.chooseTravel(travel);
         this.travelStore.merge(travel);

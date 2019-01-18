@@ -1,5 +1,7 @@
 import { Receiver } from "./Receiver";
+import { injectable } from "inversify";
 
+@injectable()
 export class MessageQueue{
     public queue :{topic: string, receivers: Receiver[]}[] = []; 
     subScribe(topic:string,receiver: Receiver ){

@@ -10,7 +10,9 @@ const COMPONENT_IDENTIFIER = {
     ControlTravels: Symbol.for("ControlTravels"),
     InsuranceValidate: Symbol.for("InsuranceValidate"),
     PathValidate: Symbol.for("PathValidate"),
-    HandleContract: Symbol.for("HandleContract")
+    HandleContract: Symbol.for("HandleContract"),
+    MessageReceiver: Symbol.for("MessageReceiver"),
+    MessageQueue: Symbol.for("MessageQueue")
 };
 
 export default COMPONENT_IDENTIFIER;
