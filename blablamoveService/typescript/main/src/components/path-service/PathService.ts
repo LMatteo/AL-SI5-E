@@ -63,7 +63,7 @@ export class PathService implements ControlTravels {
     }
 
     addItemToTravel(item: Item, travelId: number): Travel {
-        let travel: Travel = this.travelStore.get().filter(t => {console.log("t:"+t+" id:"+t.$id);return t.$id === travelId;})[0];
+        let travel: Travel = this.travelStore.get().filter(t =>  t.$id == travelId)[0];
         if(travel === undefined){
             throw new TravelDoNotExist();
         }

@@ -102,7 +102,8 @@ router.put(
         let item = new Item();
         item.$name = req.body.itemName;
         let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
-        controlTravel.addItemToTravel(item, req.params.travelId);
+        let id : number = parseInt(req.params.travelId);
+        controlTravel.addItemToTravel(item, id);
         res.status(200).end();
         logger.log(Level.info, "item added");
     }
@@ -131,7 +132,8 @@ router.get(
     (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "getting travel");
         let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
-        let travel = controlTravel.findTravelById(req.params.travelId);
+        let id : number = parseInt(req.params.travelId);
+        let travel = controlTravel.findTravelById(id);
         if (travel) {
             res.send(travel);
         } else {
@@ -158,9 +160,10 @@ router.put(
     (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "selecting travel");
         let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
+        let travelId: number = parseInt(req.params.travelId); 
         let travel = controlTravel.chooseTravel(
             req.body.transporterName,
-            req.params.travelId
+            travelId
         );
         res.send(
             JSON.stringify(travel, (key, value) => {
