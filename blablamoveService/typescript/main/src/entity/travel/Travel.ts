@@ -15,17 +15,23 @@ import {
 export class Travel implements Comparable {
     @PrimaryGeneratedColumn()
     private id: number;
+
     @Column()
     private departure: string;
+
     @Column()
     private destination: string;
+
     @OneToOne(type => Validator, { cascade: true })
     private validator: Validator;
+
     @OneToMany(type => Item, item => item.$travels)
     private items: Item[];
-    @ManyToOne(type => Customer, customer => customer.$shipments)
+
+    @ManyToOne(type => Customer, { cascade: true })
     private customer: Customer;
-    @ManyToOne(type => Customer, customer => customer.$transports)
+
+    @ManyToOne(type => Customer, { cascade: true })
     private transporter: Customer;
 
     constructor() {

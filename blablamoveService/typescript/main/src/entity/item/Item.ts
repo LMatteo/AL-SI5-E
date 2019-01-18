@@ -1,24 +1,29 @@
 import { Comparable } from "../Comparable";
 import { Customer } from "../customer/Customer";
 import { Travel } from "../travel/Travel";
-import {
-    PrimaryGeneratedColumn,
-    Column,
-    Entity,
-    ManyToOne,
-    ManyToMany
-} from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
 
 @Entity()
 export class Item implements Comparable {
     @PrimaryGeneratedColumn()
     private id: number;
+
     @Column()
     private name: string;
+
     @ManyToOne(type => Customer, customer => customer.$items)
     private owner: Customer;
-    @ManyToMany(type => Travel, travel => travel.$items)
-    private travels: Travel[];
+
+    @ManyToOne(type => Travel, travel => travel.$items)
+    private travels: Travel;
+
+    get $id(): number {
+        return this.id;
+    }
+
+    set $id(id: number) {
+        this.id = id;
+    }
 
     public get $name(): string {
         return this.name;

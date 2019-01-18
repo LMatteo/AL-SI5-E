@@ -7,10 +7,13 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 export class Customer implements Comparable {
     @PrimaryGeneratedColumn()
     private id: number;
+
     @Column()
     private name: string;
+
     @Column()
     private email: string;
+
     @Column()
     private phone: number;
 

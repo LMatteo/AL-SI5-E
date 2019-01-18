@@ -13,10 +13,10 @@ import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 @injectable()
 export class InsuranceValidator implements Validate {
   
-    private logger : Logger = new Logger();
+    private logger : Logger;
 
     @inject(COMPONENT_IDENTIFIER.InsuranceValidate)
-    private validator: InsuranceValidate;
+    private insuranceValidate: InsuranceValidate;
 
     @inject(COMPONENT_IDENTIFIER.GetSubscription)
     private contracts: GetSubscription;
@@ -24,16 +24,20 @@ export class InsuranceValidator implements Validate {
     @inject(COMPONENT_IDENTIFIER.Notify)
     private notifier: Notify ;
 
+    constructor(){
+        this.logger = new Logger();
+    }
 
     validate(travel: Travel): void {
         
         this.logger.log(Level.info, "new travel validation beginning");
+        console.log("insuranceValidate:" + this.insuranceValidate);
         let custo: Customer = travel.$customer;
         let customerSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(custo);
 
         if(customerSubscriptions.length == 0){
             this.logger.log(Level.info, "travel rejected : moved has no contract");
-            this.validator.insuranceInvalidate(travel);
+            this.insuranceValidate.insuranceInvalidate(travel);
             return;
         }
 
@@ -43,11 +47,11 @@ export class InsuranceValidator implements Validate {
         
         if(transporterSubscriptions.length == 0){
             this.logger.log(Level.info, "travel rejected : transporter has no contract");
-            this.validator.insuranceInvalidate(travel);
+            this.insuranceValidate.insuranceInvalidate(travel);
             return;
         }
 
-        this.validator.insuranceValidate(travel);
+        this.insuranceValidate.insuranceValidate(travel);
         
         customerSubscriptions.forEach(contractSubscription => {
             this.notifier.notifyContractReportCustomer(custo, contractSubscription.$contract, travel  )
@@ -64,6 +68,7 @@ export class InsuranceValidator implements Validate {
     notify(travel: Travel): void {
         let custo: Customer = travel.$customer;
         let customerSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(custo);
+      
         customerSubscriptions.forEach(subscription => {
             this.notifier.notifyContractReportCustomer(custo,subscription.$contract,travel);
         });
