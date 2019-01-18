@@ -1,14 +1,28 @@
 import { Comparable } from "../Comparable";
 import {Item} from "../item/Item";
 import {Travel} from "../travel/Travel";
+import {Column, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 
 export class Customer implements Comparable {
+    @PrimaryGeneratedColumn()
     private id: number;
+
+    @Column()
     private name: string;
+
+    @Column()
     private email: string;
+
+    @Column()
     private phone: number;
+
+    @ManyToOne(type => Item,{cascade : true})
     private items: Item[];
+
+    @ManyToOne(type => Travel,{cascade : true})
     private shipments: Travel[];
+
+    @ManyToOne(type => Travel,{cascade : true})
     private transports: Travel[];
 
     public get $id(): number {

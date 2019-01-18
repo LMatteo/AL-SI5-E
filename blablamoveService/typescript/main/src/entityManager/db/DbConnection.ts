@@ -1,6 +1,8 @@
 import {createConnection} from "typeorm";
 import {Contact} from "../../entity/contact/Contact";
 import {Contract} from "../../entity/contract/Contract";
+import {Item} from "../../entity/item/Item";
+import {Validator} from "../../entity/validator/Validator";
 
 export function getConnection(){
     return createConnection({
@@ -12,7 +14,9 @@ export function getConnection(){
         database: "blablamove",
         entities : [
             Contact,
-            Contract
+            Contract,
+            Item,
+            Validator
         ],
         synchronize : true
     })

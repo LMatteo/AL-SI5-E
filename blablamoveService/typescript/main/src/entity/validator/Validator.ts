@@ -1,6 +1,24 @@
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+
+@Entity()
 export class Validator {
+
+    @PrimaryGeneratedColumn()
+    private id : number;
+
+    @Column()
     private insuranceValidation: boolean;
+
+    @Column()
     private pathValidation: boolean;
+
+    get $id() : number{
+        return this.id;
+    }
+
+    set $id(id : number){
+        this.id = id;
+    }
 
     public set $insuranceValidation(value: boolean) {
         this.insuranceValidation = value;

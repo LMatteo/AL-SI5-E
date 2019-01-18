@@ -2,14 +2,32 @@ import { Comparable } from "../Comparable";
 import { Validator } from "../validator/Validator";
 import {Item} from "../item/Item";
 import {Customer} from "../customer/Customer";
+import {Column, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 
 export class Travel implements Comparable {
+
+    @PrimaryGeneratedColumn()
     private id: number;
+
+    @Column()
     private departure: string;
+
+    @Column()
     private destination: string;
+
+    @OneToOne(type => Validator, {cascade : true})
+    @JoinColumn()
     private validator: Validator;
+
+    @Column()
     private items: Item[];
+
+    @ManyToOne(type => Customer, {cascade : true})
+    @JoinColumn()
     private customer: Customer;
+
+    @ManyToOne(type => Customer, {cascade : true})
+    @JoinColumn()
     private transporter: Customer;
 
     constructor() {
