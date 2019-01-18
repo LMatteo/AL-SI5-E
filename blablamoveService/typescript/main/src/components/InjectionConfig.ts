@@ -16,6 +16,8 @@ import {PathService} from "./path-service/PathService";
 import {TravelValidator} from "./travelValidator/TravelValidator";
 import {InsuranceValidate} from "./travelValidator/InsuranceValidate";
 import {PathValidate} from "./travelValidator/PathValidate";
+import { MessageQueue } from "./message-queue/MessageQueue";
+import { MessageReceiver } from "./message-receiver/MessageReceiver";
 
 
 let container = new Container();
@@ -30,5 +32,7 @@ container.bind<Validate>(COMPONENT_IDENTIFIER.Validate).to(InsuranceValidator);
 container.bind<ControlTravels>(COMPONENT_IDENTIFIER.ControlTravels).to(PathService);
 container.bind<InsuranceValidate>(COMPONENT_IDENTIFIER.InsuranceValidate).to(TravelValidator);
 container.bind<PathValidate>(COMPONENT_IDENTIFIER.PathValidate).to(TravelValidator);
+container.bind<MessageQueue>(COMPONENT_IDENTIFIER.MessageQueue).to(MessageQueue);
+container.bind<MessageReceiver>(COMPONENT_IDENTIFIER.MessageReceiver).to(MessageReceiver);
 
 export default container;
