@@ -15,7 +15,7 @@ export class Item implements Comparable {
     private owner: Customer;
 
     @ManyToOne(type => Travel, travel => travel.$items)
-    private travels: Travel;
+    private travel: Travel;
 
     get $id(): number {
         return this.id;
@@ -41,12 +41,12 @@ export class Item implements Comparable {
         this.owner = value;
     }
 
-    public get $travels(): Travel[] {
-        return this.travels;
+    public get $travel(): Travel {
+        return this.travel;
     }
 
-    public set $travels(value: Travel[]) {
-        this.travels = value;
+    public set $travel(value: Travel) {
+        this.travel = value;
     }
 
     equal(object: any): boolean {

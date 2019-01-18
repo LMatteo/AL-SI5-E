@@ -25,7 +25,7 @@ export class Travel implements Comparable {
     @OneToOne(type => Validator, { cascade: true })
     private validator: Validator;
 
-    @OneToMany(type => Item, item => item.$travels)
+    @OneToMany(type => Item, item => item.$travel)
     private items: Item[];
 
     @ManyToOne(type => Customer, { cascade: true })
