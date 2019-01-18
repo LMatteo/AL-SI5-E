@@ -5,9 +5,9 @@ import {Notify} from "../agency-notifier/Notify";
 import {Subscribe} from "../../entity/Subscribe";
 import {Customer} from "../../entity/customer/Customer";
 import {Contract} from "../../entity/contract/Contract";
-import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 import {inject, injectable} from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
+import {NoSuchSubscription} from "../../error/NoSuchSubscription";
 
 
 @injectable()
@@ -38,8 +38,13 @@ export class ContractInstance implements GetSubscription, Subscription{
         }
         return res;
     }
-    getSubscriptionById(id: string): Subscribe {
-        throw new Error("Method not implemented.");
+    getSubscriptionById(id: number): Subscribe {
+        for(let sub of this.store.get()){
+            if(sub.$id ===id){
+                return sub
+            }
+        }
+        throw new NoSuchSubscription();
     }
 
     subscribeToContract(customer: Customer , contract: Contract): Subscribe {
