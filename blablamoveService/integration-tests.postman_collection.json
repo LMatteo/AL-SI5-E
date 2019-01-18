@@ -1,0 +1,461 @@
+{
+	"info": {
+		"_postman_id": "9591a6df-d95d-475a-bea3-4854883dcf07",
+		"name": "Blablamove",
+		"description": "Scénarios d'intégrations de Blablamove",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Demo workflow",
+			"description": "",
+			"item": [
+				{
+					"name": "AddContract",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5c41ca27-5a2a-4de9-917d-17b6c75ba881",
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"",
+									"pm.test(\"A contract has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.globals.set(\"contractId\", jsonData.id);",
+									"",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"contract\" :\n\t{\n\t\t\"typeName\" : \"heavy\",\n\t\t\"description\" : \"salut\",\n\t\t\"mail\" : \"test@hotmail.com\"\n\t}\n\t\n}"
+						},
+						"url": {
+							"raw": "{{BLABLAMOVE_URL}}/contracts/",
+							"host": [
+								"{{BLABLAMOVE_URL}}"
+							],
+							"path": [
+								"contracts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createTravel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f64aaf76-a86b-4bfb-a01a-ea2ef786576d",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"",
+									"pm.test(\"Travel is created\", function () {",
+									"    pm.globals.set(\"travel_id\", jsonData.id);",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "66e7b848-d8fb-42af-97ca-79554d2ea6c5",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"customerName\":\"{{customer}}\",\n\t\"departure\":\"{{from}}\",\n\t\"destination\":\"{{to}}\"\n}"
+						},
+						"url": {
+							"raw": "{{BLABLAMOVE_URL}}/travels",
+							"host": [
+								"{{BLABLAMOVE_URL}}"
+							],
+							"path": [
+								"travels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addItemToTravel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8d999601-09b4-44be-86af-97b5c6564f3d",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"itemName\":\"itemA\"\n}"
+						},
+						"url": {
+							"raw": "{{BLABLAMOVE_URL}}/travels/{{travel_id}}",
+							"host": [
+								"{{BLABLAMOVE_URL}}"
+							],
+							"path": [
+								"travels",
+								"{{travel_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findTravel depart&dest Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8057eacb-80df-469f-82ab-0f5620f28dda",
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"    var expectedId = pm.variables.get(\"travel_id\");",
+									"pm.test(\"travel \"+expectedId+ \" is listed\", function () {",
+									"    var resp = pm.response.json();",
+									"    var found = false;",
+									"    for(var i = 0; i < resp.length; i++){",
+									"         found = found || resp[i].id === expectedId;",
+									"    }",
+									"    pm.expect(found).to.be.true;",
+									"});",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BLABLAMOVE_URL}}/travels?departure={{from}}&destinaton={{to}}",
+							"host": [
+								"{{BLABLAMOVE_URL}}"
+							],
+							"path": [
+								"travels"
+							],
+							"query": [
+								{
+									"key": "departure",
+									"value": "{{from}}"
+								},
+								{
+									"key": "destinaton",
+									"value": "{{to}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "chooseTravel ",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"transporterName\":\"{{transporter}}\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/blabla-move-backend/travels/{{travel_id}}/transporter",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"blabla-move-backend",
+								"travels",
+								"{{travel_id}}",
+								"transporter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customerA subscribe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"subcribe\" : {\"name\" : \"{{customer}}\", \"email\": \"test\", \"phone\": 1233222, \"description\":\"eeeeeee\", \"typeName\" : \"heavy\" } }"
+						},
+						"url": {
+							"raw": "{{BLABLAMOVE_URL}}/subscriptions",
+							"host": [
+								"{{BLABLAMOVE_URL}}"
+							],
+							"path": [
+								"subscriptions"
+							]
+						},
+						"description": "sub"
+					},
+					"response": []
+				},
+				{
+					"name": "transporter subscribe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"subcribe\" : {\"name\" : \"{{customer}}\", \"email\": \"test\", \"phone\": 1233222, \"description\":\"eeeeeee\", \"typeName\" : \"heavy\" } }"
+						},
+						"url": {
+							"raw": "{{BLABLAMOVE_URL}}/subscriptions",
+							"host": [
+								"{{BLABLAMOVE_URL}}"
+							],
+							"path": [
+								"subscriptions"
+							]
+						},
+						"description": "sub"
+					},
+					"response": []
+				},
+				{
+					"name": "findTravel depart&dest Copy Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8057eacb-80df-469f-82ab-0f5620f28dda",
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"    var expectedId = pm.variables.get(\"travel_id\");",
+									"pm.test(\"travel \"+expectedId+ \" is listed\", function () {",
+									"    var resp = pm.response.json();",
+									"    var found = false;",
+									"    for(var i = 0; i < resp.length; i++){",
+									"         found = found || resp[i].id === expectedId;",
+									"    }",
+									"    pm.expect(found).to.be.true;",
+									"});",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BLABLAMOVE_URL}}/travels?departure={{from}}&destinaton={{to}}",
+							"host": [
+								"{{BLABLAMOVE_URL}}"
+							],
+							"path": [
+								"travels"
+							],
+							"query": [
+								{
+									"key": "departure",
+									"value": "{{from}}"
+								},
+								{
+									"key": "destinaton",
+									"value": "{{to}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UI demo",
+			"description": "",
+			"item": [
+				{
+					"name": "AddContract Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5c41ca27-5a2a-4de9-917d-17b6c75ba881",
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"",
+									"pm.test(\"A contract has been created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.globals.set(\"contractId\", jsonData.id);",
+									"",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"contract\" :\n\t{\n\t\t\"typeName\" : \"heavy\",\n\t\t\"description\" : \"salut\",\n\t\t\"mail\" : \"test@hotmail.com\"\n\t}\n\t\n}"
+						},
+						"url": {
+							"raw": "{{BLABLAMOVE_URL}}/contracts/",
+							"host": [
+								"{{BLABLAMOVE_URL}}"
+							],
+							"path": [
+								"contracts",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "64cfb547-7ac0-4bd3-ba18-1a9013374283",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7ecc9eea-13e2-458f-ad28-70a93f775a0b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "57e236ba-777c-4010-b9a5-6f79bc9a55a0",
+			"key": "BLABLAMOVE_URL",
+			"value": "http://localhost:8080/blabla-move-backend",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "923c1f26-9494-4289-b329-5a7a62093999",
+			"key": "from",
+			"value": "Paris",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "cb5954a4-6041-4694-a781-84b10157b181",
+			"key": "to",
+			"value": "Nice",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "fc94d859-0d8d-4cbb-bcf0-0b946bf0a258",
+			"key": "customer",
+			"value": "Céline",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "aa1c5ec4-3ad6-4c5d-98d4-4db4e80bcc2c",
+			"key": "transporter",
+			"value": "Julien ",
+			"type": "string",
+			"description": ""
+		}
+	]
+}
