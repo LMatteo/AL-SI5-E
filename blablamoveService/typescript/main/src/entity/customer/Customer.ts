@@ -1,14 +1,26 @@
 import { Comparable } from "../Comparable";
-import {Item} from "../item/Item";
-import {Travel} from "../travel/Travel";
+import { Item } from "../item/Item";
+import { Travel } from "../travel/Travel";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 
+@Entity()
 export class Customer implements Comparable {
+    @PrimaryGeneratedColumn()
     private id: number;
+    @Column()
     private name: string;
+    @Column()
     private email: string;
+    @Column()
     private phone: number;
+
+    @OneToMany(type => Item, item => item.$owner)
     private items: Item[];
+
+    @OneToMany(type => Travel, shipment => shipment.$customer)
     private shipments: Travel[];
+
+    @OneToMany(type => Travel, transport => transport.$transporter)
     private transports: Travel[];
 
     public get $id(): number {
