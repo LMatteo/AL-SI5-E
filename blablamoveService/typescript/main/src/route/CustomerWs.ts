@@ -24,21 +24,16 @@ const logger: Logger = new Logger();
 let pathFile = __dirname.replace("dist","typescript");
 router.use(express.static(path.join(pathFile,'public')));
 
-router.get(
-    "/contracts/:getType",
-    (req: express.Request, res: express.Response) => {
+router.get("/contracts/:getType",(req: express.Request, res: express.Response) => {
         logger.log(Level.info, "listing contract");
-        let type: keyof typeof Type = req.params.type;
+        console.log(req.params);
+        let theType: keyof typeof Type = req.params.getType;
+        logger.log(Level.info, theType);
 
-        if (!(req.params.type in Type)) {
-            res.status(404);
-            res.send("no such getType");
-        }
 
         let contractLister: ListContract = container.get(COMPONENT_IDENTIFIER.ListContract);
-        let contracts: Array<Contract> = contractLister.getContractByType(
-            Type[type]
-        );
+        let contracts: Array<Contract> = contractLister.getContractByType(Type[theType]);
+        logger.log(Level.info, contracts.toString());
         let resArr: Array<any> = new Array<any>();
 
         contracts.forEach(function (value: Contract) {
@@ -48,6 +43,10 @@ router.get(
         res.send(resArr);
 
         logger.log(Level.info, "contract listed");
+
+
+        logger.log(Level.info, "listing all contracts");
+
     }
 );
 

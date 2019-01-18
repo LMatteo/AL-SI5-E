@@ -108,6 +108,7 @@
                 Http.onreadystatechange = (e) => {
                     if (Http.responseText !== undefined && Http.responseText !== null) {
                         $scope.contracts = JSON.parse(Http.responseText);
+                        console.log($scope.contracts)
                         $scope.$apply();
                     }
                 }

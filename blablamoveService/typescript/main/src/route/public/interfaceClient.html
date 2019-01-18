@@ -94,6 +94,9 @@
             $scope.objects = [{ name: "", type: "hightech" }]
             $scope.contractSearched = [];
             $scope.showContracts = false;
+            $scope.checkaccident = false;
+            $scope.checkfires = false;
+            $scope.checksteals = false;
 
             if ($scope.contracts === null || $scope.contracts === undefined) {
                 console.log()
@@ -108,6 +111,7 @@
                 Http.onreadystatechange = (e) => {
                     if (Http.responseText !== undefined && Http.responseText !== null) {
                         $scope.contracts = JSON.parse(Http.responseText);
+                        console.log($scope.contracts)
                         $scope.$apply();
                     }
                 }
@@ -183,6 +187,7 @@
                 Http.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         $scope.getType = JSON.parse(this.responseText).type;  // getType of contracts
+                        $scope.type = JSON.parse(this.responseText).type;
                         console.log(this.responseText);
                         getContractsByType();
                     }
@@ -205,6 +210,31 @@
                 }
             }
 
+            $scope.accidentChanged = function (contract) {
+                console.log(contract.police.checkaccident)
+                if(contract.police.checkaccident){
+                    contract.price += 5
+                }else{
+                    contract.price -= 5
+                }
+            }
+
+            $scope.stealsChanged = function (contract) {
+                if(contract.police.checksteals){
+                    contract.price += 15
+                }else{
+                    contract.price -= 15
+                }
+            }
+
+            $scope.firesChanged = function (contract) {
+                if(contract.police.checkfires){
+                    contract.price += 10
+                }else{
+                    contract.price -= 10
+                }
+            }
+
 
             var addPrice = function () {
                 const Http = new XMLHttpRequest();
@@ -216,11 +246,18 @@
                     if (this.readyState == 4 && this.status == 200) {
                         $scope.contractSearched = JSON.parse(this.responseText);  // contracts with prices
                         console.log($scope.contractSearched);
+                        addPolices();
                         $scope.showContracts = true;
                         $scope.$apply();
                     }
                 };
                 Http.send(data);
+            }
+
+            var addPolices = function () {
+                $scope.contractSearched.forEach(function (element) {
+                    element.police = {"checkfires": false, "checkaccident":false, "checksteals":false }
+                });
             }
 
 
@@ -274,7 +311,7 @@
             <!-- UI Insurer: <input getType="checkbox" ng-model="isInsurer"> -->
 
             <div class="container">
-                <h1>BlaBlaMove Assurance</h1>
+                <h1>BlaBlaMove Client</h1>
                 <p ng-show="isInsurer">List of insurance contracts</p>
             </div>
 
@@ -334,6 +371,10 @@
                                 <b>Insurer contact</b> : {{x.contact.mail}} <br>
                                 <b>Description</b> : {{x.description}} <br>
                                 <b>Price</b> : {{x.price}} €<br>
+                                <b>Police </b> :
+                                    <input type="checkbox" ng-model="x.police.checkaccident" ng-change="accidentChanged(x)"> accidents
+                                    <input type="checkbox" ng-model="x.police.checkfires" ng-change="firesChanged(x)"> fires
+                                    <input type="checkbox" ng-model="x.police.checksteals" ng-change="stealsChanged(x)"> steals
                             </div>
                             <div class="button-souscrire">
                                 <button ng-click="subscribe()">Subscribe</button>
