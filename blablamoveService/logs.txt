@@ -1,0 +1,200 @@
+
+> blablamoveservice@1.0.0 start C:\Users\user\Documents\AL\AL-SI5-E\blablamoveService
+> node dist/main/src/Main.js
+
+2019-01-19T19:30:44.478Z : INFO : listening on 8080
+2019-01-19T19:30:44.576Z : INFO : new request
+2019-01-19T19:30:44.610Z : INFO : adding new contract
+2019-01-19T19:30:44.617Z : INFO : registerInsurerContact : [object Object]
+2019-01-19T19:30:44.626Z : INFO : new contract added
+2019-01-19T19:30:44.842Z : INFO : new request
+2019-01-19T19:30:44.844Z : INFO : creating new travel
+construct Messagequeue
+equal 1 [] Céline [] undefined
+isCusto:false 1
+pathValidate
+VALIDATION_QUEUE
+init connect
+2019-01-19T19:30:44.879Z : INFO : new travel created
+2019-01-19T19:30:44.983Z : INFO : new request
+2019-01-19T19:30:44.985Z : INFO : adding new item to a travel
+construct Messagequeue
+2019-01-19T19:30:44.991Z : INFO : item added
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.029Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.030Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":7}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.052Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.053Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":11}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.084Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.084Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.101Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.102Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.124Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.124Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.128Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.129Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.143Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.144Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.146Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.146Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.149Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.149Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.150Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.151Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.155Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.155Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"Céline","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.174Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.174Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"{\"name\":\"Céline\", \"id\":\"1\"}","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.176Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.176Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"{\"name\":\"Céline\", \"id\":\"1\"}","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.178Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.178Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"{\"name\":\"Céline\", \"id\":\"1\"}","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.179Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.180Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+{"validator":{"insuranceValidation":false,"pathValidation":true},"items":[],"customer":"{\"name\":\"Céline\", \"id\":\"1\"}","departure":"Paris","destination":"Nice","id":2}
+LoggingLevel { levelString: 'info' } 'receive msg validation : [object Object]'
+2019-01-19T19:30:45.182Z : INFO : new travel validation beginning
+insuranceValidate: TravelValidator { store: TravelStore {} }
+2019-01-19T19:30:45.182Z : INFO : travel rejected : moved has no contract
+insuranceInvalidate
+2019-01-19T19:30:45.195Z : INFO : new request
+2019-01-19T19:30:45.202Z : INFO : getting travels
+construct Messagequeue
+END_NOTIFICATION_QUEUE
+2019-01-19T19:30:45.212Z : INFO : travels got
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+2019-01-19T19:30:45.312Z : INFO : new request
+2019-01-19T19:30:45.314Z : INFO : selecting travel
+construct Messagequeue
+equal 1 [ Item { name: 'itemA' } ] Céline [] undefined
+isCusto:false 3
+equal 1 [ Item { name: 'itemA' } ] Céline [] undefined
+isCusto:false 3
+equal 3 [] Julien  [ Travel {
+    validator: Validator { insuranceValidation: false, pathValidation: true },
+    items: [ [Object] ],
+    customer: 
+     Customer {
+       items: [Array],
+       shipments: [Array],
+       transports: [],
+       name: 'Céline',
+       id: 1 },
+    departure: 'Paris',
+    destination: 'Nice',
+    id: 2,
+    transporter: 
+     Customer {
+       items: [],
+       shipments: [],
+       transports: [Circular],
+       name: 'Julien ',
+       id: 3 } } ] undefined
+isCusto:false 3
+pathValidate
+2019-01-19T19:30:45.324Z : INFO : travel selected
+2019-01-19T19:30:45.401Z : INFO : new request
+2019-01-19T19:30:45.402Z : INFO : adding new subscriptions
+2019-01-19T19:30:45.403Z : INFO : registerInsurerContact : [object Object]
+2019-01-19T19:30:45.406Z : INFO : new subscriptions added
+2019-01-19T19:30:45.479Z : INFO : new request
+2019-01-19T19:30:45.480Z : INFO : adding new subscriptions
+2019-01-19T19:30:45.481Z : INFO : registerInsurerContact : [object Object]
+2019-01-19T19:30:45.482Z : INFO : new subscriptions added
+2019-01-19T19:30:45.547Z : INFO : new request
+2019-01-19T19:30:45.549Z : INFO : getting travels
+construct Messagequeue
+END_NOTIFICATION_QUEUE
+2019-01-19T19:30:45.555Z : INFO : travels got
+LoggingLevel { levelString: 'info' } 'receive msg notification : [object Object]'
+equal undefined [] undefined [] undefined
+Terminer le programme de commandes (O/N)�? 

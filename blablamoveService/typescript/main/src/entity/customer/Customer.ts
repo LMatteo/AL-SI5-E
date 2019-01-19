@@ -74,7 +74,18 @@ export class Customer implements Comparable {
     }
 
     equal(object: any): boolean {
-        if (!(object instanceof Customer)) return false;
-        return this.id === object.id;
+        if(object === undefined){return false;}
+        console.log("Customer::equal", this,object,"=");
+        let isNotCustomer:boolean =  (object !== undefined && !(object instanceof Customer));
+
+        if(isNotCustomer){
+            console.log("isNotCustomer");
+            return false;
+        }if(! ("id" in object)){
+            console.log("No id\n name ? ", "name" in object);
+        }
+        let equals:  boolean =  this.id === object.id|| this.name == object.name;
+        console.log(equals);
+        return equals;
     }
 }

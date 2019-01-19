@@ -18,6 +18,8 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^10.12.18",
+    "amqp-ts": "^1.4.0",
+    "amqplib": "^0.5.3",
     "express": "^4.16.4",
     "inversify": "^5.0.1",
     "mocha": "^5.2.0",

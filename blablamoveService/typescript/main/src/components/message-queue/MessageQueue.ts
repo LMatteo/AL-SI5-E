@@ -1,8 +1,62 @@
 import { Receiver } from "./Receiver";
-import { injectable } from "inversify";
-
+import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
+import {inject, injectable} from "inversify";
+import { Validate } from "../insurance-validator/Validate";
+import * as Amqp from "amqp-ts";
+import { Travel } from "../../entity/travel/Travel";
+import Level = require("../../logging/Level");
+import container from "../InjectionConfig";
 @injectable()
 export class MessageQueue{
+    private static connection: Amqp.Connection;
+    private static exchangeValidation: Amqp.Exchange;
+    private static exchangeEndNotification: Amqp.Exchange;
+    public static VALIDATION_QUEUE: string = "validation";
+    public static END_NOTIFICATION_QUEUE: string = "end_notification";
+    @inject(COMPONENT_IDENTIFIER.Validate) 
+    private validate: Validate;
+
+    public initialize(){
+        if(this.validate === undefined){
+            this.validate = container.get(COMPONENT_IDENTIFIER.Validate);
+            return;
+        }
+        let zis = this;
+        if(MessageQueue.connection == undefined){
+            console.log("init connect");
+            MessageQueue.connection = new Amqp.Connection("amqp://localhost");
+           
+            // Queue validation
+            MessageQueue.exchangeValidation = MessageQueue.connection.declareExchange("ExchangeValidate");
+            var queue = MessageQueue.connection.declareQueue(MessageQueue.VALIDATION_QUEUE);
+            queue.bind(MessageQueue.exchangeValidation);
+            queue.activateConsumer((message) => {
+                console.log(message.getContent());
+                let travel:Travel = <Travel>JSON.parse(message.getContent());
+                console.log(Level.info, "receive msg validation : " , travel);
+                zis.validate.validate(travel);
+            });
+
+            // end notification queue
+            MessageQueue.exchangeEndNotification = MessageQueue.connection.declareExchange("ExchangeEndNotification");
+            var queue2 = MessageQueue.connection.declareQueue(MessageQueue.END_NOTIFICATION_QUEUE);
+            queue2.bind(MessageQueue.exchangeEndNotification);
+            queue2.activateConsumer((message) => {
+                console.log("Consumer VALIDATION QUEUE", typeof message, message.getContent());
+                let travel:Travel = <Travel>JSON.parse(message.getContent());
+                console.log("receive msg notification : " ,travel);
+                zis.validate.notify(travel);
+            });
+
+        }
+    }
+    public constructor(){
+        console.log("construct Messagequeue");
+       
+       this.initialize();
+
+    }
+
     public queue :{topic: string, receivers: Receiver[]}[] = []; 
     subScribe(topic:string,receiver: Receiver ){
         for (let i = 0; i < this.queue.length; i++) {
@@ -15,17 +69,27 @@ export class MessageQueue{
         this.queue.push({topic: topic, receivers: [receiver]});
     }
     
-    sendMessage(topic:string, data: Object){
-        for (let i = 0; i < this.queue.length; i++) {
-            const element = this.queue[i];
-            if(element.topic == topic){
-                for (let j = 0; j < element.receivers.length; j++) {
-                    const receiver = element.receivers[j];
-                    receiver.onMessage(data);
-                }
-                return true;
+    sendMessage(topic:string, data: Travel){
+        var marshalled :string= JSON.stringify(data, (key, value) => {
+            if (key === "customer" || key === "transporter") {
+                return {name: value.$name, id: value.$id};
             }
+            return value;
+        })
+        var msg2 = new Amqp.Message(marshalled);
+        if(topic === MessageQueue.VALIDATION_QUEUE){
+                console.log("VALIDATION_QUEUE");
+                if( MessageQueue.exchangeValidation === undefined){
+                    this.initialize();
+                }
+                MessageQueue.exchangeValidation.send(msg2);
+        }else if(topic == MessageQueue.END_NOTIFICATION_QUEUE){
+            
+            console.log("END_NOTIFICATION_QUEUE");
+            if( MessageQueue.exchangeEndNotification === undefined){
+                this.initialize();
+            }
+            MessageQueue.exchangeEndNotification.send(msg2);
         }
-        return false;
     }
 }

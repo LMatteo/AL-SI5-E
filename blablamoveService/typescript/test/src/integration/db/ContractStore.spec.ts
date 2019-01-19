@@ -3,13 +3,14 @@ import "reflect-metadata";
 import {Contact} from "../../../../main/src/entity/contact/Contact";
 import {Connection} from "typeorm";
 import * as assert from "assert";
+
 import {getConnection} from "../../../../main/src/entityManager/db/DbConnection";
 import {Contract} from "../../../../main/src/entity/contract/Contract";
 import {Type} from "../../../../main/src/entity/Type";
 
 
 describe('getType orm test', function () {
-
+  
     beforeEach(() => {
         return getConnection()
             .then(async (connect : Connection) => {
@@ -20,7 +21,7 @@ describe('getType orm test', function () {
 
     it('should retrieve getContact', function () {
         let contact : Contact = new Contact("salut");
-
+       
         return getConnection()
             .then(async (connection : Connection) => {
                 let contactRepo = connection.getRepository(Contact);

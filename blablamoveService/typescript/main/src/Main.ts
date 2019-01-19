@@ -3,12 +3,17 @@ import express = require("express");
 import bodyParser = require("body-parser");
 import Level = require("./logging/Level");
 import {Logger} from "./logging/Logger";
+import * as Amqp from "amqp-ts";
+import container from "./components/InjectionConfig";
+import COMPONENT_IDENTIFIER from "./components/InjectionIdentifier";
+import { Validate } from "./components/insurance-validator/Validate";
+import { Travel } from "./entity/travel/Travel";
+
 let customerWs : express.Router = require("./route/CustomerWs");
 let insurerWs : express.Router = require("./route/InsurerWs");
 
 const app : express.Express = express();
 const logger : Logger = new Logger();
-
 
 app.use(function (req: express.Request,res: express.Response,next : express.NextFunction) {
    logger.log(Level.info,"new request");

@@ -11,7 +11,6 @@ import { TravelDoNotExist } from "../../error/TravelDoNotExist";
 import {PathValidate} from "../travelValidator/PathValidate";
 import {inject, injectable} from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
-import { MessageReceiver } from "../message-receiver/MessageReceiver";
 
 @injectable()
 export class PathService implements ControlTravels {
@@ -21,9 +20,6 @@ export class PathService implements ControlTravels {
 
     @inject(COMPONENT_IDENTIFIER.PathValidate)
     private validator: PathValidate;
-
-    @inject(COMPONENT_IDENTIFIER.MessageReceiver)
-    private messageReceiver: MessageReceiver;
 
     private customerStore: CustomerStore = new CustomerStore();
     

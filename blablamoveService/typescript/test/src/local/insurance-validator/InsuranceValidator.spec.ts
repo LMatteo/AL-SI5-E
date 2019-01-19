@@ -77,7 +77,6 @@ describe("path service test", function() {
         travelA.$destination = "endA";
 
         Assert.throws(() =>  insuranceValidator.validate(travelA), TravelDoNotExist, "Error thrown");
-        insuranceValidator.validate(travelA);
 
 
     });
