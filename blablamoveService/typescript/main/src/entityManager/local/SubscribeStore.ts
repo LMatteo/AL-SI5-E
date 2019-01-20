@@ -14,4 +14,8 @@ export class SubscribeStore {
     get(): Array<Subscribe> {
         return SubscribeStore.storage;
     }
+
+    clear() {
+        SubscribeStore.storage = [];
+    }
 }
