@@ -11,19 +11,25 @@ export class Customer implements Comparable {
     @Column()
     private name: string;
 
-    @Column()
+    @Column({ nullable: true })
     private email: string;
 
-    @Column()
+    @Column({ nullable: true })
     private phone: number;
 
-    @OneToMany(type => Item, item => item.$owner)
+    @OneToMany(type => Item, "owner", {
+        cascade: ["insert", "update"]
+    })
     private items: Item[];
 
-    @OneToMany(type => Travel, shipment => shipment.$customer)
+    @OneToMany(type => Travel, "customer", {
+        cascade: ["insert", "update"]
+    })
     private shipments: Travel[];
 
-    @OneToMany(type => Travel, transport => transport.$transporter)
+    @OneToMany(type => Travel, "transporter", {
+        cascade: ["insert", "update"]
+    })
     private transports: Travel[];
 
     public get $id(): number {
@@ -62,19 +68,27 @@ export class Customer implements Comparable {
         return this.items;
     }
 
+    public set $items(value: Item[]) {
+        this.items = value;
+    }
+
     public get $shipments(): Travel[] {
         return this.shipments;
+    }
+
+    public set $shipments(value: Travel[]) {
+        this.shipments = value;
     }
 
     public get $transports(): Travel[] {
         return this.transports;
     }
 
-    constructor() {
-        this.items = [];
-        this.shipments = [];
-        this.transports = [];
+    public set $transports(value: Travel[]) {
+        this.transports = value;
     }
+
+    constructor() {}
 
     public addTravel(travel: Travel): void {
         this.shipments.push(travel);
