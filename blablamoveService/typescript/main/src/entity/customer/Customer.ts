@@ -91,10 +91,16 @@ export class Customer implements Comparable {
     constructor() {}
 
     public addTravel(travel: Travel): void {
+        if (this.shipments === undefined) {
+            this.shipments = [];
+        }
         this.shipments.push(travel);
     }
 
     public chooseTravel(travel: Travel): void {
+        if (this.transports === undefined) {
+            this.transports = [];
+        }
         this.transports.push(travel);
     }
 
