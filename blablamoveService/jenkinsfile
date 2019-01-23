@@ -21,11 +21,35 @@ pipeline {
         }
         stage('Test'){
             steps{
+                sh """
+                    docker run --rm \
+                        --expose 3306 \
+                        -e MYSQL_ROOT_PASSWORD=root \
+                        -e MYSQL_ROOT_HOST=% \
+                        -e MYSQL_DATABASE=blablamove \
+                        -e MYSQL_USER=user \
+                        -e MYSQL_PASSWORD=user \
+                        -d \
+                        --name blablamove-test-mysql \
+                        lucasmatteo/db_order_soa
+                """
+                timeout(time: 3, unit: 'MINUTES') {
+                    sh"""
+                        cd blablamoveService
+                        ./waitDB.sh
+                    """
+                }
                 sh '''
+                    export dbName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-test-mysql`
                     cd blablamoveService
                     npm run test
                 '''
             }
+        }
+    }
+    post{
+        always{
+            sh "docker stop blablamove-test-mysql"
         }
     }
 }
