@@ -1,5 +1,19 @@
 # Status
 
+## Week 04
+
+### Achieved
+
+- scénario d'intégration
+- mise en place de l'architecture avec le nouveau language
+
+### Planned
+
+- finir le changement de structure pour les contract
+- mettre en place le comparateur externe 
+
+### GREEN
+
 ## Week 44
 
 ### Achieved
