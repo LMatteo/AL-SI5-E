@@ -1,24 +1,23 @@
-import {Travel} from "../../entity/travel/Travel";
-import {Item} from "../../entity/item/Item";
-import {Customer} from "../../entity/customer/Customer";
-
+import { Travel } from "../../entity/travel/Travel";
+import { Item } from "../../entity/item/Item";
+import { Customer } from "../../entity/customer/Customer";
 
 export interface ControlTravels {
     createTravel(
         customerName: string,
         departure: string,
         destination: string
-    ): Travel;
+    ): Promise<Travel>;
 
-    addItemToTravel(item: Item, travelId: number): Travel;
+    addItemToTravel(item: Item, travelId: number): Promise<Travel>;
 
-    findTravel(departure: string, destination: string): Travel[];
+    findTravel(departure: string, destination: string): Promise<Travel[]>;
 
-    findTravelById(travelId: number): Travel;
+    findTravelById(travelId: number): Promise<Travel>;
 
-    chooseTravel(transporterName: string, travelId: number): Travel;
+    chooseTravel(transporterName: string, travelId: number): Promise<Travel>;
 
     finishTravel(travelId: number): void;
 
-    getCustomerById(id: number): Customer;
+    getCustomerById(id: number): Promise<Customer>;
 }

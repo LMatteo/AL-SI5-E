@@ -11,10 +11,10 @@ export class Item implements Comparable {
     @Column()
     private name: string;
 
-    @ManyToOne(type => Customer, customer => customer.$items)
+    @ManyToOne(type => Customer)
     private owner: Customer;
 
-    @ManyToOne(type => Travel, travel => travel.$items)
+    @ManyToOne(type => Travel)
     private travel: Travel;
 
     get $id(): number {

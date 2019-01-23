@@ -14,29 +14,35 @@ import { Contact } from "../entity/contact/Contact";
 import { PathService } from "../components/path-service/PathService";
 import { Item } from "../entity/item/Item";
 import { Calculate } from "../entity/Calculate";
-import {ContractRegistry} from "../components/contract-registry/ContractRegistry";
+import { ContractRegistry } from "../components/contract-registry/ContractRegistry";
 import container from "../components/InjectionConfig";
 import COMPONENT_IDENTIFIER from "../components/InjectionIdentifier";
-import {ControlTravels} from "../components/path-service/ControlTravel";
+import { ControlTravels } from "../components/path-service/ControlTravel";
+import { TravelDoNotExist } from "../error/TravelDoNotExist";
 
 let router: express.Router = express.Router();
 const logger: Logger = new Logger();
-let pathFile = __dirname.replace("dist","typescript");
-router.use(express.static(path.join(pathFile,'public')));
+let pathFile = __dirname.replace("dist", "typescript");
+router.use(express.static(path.join(pathFile, "public")));
 
-router.get("/contracts/:getType",(req: express.Request, res: express.Response) => {
+router.get(
+    "/contracts/:getType",
+    (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "listing contract");
         console.log(req.params);
         let theType: keyof typeof Type = req.params.getType;
         logger.log(Level.info, theType);
 
-
-        let contractLister: ListContract = container.get(COMPONENT_IDENTIFIER.ListContract);
-        let contracts: Array<Contract> = contractLister.getContractByType(Type[theType]);
+        let contractLister: ListContract = container.get(
+            COMPONENT_IDENTIFIER.ListContract
+        );
+        let contracts: Array<Contract> = contractLister.getContractByType(
+            Type[theType]
+        );
         logger.log(Level.info, contracts.toString());
         let resArr: Array<any> = new Array<any>();
 
-        contracts.forEach(function (value: Contract) {
+        contracts.forEach(function(value: Contract) {
             resArr.push(value.toJson());
         });
 
@@ -44,9 +50,7 @@ router.get("/contracts/:getType",(req: express.Request, res: express.Response) =
 
         logger.log(Level.info, "contract listed");
 
-
         logger.log(Level.info, "listing all contracts");
-
     }
 );
 
@@ -60,7 +64,9 @@ router.post("/subscriptions", (req: express.Request, res: express.Response) => {
     let description: string = req.body.subcribe.description;
     let type: keyof typeof Type = req.body.subcribe.typeName;
 
-    let contractHandler: Subscription = container.get(COMPONENT_IDENTIFIER.Subscription);
+    let contractHandler: Subscription = container.get(
+        COMPONENT_IDENTIFIER.Subscription
+    );
     let customer: Customer = new Customer();
     customer.$email = email;
     customer.$phone = phone;
@@ -80,71 +86,70 @@ router.post("/subscriptions", (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "new subscriptions added");
 });
 
-router.post("/travels", (req: express.Request, res: express.Response) => {
+router.post("/travels", async (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "creating new travel");
-    let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels);
-    let travel = controlTravel.createTravel(
+    let controlTravel: ControlTravels = container.get(
+        COMPONENT_IDENTIFIER.ControlTravels
+    );
+    let travel = await controlTravel.createTravel(
         req.body.customerName,
         req.body.departure,
         req.body.destination
     );
-    res.send(
-        JSON.stringify(travel, (key, value) => {
-            if (key === "customer" || key === "transporter") {
-                return value.$name;
-            }
-            return value;
-        })
-    );
+    res.send(travel);
     logger.log(Level.info, "new travel created");
 });
 
 router.put(
     "/travels/:travelId",
-    (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "adding new item to a travel");
         let item = new Item();
         item.$name = req.body.itemName;
-        let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
-        let id : number = parseInt(req.params.travelId);
-        controlTravel.addItemToTravel(item, id);
-        res.status(200).end();
-        logger.log(Level.info, "item added");
+        let controlTravel: ControlTravels = container.get(
+            COMPONENT_IDENTIFIER.ControlTravels
+        );
+        let id: number = parseInt(req.params.travelId);
+        try {
+            await controlTravel.addItemToTravel(item, id);
+            res.status(200).end();
+            logger.log(Level.info, "item added");
+        } catch (error) {
+            res.status(error.getHttpCode()).send(error.message);
+            logger.log(Level.info, "No Such travel");
+        }
     }
 );
 
-router.get("/travels", (req: express.Request, res: express.Response) => {
+router.get("/travels", async (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "getting travels");
-    let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
-    let travels = controlTravel.findTravel(
+    let controlTravel: ControlTravels = container.get(
+        COMPONENT_IDENTIFIER.ControlTravels
+    );
+    let travels = await controlTravel.findTravel(
         req.query.departure,
         req.query.destinaton
     );
-    res.send(
-        JSON.stringify(travels, (key, value) => {
-            if (key === "customer" || key === "transporter") {
-                return value.$name;
-            }
-            return value;
-        })
-    );
+    res.send(travels);
     logger.log(Level.info, "travels got");
 });
 
 router.get(
     "/travels/:travelId",
-    (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "getting travel");
-        let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
-        let id : number = parseInt(req.params.travelId);
-        let travel = controlTravel.findTravelById(id);
-        if (travel) {
+        let controlTravel: ControlTravels = container.get(
+            COMPONENT_IDENTIFIER.ControlTravels
+        );
+        let id: number = parseInt(req.params.travelId);
+        try {
+            let travel = await controlTravel.findTravelById(id);
             res.send(travel);
-        } else {
-            res.send({});
+            logger.log(Level.info, "travel got");
+        } catch (error) {
+            res.status(error.getHttpCode()).send(error.message);
+            logger.log(Level.info, "No Such travel");
         }
-
-        logger.log(Level.info, "travel got");
     }
 );
 
@@ -152,7 +157,9 @@ router.delete(
     "/travels/:travelId",
     (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "finishing travel");
-        let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
+        let controlTravel: ControlTravels = container.get(
+            COMPONENT_IDENTIFIER.ControlTravels
+        );
         controlTravel.finishTravel(req.params.travelId);
         res.status(200).end();
         logger.log(Level.info, "travel finished");
@@ -161,26 +168,25 @@ router.delete(
 
 router.put(
     "/travels/:travelId/transporter",
-    (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "selecting travel");
-        let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels)
-        let travelId: number = parseInt(req.params.travelId); 
-        let travel = controlTravel.chooseTravel(
-            req.body.transporterName,
-            travelId
+        let controlTravel: ControlTravels = container.get(
+            COMPONENT_IDENTIFIER.ControlTravels
         );
-        res.send(
-            JSON.stringify(travel, (key, value) => {
-                if (key === "customer" || key === "transporter") {
-                    return value.$name;
-                }
-                return value;
-            })
-        );
-        logger.log(Level.info, "travel selected");
+        let travelId: number = parseInt(req.params.travelId);
+        try {
+            let travel = await controlTravel.chooseTravel(
+                req.body.transporterName,
+                travelId
+            );
+            res.send(travel);
+            logger.log(Level.info, "travel selected");
+        } catch (error) {
+            res.status(error.getHttpCode()).send(error.message);
+            logger.log(Level.info, "No Such travel");
+        }
     }
 );
-
 
 router.post("/calculator", (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "calculator");
@@ -194,20 +200,23 @@ router.post("/calculator", (req: express.Request, res: express.Response) => {
         let type = req.body.request.type;
         let calculator: Calculate = new Calculate();
         result = calculator.calcule(from, to, contracts, objects, type);
-    }else if(action === "searchType"){
+    } else if (action === "searchType") {
         let objects = req.body.request.objects;
         let calculator: Calculate = new Calculate();
-        result = {"type":calculator.searchType(objects)}
-    }else{
-        result = {"error":"this action is not define"}
+        result = { type: calculator.searchType(objects) };
+    } else {
+        result = { error: "this action is not define" };
     }
     res.send(result);
 });
 
-router.get("/userInterfaceClient", (req: express.Request,res: express.Response) => {
-    logger.log(Level.info, "interface Client Used");
-    res.contentType("text/html");
-    res.sendFile(pathFile+"/public/interfaceClient.html");
-});
+router.get(
+    "/userInterfaceClient",
+    (req: express.Request, res: express.Response) => {
+        logger.log(Level.info, "interface Client Used");
+        res.contentType("text/html");
+        res.sendFile(pathFile + "/public/interfaceClient.html");
+    }
+);
 
 export = router;

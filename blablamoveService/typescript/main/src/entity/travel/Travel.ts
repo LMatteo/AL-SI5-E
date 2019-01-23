@@ -8,7 +8,8 @@ import {
     Column,
     OneToOne,
     OneToMany,
-    ManyToOne
+    ManyToOne,
+    JoinColumn
 } from "typeorm";
 
 @Entity()
@@ -23,20 +24,26 @@ export class Travel implements Comparable {
     private destination: string;
 
     @OneToOne(type => Validator, { cascade: true })
+    @JoinColumn()
     private validator: Validator;
 
-    @OneToMany(type => Item, item => item.$travel)
+    @OneToMany(type => Item, "travel", {
+        cascade: ["insert", "update"]
+    })
     private items: Item[];
 
-    @ManyToOne(type => Customer, { cascade: true })
+    @ManyToOne(type => Customer, "shipments", {
+        cascade: ["insert", "update"]
+    })
     private customer: Customer;
 
-    @ManyToOne(type => Customer, { cascade: true })
+    @ManyToOne(type => Customer, "transports", {
+        cascade: ["insert", "update"]
+    })
     private transporter: Customer;
 
     constructor() {
         this.validator = new Validator();
-        this.items = [];
     }
 
     public get $id(): number {

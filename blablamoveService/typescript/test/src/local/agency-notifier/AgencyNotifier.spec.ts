@@ -39,53 +39,53 @@ describe("path service test", function() {
         itemA.$name = "itemA";
     });
 
-    it("create travel ", function() {
-        let travel1 = pathService.createTravel(
-            "christophe",
-            "startpoint",
-            "endpoint"
-        );
-        Assert.strictEqual(travel1.$customer, christophe);
-        Assert.strictEqual(travel1.$departure, "startpoint");
-        Assert.strictEqual(travel1.$destination, "endpoint");
-        Assert.ok(christophe.$shipments.includes(travel1));
-    });
+    // it("create travel ", function() {
+    //     let travel1 = pathService.createTravel(
+    //         "christophe",
+    //         "startpoint",
+    //         "endpoint"
+    //     );
+    //     Assert.strictEqual(travel1.$customer, christophe);
+    //     Assert.strictEqual(travel1.$departure, "startpoint");
+    //     Assert.strictEqual(travel1.$destination, "endpoint");
+    //     Assert.ok(christophe.$shipments.includes(travel1));
+    // });
 
-    it("add item to travel", function() {
-        let travel1 = pathService.addItemToTravel(itemA, travelA.$id);
-        Assert.strictEqual(travel1, travelA);
-        Assert.strictEqual(travel1.$customer, christophe);
-        Assert.ok(travel1.$items.includes(itemA));
-        Assert.ok(travel1.$customer.$items.includes(itemA));
-    });
+    // it("add item to travel", function () {
+    //     let travel1 = pathService.addItemToTravel(itemA, travelA.$id);
+    //     Assert.strictEqual(travel1, travelA);
+    //     Assert.strictEqual(travel1.$customer, christophe);
+    //     Assert.ok(travel1.$items.includes(itemA));
+    //     Assert.ok(travel1.$customer.$items.includes(itemA));
+    // });
 
-    it("find travel", function() {
-        let travels = pathService.findTravel("startA", "endA");
-        Assert.strictEqual(travels.length, 1);
-        pathService.createTravel("christophe", "startA", "endA");
-        travels = pathService.findTravel("startA", "endA");
-        Assert.strictEqual(travels.length, 2);
-        pathService.createTravel("christophe", "startB", "endB");
-        travels = pathService.findTravel("startB", "endB");
-        Assert.strictEqual(travels.length, 1);
-    });
+    // it("find travel", function () {
+    //     let travels = pathService.findTravel("startA", "endA");
+    //     Assert.strictEqual(travels.length, 1);
+    //     pathService.createTravel("christophe", "startA", "endA");
+    //     travels = pathService.findTravel("startA", "endA");
+    //     Assert.strictEqual(travels.length, 2);
+    //     pathService.createTravel("christophe", "startB", "endB");
+    //     travels = pathService.findTravel("startB", "endB");
+    //     Assert.strictEqual(travels.length, 1);
+    // });
 
-    it("choose travel", function() {
-        let travel1 = pathService.chooseTravel("johan", travelA.$id);
-        Assert.strictEqual(travel1.$customer, christophe);
-        Assert.strictEqual(travel1.$transporter, johan);
-        Assert.strictEqual(travel1.$departure, "startA");
-        Assert.strictEqual(travel1.$destination, "endA");
-    });
+    // it("choose travel", function () {
+    //     let travel1 = pathService.chooseTravel("johan", travelA.$id);
+    //     Assert.strictEqual(travel1.$customer, christophe);
+    //     Assert.strictEqual(travel1.$transporter, johan);
+    //     Assert.strictEqual(travel1.$departure, "startA");
+    //     Assert.strictEqual(travel1.$destination, "endA");
+    // });
 
-    it("get customer by id", function() {
-        let byId = pathService.getCustomerById(christophe.$id);
-        Assert.strictEqual(byId, christophe);
-    });
+    // it("get customer by id", function() {
+    //     let byId = pathService.getCustomerById(christophe.$id);
+    //     Assert.strictEqual(byId, christophe);
+    // });
 
-    it("get customer by missing id", function() {
-        Assert.throws(function() {
-            pathService.getCustomerById(89898989);
-        }, CustomerDoNotExist);
-    });
+    // it("get customer by missing id", function() {
+    //     Assert.throws(function() {
+    //         pathService.getCustomerById(89898989);
+    //     }, CustomerDoNotExist);
+    // });
 });
