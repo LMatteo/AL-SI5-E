@@ -6,10 +6,12 @@ import { Travel } from "../../entity/travel/Travel";
 import { Item } from "../../entity/item/Item";
 import { Validator } from "../../entity/validator/Validator";
 
+const host = process.env.dbName || 'localhost';
+
 export function getConnection() {
     return createConnection({
         type: "mysql",
-        host: "localhost",
+        host: host,
         port: 3306,
         username: "user",
         password: "user",
