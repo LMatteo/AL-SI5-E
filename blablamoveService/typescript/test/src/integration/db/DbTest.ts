@@ -7,10 +7,13 @@ import * as assert from "assert";
 import {getConnection} from "../../../../main/src/entityManager/db/DbConnection";
 import {Contract} from "../../../../main/src/entity/contract/Contract";
 import {Type} from "../../../../main/src/entity/Type";
+import {Item} from "../../../../main/src/entity/item/Item";
+import {Validator} from "../../../../main/src/entity/validator/Validator";
+import {Travel} from "../../../../main/src/entity/travel/Travel";
 
 
-describe('getType orm test', function () {
-  
+describe('dbTest', function () {
+
     beforeEach(() => {
         return getConnection()
             .then(async (connect : Connection) => {
@@ -44,7 +47,41 @@ describe('getType orm test', function () {
                     where : {id : contract.getId},
                     relations : ['contact']
                 })));
+
                 await connect.close()
             })
     });
+
+    it('should retrive item', function () {
+        let item : Item = new Item();
+        item.$name = "test";
+
+        return getConnection()
+            .then(async (connect : Connection) => {
+                let repo = await connect.getRepository(Item);
+                await repo.save(item);
+                assert.deepStrictEqual(item, (await repo.findOne(item.$id)))
+                await connect.close();
+            })
+    });
+
+    it('should save validator', function () {
+
+        let validator : Validator = new Validator();
+
+        return getConnection()
+            .then(async (connect : Connection) => {
+                let repo = await connect.getRepository(Validator);
+                await repo.save(validator);
+
+                assert.deepStrictEqual(validator, (await repo.findOne(validator.$id)))
+
+                validator.$insuranceValidation = true;
+                validator.$pathValidation = true;
+                await repo.save(validator);
+
+                assert.deepStrictEqual(validator, (await repo.findOne(validator.$id)))
+                await connect.close();
+            })
+    })
 });

@@ -66,6 +66,8 @@ export class PathService implements ControlTravels {
         travel.addItem(item);
         travel.$customer.addItem(item);
         this.travelStore.merge(travel);
+        this.messageQueue.sendMessage("validation", travel);
+
         return travel;
     }
 
@@ -74,6 +76,8 @@ export class PathService implements ControlTravels {
             return t.$departure === departure && t.$destination === destination;
         });
         this.messageQueue.sendMessage("end_notification", travels[0]);
+        this.messageQueue.sendMessage("validation", travels[0]);
+
         return travels;
     }
 
@@ -103,6 +107,8 @@ export class PathService implements ControlTravels {
         this.travelStore.merge(travel);
         this.customerStore.merge(transporter);
         this.validator.pathValidate(travel);
+        this.messageQueue.sendMessage("validation", travel);
+
         return travel;
     }
 

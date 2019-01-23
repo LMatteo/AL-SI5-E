@@ -12,7 +12,8 @@
     "test": "mocha dist/test/src/local/**/*.js --exit",
     "test-all": "mocha dist/test/src/**/*.js --exit",
     "build": "tsc",
-    "start": "node dist/main/src/Main.js"
+    "start": "node %NODE_DEBUG_OPTION% dist/main/src/Main.js",
+    "build_debug": "tsc && node %NODE_DEBUG_OPTION% dist/main/src/Main.js"
   },
   "author": "",
   "license": "ISC",

@@ -31,8 +31,14 @@ export class MessageQueue{
             var queue = MessageQueue.connection.declareQueue(MessageQueue.VALIDATION_QUEUE);
             queue.bind(MessageQueue.exchangeValidation);
             queue.activateConsumer((message) => {
-                console.log(message.getContent());
-                let travel:Travel = <Travel>JSON.parse(message.getContent());
+                console.log("consume validate" + message.getContent());
+                let travelMarshalled = JSON.parse(message.getContent());
+                console.log("travelMarshalled",travelMarshalled);
+                let travel: Travel = travelMarshalled;
+                console.log(travel);
+                travel.$customer = travelMarshalled.customer;
+                travel.$customer.$name = travelMarshalled.customer.name;
+                travel.$transporter = travelMarshalled.transporter;
                 console.log(Level.info, "receive msg validation : " , travel);
                 zis.validate.validate(travel);
             });
@@ -42,9 +48,10 @@ export class MessageQueue{
             var queue2 = MessageQueue.connection.declareQueue(MessageQueue.END_NOTIFICATION_QUEUE);
             queue2.bind(MessageQueue.exchangeEndNotification);
             queue2.activateConsumer((message) => {
-                console.log("Consumer VALIDATION QUEUE", typeof message, message.getContent());
-                let travel:Travel = <Travel>JSON.parse(message.getContent());
-                console.log("receive msg notification : " ,travel);
+                let travelMarshalled = JSON.parse(message.getContent());
+                let travel: Travel = travelMarshalled;
+                travel.$customer = travelMarshalled.customer;
+                travel.$transporter = travelMarshalled.transporter;
                 zis.validate.notify(travel);
             });
 
@@ -76,6 +83,7 @@ export class MessageQueue{
             }
             return value;
         })
+        console.log("Send message",marshalled)
         var msg2 = new Amqp.Message(marshalled);
         if(topic === MessageQueue.VALIDATION_QUEUE){
                 console.log("VALIDATION_QUEUE");

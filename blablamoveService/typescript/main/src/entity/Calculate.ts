@@ -4,6 +4,7 @@ export class Calculate {
 
 
     calcule(from: string, to: string, contracts: Array<any>, objects: Array<any>, type: string): Array<any> { //calculate the price of each contract
+        var prix = 0;
         var coef = 1;
         var size = 1;
         if (type === Type.hightech) {
@@ -12,13 +13,15 @@ export class Calculate {
             coef = 2;
         }
         contracts.forEach(function (contract) {
-            size = contract.id.length + from.length + to.length
-            var price = (size - Math.floor(Math.random() * (size / 2)) + 1) * objects.length * coef
+            size = from.length + to.length
+            prix = (size - Math.floor(Math.random() * size) + 1) * objects.length * coef * 4
             if (objects.length > 3) {
-                price / 1.3
+                prix / 1.3
             }
-            contract.price = price;
+            contract.price = prix;
+            console.log(prix)
         });
+        console.log(contracts)
         return contracts;
     }
 

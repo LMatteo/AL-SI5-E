@@ -31,8 +31,10 @@ export class InsuranceValidator implements Validate {
     validate(travel: Travel): void {
         
         this.logger.log(Level.info, "new travel validation beginning");
-        console.log("insuranceValidator::validate:" , this.insuranceValidate,travel, typeof travel);
+        console.log("insuranceValidator::validate:");
         let custo: Customer = travel.$customer;
+        console.log("Check customer subs", custo);
+
         let customerSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(custo);
 
         if(customerSubscriptions.length == 0){
@@ -67,7 +69,7 @@ export class InsuranceValidator implements Validate {
     }  
 
     notify(travel: Travel): void {
-        console.log("insuranceValidator::notify:" , this.insuranceValidate,travel, typeof travel);
+        console.log("notify:" , this.insuranceValidate,travel, typeof travel);
         let custo: Customer = travel.$customer;
         let customerSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(custo);
       
