@@ -12,8 +12,11 @@
     "test": "mocha dist/test/src/local/**/*.js --exit",
     "test-all": "mocha dist/test/src/**/*.js --exit",
     "build": "tsc",
-    "start": "node %NODE_DEBUG_OPTION% dist/main/src/Main.js",
-    "build_debug": "tsc && node %NODE_DEBUG_OPTION% dist/main/src/Main.js"
+    "start": "node dist/main/src/Main.js",
+    "debug": "node %NODE_DEBUG_OPTION% dist/main/src/Main.js",
+    "it": "newman run https://www.getpostman.com/collections/a820c765a149178433cf",
+    "build_debug": "tsc && node dist/main/src/Main.js",
+    "build_test": "tsc && npm run test-all"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +28,7 @@
     "inversify": "^5.0.1",
     "mocha": "^5.2.0",
     "mysql2": "^1.6.4",
+    "newman": "^4.3.1",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^4.42.0",
     "ts-node": "^7.0.1",

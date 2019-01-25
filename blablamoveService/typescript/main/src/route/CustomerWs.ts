@@ -116,7 +116,10 @@ router.put(
             res.status(200).end();
             logger.log(Level.info, "item added");
         } catch (error) {
-            res.status(error.getHttpCode()).send(error.message);
+            if("getHttpCode" in error) {
+                res.status(error.getHttpCode());
+            }
+            res.send(error.message);
             logger.log(Level.info, "No Such travel");
         }
     }
