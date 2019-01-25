@@ -6,9 +6,9 @@ pipeline {
         stage('Prebuild') {
             steps {
                 sh '''
-                    ln -s /home/jenkins/.node_modules /home/jenkins/workspace/BlaBlaMove_TS/blablamoveService/node_modules
+                    npm link
                     cd blablamoveService
-                    npm install
+                    npm install -g
                 '''
             }
         }
