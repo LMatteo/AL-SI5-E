@@ -89,8 +89,6 @@ export class PathService implements ControlTravels {
             relations: ["items", "customer", "validator", "transporter"]
         });
         await connection.close();
-        this.messageQueue.sendMessage("end_notification", travels[0]);
-        this.messageQueue.sendMessage("validation", travels[0]);
 
         return travels;
     }
