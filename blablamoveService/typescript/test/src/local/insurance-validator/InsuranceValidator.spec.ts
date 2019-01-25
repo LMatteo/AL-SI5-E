@@ -22,7 +22,7 @@ import { Type } from "../../../../main/src/entity/Type";
 import { Contact } from "../../../../main/src/entity/contact/Contact";
 import { TravelDoNotExist } from "../../../../main/src/error/TravelDoNotExist";
 
-describe("path service test", function() {
+describe("insurance validator test", function() {
     let insuranceValidator: InsuranceValidator;
     let contracts: GetSubscription;
     let notifier: Notify;
@@ -36,7 +36,6 @@ describe("path service test", function() {
         new TravelStore().clear();
         new CustomerStore().clear();
         insuranceValidator = container.get(COMPONENT_IDENTIFIER.Validate);
-        insuranceValidator.notify
         contracts = container.get(COMPONENT_IDENTIFIER.GetSubscription);
         notifier = container.get(COMPONENT_IDENTIFIER.Notify);
         subscription = container.get(COMPONENT_IDENTIFIER.Subscription);
@@ -63,6 +62,7 @@ describe("path service test", function() {
     it("notify contract", function() {
         let travelA: Travel = new Travel();
         travelA.$customer = christophe;
+        travelA.$transporter = johan;
         travelA.$departure = "startA";
         travelA.$destination = "endA";
         
@@ -75,6 +75,7 @@ describe("path service test", function() {
         travelA.$customer = christophe;
         travelA.$departure = "startA";
         travelA.$destination = "endA";
+        travelA.$transporter = johan;
 
         Assert.throws(() =>  insuranceValidator.validate(travelA), TravelDoNotExist, "Error thrown");
 
