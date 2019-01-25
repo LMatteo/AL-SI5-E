@@ -48,6 +48,9 @@ describe("path service test", function() {
         travelA.$customer = christophe;
         travelA.$departure = "startA";
         travelA.$destination = "endA";
+        let transporter = new Customer();
+        transporter.$name = "salut";
+        travelA.$transporter = transporter;
         let connection = await getConnection();
         let travelRepo = connection.getRepository(Travel);
         await travelRepo.save(travelA);

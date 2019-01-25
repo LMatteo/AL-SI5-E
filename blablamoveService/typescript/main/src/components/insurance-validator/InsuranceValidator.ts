@@ -9,11 +9,13 @@ import { Subscribe } from "../../entity/Subscribe";
 import { Notify } from "../agency-notifier/Notify";
 import {inject, injectable} from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
+import {TravelStore} from "../../entityManager/local/TravelStore";
 
 @injectable()
 export class InsuranceValidator implements Validate {
   
     private logger : Logger;
+
 
     @inject(COMPONENT_IDENTIFIER.InsuranceValidate)
     private insuranceValidate: InsuranceValidate;
@@ -29,7 +31,9 @@ export class InsuranceValidator implements Validate {
     }
 
     validate(travel: Travel): void {
-        
+
+
+
         this.logger.log(Level.info, "new travel validation beginning");
         let custo: Customer = travel.$customer;
 
