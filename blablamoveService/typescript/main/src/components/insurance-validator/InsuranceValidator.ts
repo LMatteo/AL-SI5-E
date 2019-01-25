@@ -31,14 +31,12 @@ export class InsuranceValidator implements Validate {
     validate(travel: Travel): void {
         
         this.logger.log(Level.info, "new travel validation beginning");
-        console.log("insuranceValidator::validate:");
         let custo: Customer = travel.$customer;
-        console.log("Check customer subs", custo);
 
         let customerSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(custo);
 
         if(customerSubscriptions.length == 0){
-            this.logger.log(Level.info, "travel rejected : moved has no contract");
+            this.logger.log(Level.info, "travel rejected : travel creator " + custo.$id + " has no contract");
             this.insuranceValidate.insuranceInvalidate(travel);
             return;
         }
@@ -69,7 +67,6 @@ export class InsuranceValidator implements Validate {
     }  
 
     notify(travel: Travel): void {
-        console.log("notify:" , this.insuranceValidate,travel, typeof travel);
         let custo: Customer = travel.$customer;
         let customerSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(custo);
       

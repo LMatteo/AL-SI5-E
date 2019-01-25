@@ -30,10 +30,8 @@ export class ContractInstance implements GetSubscription, Subscription{
         return res;
     }
     getSubscriptionByCustomer(customer: Customer): Subscribe[] {
-        console.log("getSubscriptionByCustomer", typeof customer, customer);
         let res : Array<Subscribe> = new Array<Subscribe>();
         for(let sub of this.store.get()){
-            console.log("check ", sub.$customer, customer);
             if(sub.$customer.$name == customer.$name){
                 res.push(sub);
             }
