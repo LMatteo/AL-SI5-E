@@ -38,19 +38,12 @@ pipeline {
                         -d \
                         --name blablamove-test-queue \
                         rabbitmq:3.7
-                '''
-                timeout(time: 3, unit: 'MINUTES') {
-                    sh'''
-                        cd blablamoveService
-                        ./waitDB.sh blablamove-test-mysql
-                    '''
-                }
-                sh'''
                     docker exec blablamove-test-queue rabbitmq-plugins enable rabbitmq_management
                 '''
                 timeout(time: 3, unit: 'MINUTES') {
                     sh'''
                         cd blablamoveService
+                        ./waitDB.sh blablamove-test-mysql
                         ./waitQ.sh blablamove-test-queue
                     '''
                 }
