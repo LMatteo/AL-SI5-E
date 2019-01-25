@@ -7,7 +7,6 @@ pipeline {
             steps {
                 sh '''
                     cd blablamoveService
-                    ln -s /home/jenkins/node_modules .
                     npm install
                 '''
             }
@@ -39,12 +38,19 @@ pipeline {
                         -d \
                         --name blablamove-test-queue \
                         rabbitmq:3.7
-                    docker exec blablamove-test-queue rabbitmq-plugins enable rabbitmq_management
                 '''
                 timeout(time: 3, unit: 'MINUTES') {
                     sh'''
                         cd blablamoveService
                         ./waitDB.sh blablamove-test-mysql
+                    '''
+                }
+                sh'''
+                    docker exec blablamove-test-queue rabbitmq-plugins enable rabbitmq_management
+                '''
+                timeout(time: 3, unit: 'MINUTES') {
+                    sh'''
+                        cd blablamoveService
                         ./waitQ.sh blablamove-test-queue
                     '''
                 }
@@ -83,12 +89,19 @@ pipeline {
                         -d \
                         --name blablamove-it-queue \
                         rabbitmq:3.7
-                    docker exec blablamove-it-queue rabbitmq-plugins enable rabbitmq_management
                 '''
                 timeout(time: 3, unit: 'MINUTES') {
                     sh'''
                         cd blablamoveService
                         ./waitDB.sh blablamove-it-mysql
+                    '''
+                }
+                sh '''
+                    docker exec blablamove-it-queue rabbitmq-plugins enable rabbitmq_management
+                '''
+                timeout(time: 3, unit: 'MINUTES') {
+                    sh'''
+                        cd blablamoveService
                         ./waitQ.sh blablamove-it-queue
                     '''
                 }
