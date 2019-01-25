@@ -36,7 +36,7 @@ export class MessageQueue {
             );
             queue.bind(MessageQueue.exchangeValidation);
             queue.activateConsumer(message => {
-                console.log("consume validate" + message.getContent());
+                console.log("exchangeValidation");
                 let travelMarshalled = JSON.parse(message.getContent());
                 let travel: Travel = travelMarshalled;
                 travel.$customer = travelMarshalled.customer || new Customer();
