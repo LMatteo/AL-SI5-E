@@ -1,6 +1,6 @@
 #!/bin/bash
 
-databseIP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-test-mysql`
+databseIP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $1`
 
 mysql -h$databseIP -uuser -puser > /dev/null 2> /dev/null
 

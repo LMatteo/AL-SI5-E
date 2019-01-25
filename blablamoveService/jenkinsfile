@@ -43,11 +43,10 @@ pipeline {
                 timeout(time: 3, unit: 'MINUTES') {
                     sh'''
                         cd blablamoveService
-                        ./waitDB.sh
-                        ./waitQ.sh
+                        ./waitDB.sh blablamove-test-mysql
+                        ./waitQ.sh blablamove-test-queue
                     '''
                 }
-
                 sh '''
                     export dbName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-test-mysql`
                     export qName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-test-queue`
@@ -55,14 +54,62 @@ pipeline {
                     npm run test
                 '''
             }
+            post{
+                always{
+                    sh '''
+                        docker stop blablamove-test-mysql
+                        docker stop blablamove-test-queue
+                    '''
+                }
+            }
         }
-    }
-    post{
-        always{
-            sh '''
-                docker stop blablamove-test-mysql
-                docker stop blablamove-test-queue
-            '''
+        stage('Integration test'){
+            steps{
+                sh '''
+                    docker run --rm \
+                        --expose 3306 \
+                        -e MYSQL_ROOT_PASSWORD=root \
+                        -e MYSQL_ROOT_HOST=% \
+                        -e MYSQL_DATABASE=blablamove \
+                        -e MYSQL_USER=user \
+                        -e MYSQL_PASSWORD=user \
+                        -d \
+                        --name blablamove-it-mysql \
+                        lucasmatteo/db_order_soa
+                    docker run --rm \
+                        --expose 5672\
+                        --expose 15672\
+                        -d \
+                        --name blablamove-it-queue \
+                        rabbitmq:3.7
+                    docker exec blablamove-it-queue rabbitmq-plugins enable rabbitmq_management
+                '''
+                timeout(time: 3, unit: 'MINUTES') {
+                    sh'''
+                        cd blablamoveService
+                        ./waitDB.sh blablamove-it-mysql
+                        ./waitQ.sh blablamove-it-queue
+                    '''
+                }
+                sh '''
+                    export dbName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-it-mysql`
+                    export qName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-it-queue`
+                    cd blablamoveService
+                    npm run start
+                '''
+                sh '''
+                    cd blablamoveService
+                    npm run it
+                '''
+            }
+            post{
+                always{
+                    sh '''
+                        docker stop blablamove-it-mysql
+                        docker stop blablamove-it-queue
+                    '''
+                }
+            }
         }
     }
 }
