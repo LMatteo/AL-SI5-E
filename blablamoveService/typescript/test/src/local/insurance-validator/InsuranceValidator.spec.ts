@@ -44,7 +44,7 @@ describe("path service test", function() {
         christophe = new Customer();
         christophe.$name = "christophe";
         new CustomerStore().persist(christophe);
-        let contract: Contract = new Contract("Contract",Type.hightech, new Contact("unit@test"));
+        let contract: Contract = new Contract("Contract",Type.hightech, new Contact("unit@test"),[]);
         subscription.subscribeToContract(christophe, contract);
 
      

@@ -35,7 +35,8 @@ describe("dbTest", function() {
         let contract: Contract = new Contract(
             "type",
             Type.fragile,
-            new Contact("sal")
+            new Contact("sal"),
+            []
         );
 
         return getConnection().then(async (connect: Connection) => {

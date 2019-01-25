@@ -75,7 +75,8 @@ router.post("/subscriptions", (req: express.Request, res: express.Response) => {
     let contract: Contract = new Contract(
         description,
         Type[type],
-        new Contact(name)
+        new Contact(name),
+        []
     );
     let subscription: Subscribe = contractHandler.subscribeToContract(
         customer,

@@ -19,7 +19,7 @@ describe("contract store test", function () {
 
     it('should add a contract to the store', function () {
         let store : ContractStore = new ContractStore();
-        let contract: Contract = store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
+        let contract: Contract = store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
 
         Assert.strictEqual(1,store.get().length);
 
@@ -30,24 +30,24 @@ describe("contract store test", function () {
     it('should insert multiple contract to the store', function () {
         let store : ContractStore = new ContractStore();
 
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
-        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
+        store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
 
         Assert.strictEqual(11, store.get().length);
     });
 
     it('should merge into existing contract', function () {
         let store : ContractStore = new ContractStore();
-        let contract: Contract = store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com")));
+        let contract: Contract = store.persist(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]));
 
         contract.getDescription = "new getDescription";
 
@@ -61,7 +61,7 @@ describe("contract store test", function () {
         let store : ContractStore = new ContractStore();
 
         try{
-            store.merge(new Contract("test",Type.fragile, new Contact("test@htomail.com")))
+            store.merge(new Contract("test",Type.fragile, new Contact("test@htomail.com"),[]))
         } catch (e) {
             Assert.strictEqual(true,e instanceof ContractDoesNotExist)
         }
