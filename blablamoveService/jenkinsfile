@@ -95,10 +95,7 @@ pipeline {
                     export dbName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-it-mysql`
                     export qName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-it-queue`
                     cd blablamoveService
-                    npm run start
-                '''
-                sh '''
-                    cd blablamoveService
+                    npm run start &
                     npm run it
                 '''
             }
