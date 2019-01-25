@@ -2,7 +2,8 @@ import {Type} from "../Type";
 import {Comparable} from "../Comparable";
 import {Contact} from "../contact/Contact";
 import {Jsonable} from "../Jsonable";
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import { Police } from "../Police";
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, OneToMany} from "typeorm";
 
 @Entity()
 export class Contract implements Comparable, Jsonable{
@@ -19,6 +20,9 @@ export class Contract implements Comparable, Jsonable{
     @OneToOne(type => Contact, {cascade : true})
     @JoinColumn()
     private contact: Contact;
+
+    @OneToMany(type => Police, "owner")
+    private polices : Array<Police>;
 
 
     get getId() : number {
@@ -54,7 +58,7 @@ export class Contract implements Comparable, Jsonable{
         this.contact = value;
     }
 
-    constructor(description: string, type: Type, contact: Contact) {
+    constructor(description: string, type: Type, contact: Contact, polices : Array<Police>) {
         this.description = description;
         this.type = type;
         this.contact = contact;
@@ -72,6 +76,7 @@ export class Contract implements Comparable, Jsonable{
         j.type = this.type;
         j.contact = this.contact.toJson();
         j.description = this.description;
+        j.polices = this.polices;
         return j;
     }
 

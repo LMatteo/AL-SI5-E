@@ -9,6 +9,7 @@ import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 import {inject, injectable} from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 import {ContractDoesNotExist} from "../../error/ContractDoesNotExist";
+import { Police } from "../../entity/Police";
 
 @injectable()
 export class ContractRegistry implements HandleContract, ListContract{
@@ -21,8 +22,8 @@ export class ContractRegistry implements HandleContract, ListContract{
         this.store = new ContractStore();
     }
 
-    addContract(type: Type, description: string, mail: string): Contract {
-        let contract : Contract = this.store.persist(new Contract(description,type, new Contact(mail)));
+    addContract(type: Type, description: string, mail: string, polices: Array<Police>): Contract {
+        let contract : Contract = this.store.persist(new Contract(description,type, new Contact(mail), polices));
         this.registerInsurer.registerInsurerContact(contract);
         return contract;
     }

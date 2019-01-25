@@ -24,7 +24,7 @@ describe("contract registry test", function () {
     });
 
     it('should add contract ', function () {
-        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
 
         let store : ContractStore = new ContractStore();
 
@@ -37,7 +37,7 @@ describe("contract registry test", function () {
     });
 
     it('should return the contract with the specified id', function () {
-        let contract : Contract = handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        let contract : Contract = handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
         Assert.strictEqual(true, contract.equal(listContract.getContractById(contract.getId)));
     });
 
@@ -49,14 +49,14 @@ describe("contract registry test", function () {
     });
 
     it('should return the right number of contract', function () {
-        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
 
         Assert.strictEqual(8,listContract.getContractByType(Type.fragile).length);
         Assert.strictEqual(0,listContract.getContractByType(Type.heavy).length);
@@ -64,7 +64,7 @@ describe("contract registry test", function () {
     });
 
     it('should modify a contract', function () {
-        let contract : Contract = handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        let contract : Contract = handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
 
         handleContract.updateContractDescription(contract.getId,"new");
 

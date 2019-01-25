@@ -25,7 +25,8 @@ router.post("/contracts", (req: express.Request, res: express.Response) => {
     let contract: Contract = contractHandler.addContract(
         Type[type],
         req.body.contract.description,
-        req.body.contract.mail
+        req.body.contract.mail,
+        []
     );
     res.send(JSON.stringify(contract.toJson()));
 
