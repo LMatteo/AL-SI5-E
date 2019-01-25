@@ -6,8 +6,8 @@ pipeline {
         stage('Prebuild') {
             steps {
                 sh '''
-                    npm link
                     cd blablamoveService
+                    npm link
                     npm install -g
                 '''
             }
