@@ -75,7 +75,8 @@ router.post("/subscriptions", (req: express.Request, res: express.Response) => {
     let contract: Contract = new Contract(
         description,
         Type[type],
-        new Contact(name)
+        new Contact(name),
+        []
     );
     let subscription: Subscribe = contractHandler.subscribeToContract(
         customer,
@@ -115,7 +116,10 @@ router.put(
             res.status(200).end();
             logger.log(Level.info, "item added");
         } catch (error) {
-            res.status(error.getHttpCode()).send(error.message);
+            if("getHttpCode" in error) {
+                res.status(error.getHttpCode());
+            }
+            res.send(error.message);
             logger.log(Level.info, "No Such travel");
         }
     }

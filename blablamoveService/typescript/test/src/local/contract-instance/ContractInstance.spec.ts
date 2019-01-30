@@ -28,7 +28,7 @@ describe('contract instance test', function () {
 
     it('should had and retrive subscription', function () {
         let custo = new Customer();
-        let contract = new Contract("test",Type.fragile,new Contact("test"));
+        let contract = new Contract("test",Type.fragile,new Contact("test"),[]);
         let subscription = subs.subscribeToContract(custo,contract);
 
         assert.strictEqual(1,getSubs.getSubscriptionByCustomer(custo).length);

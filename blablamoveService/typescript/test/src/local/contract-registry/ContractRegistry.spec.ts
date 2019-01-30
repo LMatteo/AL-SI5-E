@@ -30,7 +30,7 @@ describe("contract registry test", function () {
     });
 
     it('should add contract ', async function () {
-        let contract = await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        let contract = await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
 
 
         Assert.strictEqual(1,(await listContract.getAllContract()).length);
@@ -41,8 +41,9 @@ describe("contract registry test", function () {
     });
 
     it('should return the contract with the specified id', async function () {
-        let contract : Contract = await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        let contract : Contract = await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
         Assert.strictEqual(true, contract.equal(await listContract.getContractById(contract.getId)));
+
     });
 
     it('should throw an error as the contract is unknown', function () {
@@ -53,14 +54,14 @@ describe("contract registry test", function () {
     });
 
     it('should return the right number of contract', async function () {
-        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
-        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
+        await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
 
         Assert.strictEqual(8,(await listContract.getContractByType(Type.fragile)).length);
         Assert.strictEqual(0,(await listContract.getContractByType(Type.heavy)).length);
@@ -68,7 +69,7 @@ describe("contract registry test", function () {
     });
 
     it('should modify a contract', async function () {
-        let contract : Contract = await handleContract.addContract(Type.fragile, "test","salut@hotmail.com");
+        let contract : Contract = await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
 
         await handleContract.updateContractDescription(contract.getId,"new");
 

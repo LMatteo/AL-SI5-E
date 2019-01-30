@@ -22,6 +22,7 @@ services:
       - "9090:8080"
     environment:
       - dbName=db
+      - qName=rabbitmq
 
   rabbitmq:
     image: rabbitmq:3.7

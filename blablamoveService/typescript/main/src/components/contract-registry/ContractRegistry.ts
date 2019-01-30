@@ -10,6 +10,7 @@ import {inject, injectable} from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 import {ContractDoesNotExist} from "../../error/ContractDoesNotExist";
 import {getRepository} from "typeorm";
+import { Police } from "../../entity/Policy/Police";
 
 @injectable()
 export class ContractRegistry implements HandleContract, ListContract{
@@ -20,8 +21,8 @@ export class ContractRegistry implements HandleContract, ListContract{
     constructor(){
     }
 
-    async addContract(type: Type, description: string, mail: string): Promise<Contract> {
-        let contract : Contract = new Contract(description,type, new Contact(mail));
+    async addContract(type: Type, description: string, mail: string, polices: Array<Police>): Promise<Contract> {
+        let contract : Contract = new Contract(description,type, new Contact(mail), polices);
         let repo = getRepository(Contract);
         await repo.save(contract);
         this.registerInsurer.registerInsurerContact(contract);

@@ -41,7 +41,8 @@ describe("dbTest", function() {
         let contract: Contract = new Contract(
             "type",
             Type.fragile,
-            new Contact("sal")
+            new Contact("sal"),
+            []
         );
 
         let contractRepo = getRepository(Contract);
