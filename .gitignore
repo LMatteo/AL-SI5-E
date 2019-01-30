@@ -155,3 +155,6 @@ buildNumber.properties
 package-lock.json
 dist/
 node_modules/
+
+### ormtype ###
+.env

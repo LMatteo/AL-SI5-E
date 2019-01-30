@@ -21,7 +21,7 @@ services:
     ports:
       - "9090:8080"
     environment:
-      - dbName=db
+      - TYPEORM_HOST=db
       - qName=rabbitmq
 
   rabbitmq:
