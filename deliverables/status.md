@@ -1,5 +1,19 @@
 # Status
 
+## Week 05
+
+### Achieved
+
+- meilleur intégration de la base de donnée
+- ajout partiel des polices 
+
+### Planned
+
+- finir le changement de structure pour les contract
+- communication comparateur et service principal 
+
+### YELLOW
+
 ## Week 04
 
 ### Achieved
