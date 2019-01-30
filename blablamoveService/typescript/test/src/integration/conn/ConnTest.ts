@@ -1,0 +1,77 @@
+import "reflect-metadata";
+import "typeorm"
+//import "../../../../main/src/entityManager/db/CreateConnection"
+import {createConnection, getConnection, getManager, getRepository} from "typeorm";
+import {Contract} from "../../../../main/src/entity/contract/Contract";
+import {Contact} from "../../../../main/src/entity/contact/Contact";
+
+
+describe("connection test db", function(){
+
+    before(async () => {
+        try {
+            await createConnection()
+        } catch (e) {
+
+            await getConnection().synchronize(true)
+        }
+    });
+
+    it('should save obj', async function () {
+        let contact = new Contact("salut");
+        let repo = getRepository(Contact);
+        await repo.save(contact);
+
+        console.log("saved")
+    });
+
+    it('should save obj', async function () {
+        let contact = new Contact("salut");
+        let repo = getRepository(Contact);
+        await repo.save(contact);
+
+        console.log("saved")
+    });
+    it('should save obj', async function () {
+        let contact = new Contact("salut");
+        let repo = getRepository(Contact);
+        await repo.save(contact);
+
+        console.log("saved")
+    });
+    it('should save obj', async function () {
+        let contact = new Contact("salut");
+        let repo = getRepository(Contact);
+        await repo.save(contact);
+
+        console.log("saved")
+    });
+    it('should save obj', async function () {
+        let contact = new Contact("salut");
+        let repo = getRepository(Contact);
+        await repo.save(contact);
+
+        console.log("saved")
+    });
+    it('should save obj', async function () {
+        let contact = new Contact("salut");
+        let repo = getRepository(Contact);
+        await repo.save(contact);
+
+        console.log("saved")
+    });
+    it('should save obj', async function () {
+        let contact = new Contact("salut");
+        let repo = getRepository(Contact);
+        await repo.save(contact);
+
+        console.log("saved")
+    });
+    it('should save obj', async function () {
+        let contact = new Contact("salut");
+        let repo = getRepository(Contact);
+        await repo.save(contact);
+
+        console.log("saved")
+    });
+});

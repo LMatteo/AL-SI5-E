@@ -9,16 +9,21 @@ import { CustomerDoNotExist } from "../../../../main/src/error/CustomerDoNotExis
 import { ControlTravels } from "../../../../main/src/components/path-service/ControlTravel";
 import container from "../../../../main/src/components/InjectionConfig";
 import COMPONENT_IDENTIFIER from "../../../../main/src/components/InjectionIdentifier";
-import { getConnection } from "../../../../main/src/entityManager/db/DbConnection";
+import {createConnection, getConnection, getRepository} from "typeorm";
 
 describe("path service test", function() {
-    let pathService: ControlTravels;
+    let pathService: ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels);
+
+    before(async () => {
+        try{
+            await createConnection()
+        } catch (e) {
+            await getConnection().synchronize(true);
+        }
+    });
 
     beforeEach(async () => {
-        let connection = await getConnection();
-        await connection.dropDatabase();
-        pathService = container.get(COMPONENT_IDENTIFIER.ControlTravels);
-        await connection.close();
+        await getConnection().synchronize(true);
     });
 
     it("create travel ", async () => {
@@ -30,13 +35,11 @@ describe("path service test", function() {
         Assert.strictEqual(travel1.$customer.$name, "christophe");
         Assert.strictEqual(travel1.$departure, "startpoint");
         Assert.strictEqual(travel1.$destination, "endpoint");
-        let connection = await getConnection();
-        let customerRepo = connection.getRepository(Customer);
+        let customerRepo = getRepository(Customer);
         let christophe = await customerRepo.findOne(travel1.$customer.$id, {
             relations: ["shipments"]
         });
         Assert.ok(christophe.$shipments.some(s => s.$id === travel1.$id));
-        await connection.close();
     });
 
     it("add item to travel", async () => {
@@ -51,10 +54,8 @@ describe("path service test", function() {
         let transporter = new Customer();
         transporter.$name = "salut";
         travelA.$transporter = transporter;
-        let connection = await getConnection();
-        let travelRepo = connection.getRepository(Travel);
+        let travelRepo = getRepository(Travel);
         await travelRepo.save(travelA);
-        await connection.close();
         let travel1 = await pathService.addItemToTravel(itemA, travelA.$id);
         Assert.strictEqual(travel1.$departure, travelA.$departure);
         Assert.strictEqual(travel1.$destination, travelA.$destination);
@@ -91,10 +92,8 @@ describe("path service test", function() {
     it("get customer by id", async () => {
         let christophe = new Customer();
         christophe.$name = "christophe";
-        let connection = await getConnection();
-        let customerRepo = connection.getRepository(Customer);
+        let customerRepo = getRepository(Customer);
         await customerRepo.save(christophe);
-        await connection.close();
         let byId = await pathService.getCustomerById(christophe.$id);
         Assert.strictEqual(byId.$name, christophe.$name);
     });

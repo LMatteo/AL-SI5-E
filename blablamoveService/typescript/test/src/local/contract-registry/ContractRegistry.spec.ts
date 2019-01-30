@@ -10,17 +10,23 @@ import {ListContract} from "../../../../main/src/components/contract-registry/Li
 import container from "../../../../main/src/components/InjectionConfig";
 import COMPONENT_IDENTIFIER from "../../../../main/src/components/InjectionIdentifier";
 import {ContractDoesNotExist} from "../../../../main/src/error/ContractDoesNotExist";
-import {getConnection} from "../../../../main/src/entityManager/db/DbConnection";
+import {createConnection, getConnection} from "typeorm";
 
 describe("contract registry test", function () {
 
     let handleContract : HandleContract = container.get(COMPONENT_IDENTIFIER.HandleContract);
     let listContract : ListContract = container.get(COMPONENT_IDENTIFIER.ListContract);
 
-    beforeEach(async function () {
-        let connection = await getConnection();
-        await connection.dropDatabase();
-        await connection.close();
+    before(async () => {
+        try{
+            await createConnection()
+        } catch (e) {
+            await getConnection().synchronize(true);
+        }
+    });
+
+    beforeEach(async () => {
+        await getConnection().synchronize(true);
     });
 
     it('should add contract ', async function () {

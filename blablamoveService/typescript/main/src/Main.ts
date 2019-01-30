@@ -8,6 +8,7 @@ import container from "./components/InjectionConfig";
 import COMPONENT_IDENTIFIER from "./components/InjectionIdentifier";
 import { Validate } from "./components/insurance-validator/Validate";
 import { Travel } from "./entity/travel/Travel";
+import {createConnection} from "typeorm";
 
 let customerWs : express.Router = require("./route/CustomerWs");
 let insurerWs : express.Router = require("./route/InsurerWs");
@@ -39,6 +40,8 @@ app.use(function(error:Error,req: express.Request,res: express.Response,next : e
 app.use('/blabla-move-backend',customerWs);
 app.use('/blabla-move-backend',insurerWs);
 
-app.listen(8080,() => {
-   logger.log(Level.info,"listening on 8080");
+createConnection().then(() => {
+   app.listen(8080,() => {
+      logger.log(Level.info,"listening on 8080");
+   });
 });
