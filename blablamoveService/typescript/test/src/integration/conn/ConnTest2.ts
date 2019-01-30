@@ -25,7 +25,6 @@ describe("connection test db", function(){
         let repo = getRepository(Contact);
         await repo.save(contact);
 
-        console.log("saved")
     });
 
     it('should save obj', async function () {
@@ -33,48 +32,41 @@ describe("connection test db", function(){
         let repo = getRepository(Contact);
         await repo.save(contact);
 
-        console.log("saved")
     });
     it('should save obj', async function () {
         let contact = new Contact("salut");
         let repo = getRepository(Contact);
         await repo.save(contact);
 
-        console.log("saved")
     });
     it('should save obj', async function () {
         let contact = new Contact("salut");
         let repo = getRepository(Contact);
         await repo.save(contact);
 
-        console.log("saved")
     });
     it('should save obj', async function () {
         let contact = new Contact("salut");
         let repo = getRepository(Contact);
         await repo.save(contact);
 
-        console.log("saved")
     });
     it('should save obj', async function () {
         let contact = new Contact("salut");
         let repo = getRepository(Contact);
         await repo.save(contact);
 
-        console.log("saved")
     });
     it('should save obj', async function () {
         let contact = new Contact("salut");
         let repo = getRepository(Contact);
         await repo.save(contact);
 
-        console.log("saved")
     });
     it('should save obj', async function () {
         let contact = new Contact("salut");
         let repo = getRepository(Contact);
         await repo.save(contact);
 
-        console.log("saved")
     });
 });
