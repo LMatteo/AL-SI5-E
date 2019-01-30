@@ -17,12 +17,12 @@ let pathFile = __dirname.replace("dist","typescript");
 router.use(express.static(path.join(pathFile,'public')));
 
 
-router.post("/contracts", (req: express.Request, res: express.Response) => {
+router.post("/contracts", async (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "adding new contract");
 
     let contractHandler: HandleContract = container.get(COMPONENT_IDENTIFIER.HandleContract);
     let type: keyof typeof Type = req.body.contract.typeName;
-    let contract: Contract = contractHandler.addContract(
+    let contract: Contract = await contractHandler.addContract(
         Type[type],
         req.body.contract.description,
         req.body.contract.mail
@@ -32,11 +32,11 @@ router.post("/contracts", (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "new contract added");
 });
 
-router.get("/contracts", (req: express.Request,res: express.Response) => {
+router.get("/contracts", async (req: express.Request,res: express.Response) => {
     logger.log(Level.info, "listing all contracts");
 
     let contractLister : ListContract = container.get(COMPONENT_IDENTIFIER.ListContract);
-    let contracts : Array<Contract> = contractLister.getAllContract();
+    let contracts : Array<Contract> = await contractLister.getAllContract();
     let resArr : Array<any> = new Array<any>();
 
     contracts.forEach(function (value: Contract) {resArr.push(value.toJson())});
@@ -45,7 +45,7 @@ router.get("/contracts", (req: express.Request,res: express.Response) => {
 
 });
 
-router.get("/subscriptions", (req: express.Request, res: express.Response) => {
+router.get("/subscriptions",  (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "listing subscriptions");
 
     let instanceSubscriptions: GetSubscription = container.get(COMPONENT_IDENTIFIER.GetSubscription);
