@@ -47,7 +47,7 @@ pipeline {
                     '''
                 }
                 sh '''
-                    export TYPEORM_HOST=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-test-mysql`
+                    export dbName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-test-mysql`
                     export qName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-test-queue`
                     cd blablamoveService
                     npm run test
@@ -98,7 +98,7 @@ pipeline {
                     '''
                 }
                 sh '''
-                    export TYPEORM_HOST=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-it-mysql`
+                    export dbName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-it-mysql`
                     export qName=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' blablamove-it-queue`
                     cd blablamoveService
                     npm run start &
