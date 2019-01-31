@@ -9,6 +9,7 @@ import { Item } from "../../../../main/src/entity/item/Item";
 import { Validator } from "../../../../main/src/entity/validator/Validator";
 import { Travel } from "../../../../main/src/entity/travel/Travel";
 import { Customer } from "../../../../main/src/entity/customer/Customer";
+import {Subscribe} from "../../../../main/src/entity/Subscription/Subscribe";
 
 describe("dbTest", function() {
     before(async () => {
@@ -226,6 +227,30 @@ describe("dbTest", function() {
             customer2.$items[0].$name,
             customer.$items[0].$name
         );
+    });
+
+    it('should save subscription', async function () {
+        let customer = new Customer();
+        customer.$name = "toto";
+
+        let contract: Contract = new Contract(
+            "type",
+            Type.fragile,
+            new Contact("sal"),
+            []
+        );
+
+        let subscription = new Subscribe(customer,contract);
+
+        let repo = getRepository(Subscribe);
+
+        await repo.save(subscription);
+        let retrivedSubscription = await repo.findOne({
+            where: {id: subscription.$id},
+            relations: ["contract","customer"]
+        });
+
+        assert.deepStrictEqual(subscription,retrivedSubscription);
     });
 
 });

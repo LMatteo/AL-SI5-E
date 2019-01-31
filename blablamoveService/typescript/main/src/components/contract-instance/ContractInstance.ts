@@ -2,60 +2,66 @@ import {GetSubscription} from "./GetSubscription";
 import {Subscription} from "./Subscription";
 import {SubscribeStore} from "../../entityManager/local/SubscribeStore";
 import {Notify} from "../agency-notifier/Notify";
-import {Subscribe} from "../../entity/Subscribe";
+import {Subscribe} from "../../entity/Subscription/Subscribe";
 import {Customer} from "../../entity/customer/Customer";
 import {Contract} from "../../entity/contract/Contract";
 import {inject, injectable} from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 import {NoSuchSubscription} from "../../error/NoSuchSubscription";
+import {getRepository} from "typeorm";
 
 
 @injectable()
 export class ContractInstance implements GetSubscription, Subscription{
    
-    private store: SubscribeStore;
 
     @inject(COMPONENT_IDENTIFIER.Notify)
     private notify: Notify;
 
     constructor(){
-        this.store = new SubscribeStore();
     }
 
-    getSubscriptions(): Array<Subscribe> {
-        let res : Array<Subscribe> = new Array<Subscribe>();
-        for(let sub of this.store.get()){
-                res.push(sub);
-        }
-        return res;
+    async getSubscriptions(): Promise<Array<Subscribe>> {
+        let repo = getRepository(Subscribe);
+
+        return await repo.find()
     }
-    getSubscriptionByCustomer(customer: Customer): Subscribe[] {
-        let res : Array<Subscribe> = new Array<Subscribe>();
-        for(let sub of this.store.get()){
-            if(sub.$customer.$name == customer.$name){
-                res.push(sub);
-            }
-        }
-        return res;
+    async getSubscriptionByCustomer(customer: Customer): Promise<Array<Subscribe>> {
+        let repo = getRepository(Subscribe);
+
+        return await repo.find({
+            where: {customer: customer},
+            relations : ["contract","customer"]
+        });
+
     }
-    getSubscriptionById(id: number): Subscribe {
-        for(let sub of this.store.get()){
-            if(sub.$id ===id){
-                return sub
-            }
+    async getSubscriptionById(id: number): Promise<Subscribe> {
+        let repo = getRepository(Subscribe);
+
+        let res =  await repo.findOne({
+            where: {id : id},
+            relations : ["contract","customer"]
+        });
+
+        if (res == undefined){
+            throw new NoSuchSubscription();
         }
-        throw new NoSuchSubscription();
+
+        return res
     }
 
-    subscribeToContract(customer: Customer , contract: Contract): Subscribe {
+    async subscribeToContract(customer: Customer , contract: Contract): Promise<Subscribe> {
         let subscription :Subscribe = new Subscribe(customer,contract);
-        let sub : Subscribe = this.store.persist(subscription);
+        let repo = getRepository(Subscribe);
+        await repo.save(subscription);
         this.notify.notifyContractRegister(subscription);
-        return sub;
+        return subscription;
     }
 
-    cancelSubscritpion(subscribe: Subscribe): void {
-        throw new Error("Method not implemented.");
+    async cancelSubscritpion(subscribe: Subscribe): Promise<void> {
+        let repo = getRepository(Subscribe);
+        await repo.delete(subscribe)
+
     }
 
 }

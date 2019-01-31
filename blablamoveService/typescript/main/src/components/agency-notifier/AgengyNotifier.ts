@@ -1,6 +1,6 @@
 import { RegisterInsurer } from "./RegisterInsurer";
 import { Notify } from "./Notify";
-import { Subscribe } from "../../entity/Subscribe";
+import { Subscribe } from "../../entity/Subscription/Subscribe";
 import { ItineraryStatus } from "../../entity/ItineraryStatus";
 import { Logger } from "../../logging/Logger";
 import { LoggingLevel } from "../../logging/LoggingLevel";

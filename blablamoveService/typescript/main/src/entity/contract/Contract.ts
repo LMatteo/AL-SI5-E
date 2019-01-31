@@ -17,7 +17,7 @@ export class Contract implements Comparable, Jsonable{
     @Column()
     private type : Type;
 
-    @OneToOne(type => Contact, {cascade : true})
+    @OneToOne(type => Contact, {cascade : true , eager : true})
     @JoinColumn()
     private contact: Contact;
 

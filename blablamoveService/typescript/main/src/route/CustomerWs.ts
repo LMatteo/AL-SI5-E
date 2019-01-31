@@ -2,7 +2,7 @@ import express = require("express");
 import path = require("path");
 import { Type } from "../entity/Type";
 import { Contract } from "../entity/contract/Contract";
-import { Subscribe } from "../entity/Subscribe";
+import { Subscribe } from "../entity/Subscription/Subscribe";
 import { GetSubscription } from "../components/contract-instance/GetSubscription";
 import { ListContract } from "../components/contract-registry/ListContract";
 import { Logger } from "../logging/Logger";
@@ -54,7 +54,7 @@ router.get(
     }
 );
 
-router.post("/subscriptions", (req: express.Request, res: express.Response) => {
+router.post("/subscriptions", async (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "adding new subscriptions");
 
     let name: string = req.body.subcribe.name;
@@ -78,7 +78,7 @@ router.post("/subscriptions", (req: express.Request, res: express.Response) => {
         new Contact(name),
         []
     );
-    let subscription: Subscribe = contractHandler.subscribeToContract(
+    let subscription: Subscribe = await contractHandler.subscribeToContract(
         customer,
         contract
     );
