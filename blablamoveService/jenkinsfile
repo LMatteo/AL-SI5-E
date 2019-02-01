@@ -85,16 +85,8 @@ pipeline {
                 timeout(time: 3, unit: 'MINUTES') {
                     sh'''
                         cd blablamoveService
-                        ./waitDB.sh blablamove-it-mysql
-                    '''
-                }
-                sh '''
-                    docker exec blablamove-it-queue rabbitmq-plugins enable rabbitmq_management
-                '''
-                timeout(time: 3, unit: 'MINUTES') {
-                    sh'''
-                        cd blablamoveService
-                        ./waitQ.sh blablamove-it-queue
+                        sleep 10
+                        ./waitDB.sh blablamove-test-mysql
                     '''
                 }
                 sh '''
