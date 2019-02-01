@@ -1,7 +1,7 @@
-import { Comparable } from "../Comparable";
-import { Validator } from "../validator/Validator";
-import { Item } from "../item/Item";
-import { Customer } from "../customer/Customer";
+import {Comparable} from "../Comparable";
+import {Validator} from "../validator/Validator";
+import {Item} from "../item/Item";
+import {Customer} from "../customer/Customer";
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -23,7 +23,7 @@ export class Travel implements Comparable {
     @Column()
     private destination: string;
 
-    @OneToOne(type => Validator, { cascade: true })
+    @OneToOne(type => Validator, {cascade: true})
     @JoinColumn()
     private validator: Validator;
 
@@ -46,9 +46,51 @@ export class Travel implements Comparable {
         this.validator = new Validator();
     }
 
+    public static deserialize(json: string): Travel {
+        let object = JSON.parse(json);
+
+        let travel: Travel = new Travel();
+        travel.id = object.id;
+        travel.departure = object.departure;
+        travel.destination = object.destination;
+        travel.items = [];
+        if (object.items !== undefined) {
+
+            for (let i = 0; i < object.items.length; i++) {
+                let item = new Item();
+                let objectItem = object.items[i];
+                item.$id = objectItem.id;
+                item.$name = objectItem.name;
+                travel.items.push(item)
+            }
+        }
+        travel.validator = new Validator();
+        travel.validator.$id = object.validator.id;
+        travel.validator.$insuranceValidation = object.validator.insuranceValidation;
+        travel.validator.$pathValidation = object.validator.pathValidation;
+
+        travel.customer = new Customer();
+        if(object.customer !== undefined){
+            travel.customer.$name = object.customer.name;
+            travel.customer.$email = object.customer.email;
+            travel.customer.$id = object.customer.id;
+
+        }
+        travel.transporter = new Customer();
+        if(object.transporter !== undefined){
+            travel.transporter.$name = object.transporter.name;
+            travel.transporter.$email = object.transporter.email;
+            travel.transporter.$id = object.transporter.id;
+
+        }
+        return travel;
+
+    }
+
     public get $id(): number {
         return this.id;
     }
+
     public set $id(value: number) {
         this.id = value;
     }
@@ -76,6 +118,7 @@ export class Travel implements Comparable {
     public set $items(value: Item[]) {
         this.items = value;
     }
+
     public get $customer(): Customer {
         return this.customer;
     }

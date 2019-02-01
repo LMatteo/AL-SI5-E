@@ -30,9 +30,7 @@ export class InsuranceValidator implements Validate {
         this.logger = new Logger();
     }
 
-    validate(travel: Travel): void {
-
-
+    async validate(travel: Travel): Promise<void> {
 
         this.logger.log(Level.info, "new travel validation beginning");
         let custo: Customer = travel.$customer;
@@ -41,7 +39,7 @@ export class InsuranceValidator implements Validate {
 
         if(customerSubscriptions.length == 0){
             this.logger.log(Level.info, "travel rejected : travel creator " + custo.$id + " has no contract");
-            this.insuranceValidate.insuranceInvalidate(travel);
+            await this.insuranceValidate.insuranceInvalidate(travel);
             return;
         }
 
@@ -51,12 +49,12 @@ export class InsuranceValidator implements Validate {
         
         if(transporterSubscriptions.length == 0){
             this.logger.log(Level.info, "travel rejected : transporter has no contract");
-            this.insuranceValidate.insuranceInvalidate(travel);
+            await this.insuranceValidate.insuranceInvalidate(travel);
             return;
         }
         this.logger.log(Level.info, "insurance has been validated");
 
-        this.insuranceValidate.insuranceValidate(travel);
+        await this.insuranceValidate.insuranceValidate(travel);
         
         customerSubscriptions.forEach(contractSubscription => {
             this.notifier.notifyContractReportCustomer(custo, contractSubscription.$contract, travel  )
@@ -70,7 +68,7 @@ export class InsuranceValidator implements Validate {
 
     }  
 
-    notify(travel: Travel): void {
+    async notify(travel: Travel): Promise<void> {
         let custo: Customer = travel.$customer;
         let customerSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(custo);
       

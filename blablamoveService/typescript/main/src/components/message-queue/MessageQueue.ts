@@ -7,6 +7,7 @@ import { Travel } from "../../entity/travel/Travel";
 import Level = require("../../logging/Level");
 import container from "../InjectionConfig";
 import { Customer } from "../../entity/customer/Customer";
+import {Validator} from "../../entity/validator/Validator";
 @injectable()
 export class MessageQueue {
     private static connection: Amqp.Connection;
@@ -36,20 +37,7 @@ export class MessageQueue {
             );
             queue.bind(MessageQueue.exchangeValidation);
             queue.activateConsumer(message => {
-                console.log("exchangeValidation");
-                let travelMarshalled = JSON.parse(message.getContent());
-                let travel: Travel = travelMarshalled;
-                travel.$customer = travelMarshalled.customer || new Customer();
-                if (travelMarshalled.customer !== undefined) {
-                    travel.$customer.$name = travelMarshalled.customer.name;
-                }
-                travel.$transporter =
-                    travelMarshalled.transporter || new Customer();
-                if (travelMarshalled.transporter !== undefined) {
-                    travel.$transporter.$name =
-                        travelMarshalled.transporter.name;
-                }
-
+                let travel: Travel = Travel.deserialize(message.getContent());
                 zis.validate.validate(travel);
             });
 
@@ -63,30 +51,17 @@ export class MessageQueue {
             queue2.bind(MessageQueue.exchangeEndNotification);
             queue2.activateConsumer(message => {
                 console.log("END_NOTIFICATION_QUEUE");
-                let travelMarshalled = JSON.parse(message.getContent());
-                let travel: Travel = travelMarshalled;
-                travel.$customer = travelMarshalled.customer || new Customer();
-                if (travelMarshalled.customer !== undefined) {
-                    travel.$customer.$name = travelMarshalled.customer.name;
-                }
-
-                travel.$transporter =
-                    travelMarshalled.transporter || new Customer();
-                if (travelMarshalled.transporter !== undefined) {
-                    travel.$transporter.$name =
-                        travelMarshalled.transporter.name;
-                }
+                let travel: Travel = Travel.deserialize(message.getContent());
 
                 zis.validate.notify(travel);
             });
         }
     }
     public constructor() {
-        this.initialize();
     }
 
     public queue: { topic: string; receivers: Receiver[] }[] = [];
-    subScribe(topic: string, receiver: Receiver) {
+    subScribe(topic: string, receiver: Receiver):  Promise<void>  {
         for (let i = 0; i < this.queue.length; i++) {
             const element = this.queue[i];
             if (element.topic == topic) {
@@ -97,7 +72,7 @@ export class MessageQueue {
         this.queue.push({ topic: topic, receivers: [receiver] });
     }
 
-    sendMessage(topic: string, data: Travel) {
+    async sendMessage(topic: string, data: Travel):  Promise<void>  {
         var marshalled: string = JSON.stringify(data, (key, value) => {
             if (key === "customer" || key === "transporter") {
                 return { name: value.$name, id: value.$id };

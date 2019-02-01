@@ -1,58 +1,56 @@
-import { InsuranceValidate } from "./InsuranceValidate";
-import { PathValidate } from "./PathValidate";
-import { Travel } from "../../entity/travel/Travel";
-import { injectable } from "inversify";
-import { getConnection } from "../../entityManager/db/DbConnection";
-import { Validator } from "../../entity/validator/Validator";
+import {InsuranceValidate} from "./InsuranceValidate";
+import {PathValidate} from "./PathValidate";
+import {Travel} from "../../entity/travel/Travel";
+import {injectable} from "inversify";
+
+import {Validator} from "../../entity/validator/Validator";
+import {getRepository} from "typeorm";
 
 @injectable()
 export class TravelValidator implements InsuranceValidate, PathValidate {
-    insuranceValidate(travel: Travel): Travel {
-        console.log("insuranceValidate");
-        if(travel.$validator === undefined){
+    async insuranceValidate(travel: Travel): Promise<Travel> {
+        console.log("insuranceValidate",travel.$id);
+
+        if (travel.$validator === undefined) {
             travel.$validator = new Validator();
         }
         travel.$validator.$insuranceValidation = true;
-        async () => {
-            let travelRepo = getRepository(Travel);
-            travelRepo.save(travel);
-        };
+        let travelRepo = getRepository(Travel);
+        await travelRepo.save(travel);
         return travel;
     }
-    insuranceInvalidate(travel: Travel): Travel {
-        console.log("insuranceInvalidate");
-        if(travel.$validator === undefined){
+
+    async insuranceInvalidate(travel: Travel): Promise<Travel> {
+        console.log("insuranceInvalidate",travel.$id);
+        if (travel.$validator === undefined) {
             travel.$validator = new Validator();
         }
         travel.$validator.$insuranceValidation = false;
-        async () => {
-            let travelRepo = getRepository(Travel);
-            travelRepo.save(travel);
-        };
+
+        let travelRepo = getRepository(Travel);
+        await travelRepo.save(travel);
         return travel;
     }
-    pathValidate(travel: Travel): Travel {
+
+    async pathValidate(travel: Travel): Promise<Travel> {
         console.log("pathValidate");
-        if(travel.$validator === undefined){
+        if (travel.$validator === undefined) {
             travel.$validator = new Validator();
         }
         travel.$validator.$pathValidation = true;
-        async () => {
-            let travelRepo = getRepository(Travel);
-            travelRepo.save(travel);
-        };
+        let travelRepo = getRepository(Travel);
+        await travelRepo.save(travel);
         return travel;
     }
-    pathInvalidate(travel: Travel): Travel {
+
+    async pathInvalidate(travel: Travel): Promise<Travel> {
         console.log("pathInvalidate");
-        if(travel.$validator === undefined){
+        if (travel.$validator === undefined) {
             travel.$validator = new Validator();
         }
         travel.$validator.$pathValidation = false;
-        (async () => {
-            let travelRepo = getRepository(Travel);
-            travelRepo.save(travel);
-        })();
+        let travelRepo = getRepository(Travel);
+        await travelRepo.save(travel);
         return travel;
     }
 }
