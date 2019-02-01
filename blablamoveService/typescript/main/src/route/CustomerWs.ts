@@ -27,7 +27,7 @@ router.use(express.static(path.join(pathFile, "public")));
 
 router.get(
     "/contracts/:getType",
-    (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "listing contract");
         console.log(req.params);
         let theType: keyof typeof Type = req.params.getType;
@@ -36,7 +36,7 @@ router.get(
         let contractLister: ListContract = container.get(
             COMPONENT_IDENTIFIER.ListContract
         );
-        let contracts: Array<Contract> = contractLister.getContractByType(
+        let contracts: Array<Contract> = await contractLister.getContractByType(
             Type[theType]
         );
         logger.log(Level.info, contracts.toString());

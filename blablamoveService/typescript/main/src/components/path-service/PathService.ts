@@ -8,7 +8,7 @@ import { TravelDoNotExist } from "../../error/TravelDoNotExist";
 import { PathValidate } from "../travelValidator/PathValidate";
 import { inject, injectable } from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
-import { getConnection } from "../../entityManager/db/DbConnection";
+import {getRepository} from "typeorm";
 
 @injectable()
 export class PathService implements ControlTravels {
@@ -26,8 +26,7 @@ export class PathService implements ControlTravels {
         destination: string
     ): Promise<Travel> {
         let customer: Customer;
-        let connection = await getConnection();
-        let customerRepo = connection.getRepository(Customer);
+        let customerRepo = getRepository(Customer);
         customer = await customerRepo.findOne({
             where: { name: customerName },
             relations: ["shipments", "transports", "items"]
@@ -42,20 +41,18 @@ export class PathService implements ControlTravels {
         travel.$destination = destination;
         customer.addTravel(travel);
         this.validator.pathValidate(travel);
-        let travelRepo = connection.getRepository(Travel);
+        let travelRepo = getRepository(Travel);
         await travelRepo.save(travel);
         this.messageQueue.sendMessage("validation", travel);
         travel = await travelRepo.findOne(travel.$id, {
             relations: ["items", "customer", "validator", "transporter"]
         });
-        await connection.close();
         return travel;
     }
 
     async addItemToTravel(item: Item, travelId: number): Promise<Travel> {
         let travel: Travel;
-        let connection = await getConnection();
-        let travelRepo = connection.getRepository(Travel);
+        let travelRepo = getRepository(Travel);
         travel = await travelRepo.findOne(travelId, {
             relations: [
                 "items",
@@ -73,7 +70,6 @@ export class PathService implements ControlTravels {
         await travelRepo.save(travel);
         
         this.messageQueue.sendMessage("validation", travel);
-        await connection.close();
         return travel;
     }
 
@@ -82,29 +78,24 @@ export class PathService implements ControlTravels {
         destination: string
     ): Promise<Travel[]> {
         let travels: Travel[];
-        let connection = await getConnection();
-        let travelRepo = connection.getRepository(Travel);
+        let travelRepo = getRepository(Travel);
         travels = await travelRepo.find({
             where: { departure: departure, destination: destination },
             relations: ["items", "customer", "validator", "transporter"]
         });
-        await connection.close();
 
         return travels;
     }
 
     async findTravelById(travelId: number): Promise<Travel> {
         let travel: Travel;
-        let connection = await getConnection();
-        let travelRepo = connection.getRepository(Travel);
+        let travelRepo = getRepository(Travel);
         travel = await travelRepo.findOne(travelId, {
             relations: ["items", "customer", "validator", "transporter"]
         });
         if (travel === undefined) {
-            await connection.close();
             throw new TravelDoNotExist();
         }
-        await connection.close();
         return travel;
     }
 
@@ -114,9 +105,8 @@ export class PathService implements ControlTravels {
     ): Promise<Travel> {
         let transporter: Customer;
         let travel: Travel;
-        let connection = await getConnection();
-        let travelRepo = connection.getRepository(Travel);
-        let customerRepo = connection.getRepository(Customer);
+        let travelRepo = getRepository(Travel);
+        let customerRepo = getRepository(Customer);
         transporter = await customerRepo.findOne({
             where: { name: transporterName },
             relations: ["transports"]
@@ -129,7 +119,6 @@ export class PathService implements ControlTravels {
             relations: ["transporter", "customer", "items", "validator"]
         });
         if (travel === undefined) {
-            await connection.close();
             throw new TravelDoNotExist();
         }
         travel.$transporter = transporter;
@@ -138,7 +127,6 @@ export class PathService implements ControlTravels {
         travel = await travelRepo.findOne(travelId, {
             relations: ["transporter", "customer", "items", "validator"]
         });
-        await connection.close();
         this.validator.pathValidate(travel);
         this.messageQueue.sendMessage("validation", travel);
 
@@ -151,16 +139,13 @@ export class PathService implements ControlTravels {
 
     async getCustomerById(id: number): Promise<Customer> {
         let customer: Customer;
-        let connection = await getConnection();
-        let customerRepo = connection.getRepository(Customer);
+        let customerRepo = getRepository(Customer);
         customer = await customerRepo.findOne(id, {
             relations: ["transports", "shipments", "items"]
         });
         if (customer === undefined) {
-            await connection.close();
             throw new CustomerDoNotExist();
         }
-        await connection.close();
         return customer;
     }
 }

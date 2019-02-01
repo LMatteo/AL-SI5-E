@@ -9,65 +9,63 @@ import {AgencyNotifier} from "../agency-notifier/AgengyNotifier";
 import {inject, injectable} from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 import {ContractDoesNotExist} from "../../error/ContractDoesNotExist";
-import { Police } from "../../entity/Police";
+import {getRepository} from "typeorm";
+import { Police } from "../../entity/Policy/Police";
 
 @injectable()
 export class ContractRegistry implements HandleContract, ListContract{
-    private store: ContractStore;
 
     @inject(COMPONENT_IDENTIFIER.RegisterInsurer)
     private registerInsurer: RegisterInsurer;
 
     constructor(){
-        this.store = new ContractStore();
     }
 
-    addContract(type: Type, description: string, mail: string, polices: Array<Police>): Contract {
-        let contract : Contract = this.store.persist(new Contract(description,type, new Contact(mail), polices));
+    async addContract(type: Type, description: string, mail: string, polices: Array<Police>): Promise<Contract> {
+        let contract : Contract = new Contract(description,type, new Contact(mail), polices);
+        let repo = getRepository(Contract);
+        await repo.save(contract);
         this.registerInsurer.registerInsurerContact(contract);
         return contract;
     }
 
-    getContractById(id: number): Contract {
-        for(let contract of this.store.get()){
-            if(contract.getId === id){
-                return contract;
-            }
+    async getContractById(id: number): Promise<Contract> {
+        let repo = getRepository(Contract);
+        let contract : Contract = await repo.findOne({
+            where: { id: id },
+            relations: ["contact"]
+        });
+        if(contract === undefined){
+            throw new ContractDoesNotExist();
         }
-        throw new ContractDoesNotExist();
+        return contract;
     }
 
-    getContractByType(type: Type): Array<Contract> {
-        let res : Array<Contract> = new Array<Contract>();
+    async getContractByType(type: Type): Promise<Array<Contract>>{
 
-        for(let contract of this.store.get()){
-            if(contract.getType === type){
-                res.push(contract);
-            }
-        }
-
-        return res;
+        let repo = getRepository(Contract);
+        let contracts : Contract[] = await repo.find({
+            where: { type: type },
+            relations: ["contact"]
+        });
+        return contracts;
     }
 
-    updateContractDescription(id: number, description: string): Contract {
-        for(let contract of this.store.get()){
-            if(contract.getId=== id){
-                contract.getDescription = description;
-                this.store.merge(contract);
-                this.registerInsurer.updateInsurerContact(contract);
-                return contract;
-            }
-        }
-        
-        throw new ContractDoesNotExist();
+    async updateContractDescription(id: number, description: string): Promise<Contract> {
+        let contract = await this.getContractById(id);
+        contract.getDescription = description;
+        let repo = getRepository(Contract);
+        await repo.save(contract);
+        return contract;
     }
 
-    getAllContract(): Array<Contract> {
-        let res : Array<Contract> = new Array<Contract>();
-        for(let contract of this.store.get()){
-            res.push(contract);
-        }
-        return res;
+    async getAllContract(): Promise<Array<Contract>> {
+
+        let repo = getRepository(Contract);
+        let contracts =  await repo.find({
+            relations: ["contact"]
+        });
+        return contracts;
     }
 
 }

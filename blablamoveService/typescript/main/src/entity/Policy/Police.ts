@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
-import { Contract } from "./contract/Contract";
+import { Contract } from "../contract/Contract";
 
 @Entity()
 export class Police {
