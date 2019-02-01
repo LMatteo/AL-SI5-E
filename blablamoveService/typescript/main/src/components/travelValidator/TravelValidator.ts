@@ -4,6 +4,9 @@ import { Travel } from "../../entity/travel/Travel";
 import { injectable } from "inversify";
 import { getConnection } from "../../entityManager/db/DbConnection";
 import { Validator } from "../../entity/validator/Validator";
+import {Connection} from "typeorm";
+import {Item} from "../../entity/item/Item";
+import * as assert from "assert";
 
 @injectable()
 export class TravelValidator implements InsuranceValidate, PathValidate {
@@ -55,12 +58,12 @@ export class TravelValidator implements InsuranceValidate, PathValidate {
             travel.$validator = new Validator();
         }
         travel.$validator.$pathValidation = false;
-        async () => {
+        (async () => {
             let connection = await getConnection();
             let travelRepo = connection.getRepository(Travel);
             travelRepo.save(travel);
             connection.close();
-        };
+        })();
         return travel;
     }
 }
