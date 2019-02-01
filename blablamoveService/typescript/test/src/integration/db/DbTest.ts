@@ -21,11 +21,7 @@ describe("dbTest", function() {
     });
 
     beforeEach(async () => {
-        try {
-            await createConnection()
-        } catch (e) {
-            await getConnection().synchronize(true);
-        }
+        await getConnection().synchronize();
     });
 
     it("should retrieve getContact", async function () {
@@ -51,7 +47,6 @@ describe("dbTest", function() {
         assert.deepStrictEqual(
             await contractRepo.findOne({
                 where: {id: contract.getId},
-                relations: ["contact"]
             }),
             contract
         );
@@ -245,9 +240,8 @@ describe("dbTest", function() {
         let repo = getRepository(Subscribe);
 
         await repo.save(subscription);
-        let retrivedSubscription = await repo.findOne({
-            where: {id: subscription.$id},
-            relations: ["contract","customer"]
+        let retrivedSubscription : Subscribe = await repo.findOne({
+            where: {id: subscription.$id}
         });
 
         assert.deepStrictEqual(subscription,retrivedSubscription);

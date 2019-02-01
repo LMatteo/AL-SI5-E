@@ -31,7 +31,6 @@ export class ContractInstance implements GetSubscription, Subscription{
 
         return await repo.find({
             where: {customer: customer},
-            relations : ["contract","customer"]
         });
 
     }
@@ -40,7 +39,6 @@ export class ContractInstance implements GetSubscription, Subscription{
 
         let res =  await repo.findOne({
             where: {id : id},
-            relations : ["contract","customer"]
         });
 
         if (res == undefined){
