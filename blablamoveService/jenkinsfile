@@ -86,7 +86,7 @@ pipeline {
                     sh'''
                         cd blablamoveService
                         sleep 10
-                        ./waitDB.sh blablamove-test-mysql
+                        ./waitDB.sh blablamove-it-mysql
                     '''
                 }
                 sh '''
