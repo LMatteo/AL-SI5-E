@@ -32,7 +32,6 @@ export class InsuranceValidator implements Validate {
 
     async validate(travel: Travel): Promise<void> {
 
-        this.logger.log(Level.info, "new travel validation beginning");
         let custo: Customer = travel.$customer;
 
         let customerSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(custo);
@@ -63,7 +62,6 @@ export class InsuranceValidator implements Validate {
         transporterSubscriptions.forEach(contractSubscription => {
             this.notifier.notifyContractReportCustomer(custo, contractSubscription.$contract, travel  )
         });
-        this.logger.log(Level.info, "travel accepted");
 
 
     }  
