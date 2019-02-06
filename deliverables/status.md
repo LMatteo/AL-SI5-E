@@ -1,5 +1,19 @@
 # Status
 
+## Week 06
+
+### Achieved
+
+- intégration de la base de donnée
+- ajout du scénario et des test d'intégration 
+
+### Planned
+
+- implémentation du simulateur
+- ajout des polices
+
+### YELLOW
+
 ## Week 05
 
 ### Achieved
