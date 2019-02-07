@@ -11,7 +11,7 @@
   "scripts": {
     "test": "mocha dist/test/src/local/**/*.js --exit",
     "test-all": "mocha dist/test/src/**/*.js --exit",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "start": "node dist/main/src/Main.js",
     "debug": "node %NODE_DEBUG_OPTION% dist/main/src/Main.js",
     "it": "newman run https://www.getpostman.com/collections/e44fe0ac61bb3eb96926",
@@ -20,7 +20,8 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {name
+  "dependencies": {
+    "rimraf": "^2.6.3",
     "amqp-ts": "^1.4.0",
     "amqplib": "^0.5.3",
     "express": "^4.16.4",
