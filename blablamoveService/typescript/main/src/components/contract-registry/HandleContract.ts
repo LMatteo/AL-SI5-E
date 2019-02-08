@@ -1,10 +1,10 @@
 import {Type} from "../../entity/Type";
 import {Contract} from "../../entity/contract/Contract";
-import { Police } from "../../entity/Policy/Police";
+import { Policy } from "../../entity/Policy/Policy";
 
 export interface HandleContract {
 
-    addContract(type: Type,description: string, mail: string, polices: Array<Police>) : Promise<Contract>
+    addContract(type: Type,description: string, mail: string, policies: Array<Policy>) : Promise<Contract>
     updateContractDescription(id: number, description: string) : Promise<Contract>
 
 }

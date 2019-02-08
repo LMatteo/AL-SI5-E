@@ -42,7 +42,7 @@ router.get(
         let resArr: Array<any> = new Array<any>();
 
         contracts.forEach(function(value: Contract) {
-            resArr.push(value.toJson());
+            resArr.push(value);
         });
 
         res.send(resArr);
@@ -116,7 +116,7 @@ router.put(
             res.status(200).end();
             logger.log(Level.info, "item added");
         } catch (error) {
-            if("getHttpCode" in error) {
+            if ("getHttpCode" in error) {
                 res.status(error.getHttpCode());
             }
             res.send(error.message);
