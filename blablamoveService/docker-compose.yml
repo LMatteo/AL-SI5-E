@@ -29,3 +29,8 @@ services:
     ports:
       - "5672:5672"
 
+  extern_mailer:
+    image: extern_mailer
+    build: ./mailer
+    ports:
+    - "9091:9091"

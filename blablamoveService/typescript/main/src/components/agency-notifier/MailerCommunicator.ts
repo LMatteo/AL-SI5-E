@@ -1,7 +1,8 @@
 import * as http from "http";
 
 export class MailerCommunicator{
-    public static serverUrl: String = "localhost";
+    public static serverUrl: String = process.env.mailer || "localhost";
+
 
     private static getOptions(): any{
         return  {
