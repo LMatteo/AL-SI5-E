@@ -40,10 +40,10 @@ export class PathService implements ControlTravels {
         travel.$departure = departure;
         travel.$destination = destination;
         customer.addTravel(travel);
-        this.validator.pathValidate(travel);
+        await this.validator.pathValidate(travel);
         let travelRepo = getRepository(Travel);
         await travelRepo.save(travel);
-        this.messageQueue.sendMessage("validation", travel);
+        await this.messageQueue.sendMessage("validation", travel);
         travel = await travelRepo.findOne(travel.$id, {
             relations: ["items", "customer", "validator", "transporter"]
         });
@@ -69,7 +69,7 @@ export class PathService implements ControlTravels {
         travel.$customer.addItem(item);
         await travelRepo.save(travel);
         
-        this.messageQueue.sendMessage("validation", travel);
+        await this.messageQueue.sendMessage("validation", travel);
         return travel;
     }
 
@@ -127,8 +127,8 @@ export class PathService implements ControlTravels {
         travel = await travelRepo.findOne(travelId, {
             relations: ["transporter", "customer", "items", "validator"]
         });
-        this.validator.pathValidate(travel);
-        this.messageQueue.sendMessage("validation", travel);
+        await this.validator.pathValidate(travel);
+        await this.messageQueue.sendMessage("validation", travel);
 
         return travel;
     }

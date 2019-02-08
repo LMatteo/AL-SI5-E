@@ -26,14 +26,16 @@ export class ContractInstance implements GetSubscription, Subscription{
 
         return await repo.find()
     }
+
     async getSubscriptionByCustomer(customer: Customer): Promise<Array<Subscribe>> {
         let repo = getRepository(Subscribe);
 
         return await repo.find({
             where: {customer: customer},
         });
-
     }
+
+
     async getSubscriptionById(id: number): Promise<Subscribe> {
         let repo = getRepository(Subscribe);
 
