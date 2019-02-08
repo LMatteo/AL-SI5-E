@@ -5,7 +5,7 @@ import Level = require("../../logging/Level");
 import { InsuranceValidate } from "../travelValidator/InsuranceValidate";
 import { Customer } from "../../entity/customer/Customer";
 import { GetSubscription } from "../contract-instance/GetSubscription";
-import { Subscribe } from "../../entity/Subscribe";
+import { Subscribe } from "../../entity/Subscription/Subscribe";
 import { Notify } from "../agency-notifier/Notify";
 import {inject, injectable} from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
@@ -34,7 +34,7 @@ export class InsuranceValidator implements Validate {
 
         let custo: Customer = travel.$customer;
 
-        let customerSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(custo);
+        let customerSubscriptions: Subscribe[] = await this.contracts.getSubscriptionByCustomer(custo);
 
         if(customerSubscriptions.length == 0){
             this.logger.log(Level.info, "travel rejected : travel creator " + custo.$id + " has no contract");
@@ -44,7 +44,7 @@ export class InsuranceValidator implements Validate {
 
         let transporter :Customer= travel.$transporter;
 
-        let transporterSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(transporter);
+        let transporterSubscriptions: Subscribe[] = await this.contracts.getSubscriptionByCustomer(transporter);
         
         if(transporterSubscriptions.length == 0){
             this.logger.log(Level.info, "travel rejected : transporter has no contract");
@@ -68,13 +68,13 @@ export class InsuranceValidator implements Validate {
 
     async notify(travel: Travel): Promise<void> {
         let custo: Customer = travel.$customer;
-        let customerSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(custo);
+        let customerSubscriptions: Subscribe[] = await this.contracts.getSubscriptionByCustomer(custo);
       
         customerSubscriptions.forEach(subscription => {
             this.notifier.notifyContractReportCustomer(custo,subscription.$contract,travel);
         });
         let transporter: Customer = travel.$transporter;
-        let transporterSubscriptions: Subscribe[] = this.contracts.getSubscriptionByCustomer(transporter);
+        let transporterSubscriptions: Subscribe[] = await this.contracts.getSubscriptionByCustomer(transporter);
 
         transporterSubscriptions.forEach(subscription => {
             this.notifier.notifyContractReportCustomer(transporter,subscription.$contract,travel);

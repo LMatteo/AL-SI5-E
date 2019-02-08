@@ -4,7 +4,7 @@ import { HandleContract } from "../components/contract-registry/HandleContract";
 import { Type } from "../entity/Type";
 import { Logger } from "../logging/Logger";
 import Level = require("../logging/Level");
-import { Subscribe } from "../entity/Subscribe";
+import { Subscribe } from "../entity/Subscription/Subscribe";
 import { GetSubscription } from "../components/contract-instance/GetSubscription";
 import {Contract} from "../entity/contract/Contract";
 import {ListContract} from "../components/contract-registry/ListContract";
@@ -46,13 +46,11 @@ router.get("/contracts", async (req: express.Request,res: express.Response) => {
 
 });
 
-router.get("/subscriptions",  (req: express.Request, res: express.Response) => {
+router.get("/subscriptions",  async (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "listing subscriptions");
 
     let instanceSubscriptions: GetSubscription = container.get(COMPONENT_IDENTIFIER.GetSubscription);
-    let subscriptions: Array<
-        Subscribe
-    > = instanceSubscriptions.getSubscriptions();
+    let subscriptions: Array<Subscribe> = await instanceSubscriptions.getSubscriptions();
     let result: Array<any> = new Array<any>();
 
     subscriptions.forEach(function(value: Subscribe) {

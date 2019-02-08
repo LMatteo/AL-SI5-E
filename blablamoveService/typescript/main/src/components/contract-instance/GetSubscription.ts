@@ -1,8 +1,8 @@
-import {Subscribe} from "../../entity/Subscribe";
+import {Subscribe} from "../../entity/Subscription/Subscribe";
 import { Customer } from "../../entity/customer/Customer";
 
 export interface GetSubscription {
-    getSubscriptions() : Array<Subscribe>;
-    getSubscriptionById(id: number): Subscribe;
-    getSubscriptionByCustomer(customer: Customer): Array<Subscribe>;
+    getSubscriptions() : Promise<Array<Subscribe>>;
+    getSubscriptionById(id: number): Promise<Subscribe>;
+    getSubscriptionByCustomer(customer: Customer): Promise<Array<Subscribe>>;
 }

@@ -15,6 +15,7 @@ module.exports = {
       "dist/main/src/entity/item/Item.js",
       "dist/main/src/entity/travel/Travel.js",
       "dist/main/src/entity/validator/Validator.js",
+      "dist/main/src/entity/Subscription/Subscribe.js",
       "dist/main/src/entity/policy/Police.js"
     ],
     "extra": { "connectionLimit": 10 }
