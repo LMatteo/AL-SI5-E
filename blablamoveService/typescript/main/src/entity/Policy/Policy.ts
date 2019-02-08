@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from "typeorm";
 import { Contract } from "../contract/Contract";
 
 @Entity()
-export class Police {
+export class Policy {
     @PrimaryGeneratedColumn()
     private id: number;
 

@@ -7,7 +7,7 @@ import Level = require("../logging/Level");
 import { Subscribe } from "../entity/Subscription/Subscribe";
 import { GetSubscription } from "../components/contract-instance/GetSubscription";
 import { Contract } from "../entity/contract/Contract";
-import { Police } from "../entity/Policy/Police";
+import { Policy } from "../entity/Policy/Policy";
 import { ListContract } from "../components/contract-registry/ListContract";
 import container from "../components/InjectionConfig";
 import COMPONENT_IDENTIFIER from "../components/InjectionIdentifier";
@@ -27,18 +27,18 @@ router.post(
         );
         let type: keyof typeof Type = req.body.contract.typeName;
 
-        let policesArray = <any[]>(
-            JSON.parse(JSON.stringify(req.body.contract.polices))
+        let policiesArray = <any[]>(
+            JSON.parse(JSON.stringify(req.body.contract.policies))
         );
-        let polices: Police[] = [];
-        for (let p of policesArray) {
-            polices.push(new Police(p.name, p.price));
+        let policies: Policy[] = [];
+        for (let p of policiesArray) {
+            policies.push(new Policy(p.name, p.price));
         }
         let contract: Contract = await contractHandler.addContract(
             Type[type],
             req.body.contract.description,
             req.body.contract.mail,
-            polices
+            policies
         );
         res.send(contract);
 

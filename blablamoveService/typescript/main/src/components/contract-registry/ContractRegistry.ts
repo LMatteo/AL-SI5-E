@@ -10,7 +10,7 @@ import { inject, injectable } from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 import { ContractDoesNotExist } from "../../error/ContractDoesNotExist";
 import { getRepository } from "typeorm";
-import { Police } from "../../entity/Policy/Police";
+import { Policy } from "../../entity/Policy/Policy";
 
 @injectable()
 export class ContractRegistry implements HandleContract, ListContract {
@@ -23,13 +23,13 @@ export class ContractRegistry implements HandleContract, ListContract {
         type: Type,
         description: string,
         mail: string,
-        polices: Array<Police>
+        policies: Array<Policy>
     ): Promise<Contract> {
         let contract: Contract = new Contract(
             description,
             type,
             new Contact(mail),
-            polices
+            policies
         );
         let repo = getRepository(Contract);
         await repo.save(contract);

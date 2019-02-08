@@ -2,7 +2,7 @@ import { Type } from "../Type";
 import { Comparable } from "../Comparable";
 import { Contact } from "../contact/Contact";
 import { Jsonable } from "../Jsonable";
-import { Police } from "../Policy/Police";
+import { Policy } from "../Policy/Policy";
 import {
     Column,
     Entity,
@@ -28,8 +28,8 @@ export class Contract implements Comparable, Jsonable {
     @JoinColumn()
     private contact: Contact;
 
-    @OneToMany(type => Police, "owner", { cascade: true, eager: true })
-    private polices: Police[];
+    @OneToMany(type => Policy, "owner", { cascade: true, eager: true })
+    private policies: Policy[];
 
     get getId(): number {
         return this.id;
@@ -63,24 +63,24 @@ export class Contract implements Comparable, Jsonable {
         this.contact = value;
     }
 
-    get getPolices(): Police[] {
-        return this.polices;
+    get getPolicies(): Policy[] {
+        return this.policies;
     }
 
-    set getPolices(value: Police[]) {
-        this.polices = value;
+    set getPolicies(value: Policy[]) {
+        this.policies = value;
     }
 
     constructor(
         description: string,
         type: Type,
         contact: Contact,
-        polices: Police[]
+        policies: Policy[]
     ) {
         this.description = description;
         this.type = type;
         this.contact = contact;
-        this.polices = polices;
+        this.policies = policies;
     }
 
     equal(object: any): boolean {
