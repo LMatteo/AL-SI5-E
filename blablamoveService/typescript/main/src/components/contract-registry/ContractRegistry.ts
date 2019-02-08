@@ -39,10 +39,7 @@ export class ContractRegistry implements HandleContract, ListContract {
 
     async getContractById(id: number): Promise<Contract> {
         let repo = getRepository(Contract);
-        let contract: Contract = await repo.findOne({
-            where: { id: id },
-            relations: ["contact", "polices"]
-        });
+        let contract: Contract = await repo.findOne({ where: { id: id } });
         if (contract === undefined) {
             throw new ContractDoesNotExist();
         }
@@ -51,10 +48,7 @@ export class ContractRegistry implements HandleContract, ListContract {
 
     async getContractByType(type: Type): Promise<Array<Contract>> {
         let repo = getRepository(Contract);
-        let contracts: Contract[] = await repo.find({
-            where: { type: type },
-            relations: ["contact", "polices"]
-        });
+        let contracts: Contract[] = await repo.find({ where: { type: type } });
         return contracts;
     }
 
@@ -71,9 +65,7 @@ export class ContractRegistry implements HandleContract, ListContract {
 
     async getAllContract(): Promise<Array<Contract>> {
         let repo = getRepository(Contract);
-        let contracts = await repo.find({
-            relations: ["contact", "polices"]
-        });
+        let contracts = await repo.find({});
         return contracts;
     }
 }

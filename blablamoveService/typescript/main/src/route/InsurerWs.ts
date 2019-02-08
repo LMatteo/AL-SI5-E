@@ -4,7 +4,7 @@ import { HandleContract } from "../components/contract-registry/HandleContract";
 import { Type } from "../entity/Type";
 import { Logger } from "../logging/Logger";
 import Level = require("../logging/Level");
-import { Subscribe } from "../entity/Subscribe";
+import { Subscribe } from "../entity/Subscription/Subscribe";
 import { GetSubscription } from "../components/contract-instance/GetSubscription";
 import { Contract } from "../entity/contract/Contract";
 import { Police } from "../entity/Policy/Police";
@@ -65,25 +65,28 @@ router.get(
     }
 );
 
-router.get("/subscriptions", (req: express.Request, res: express.Response) => {
-    logger.log(Level.info, "listing subscriptions");
+router.get(
+    "/subscriptions",
+    async (req: express.Request, res: express.Response) => {
+        logger.log(Level.info, "listing subscriptions");
 
-    let instanceSubscriptions: GetSubscription = container.get(
-        COMPONENT_IDENTIFIER.GetSubscription
-    );
-    let subscriptions: Array<
-        Subscribe
-    > = instanceSubscriptions.getSubscriptions();
-    let result: Array<any> = new Array<any>();
+        let instanceSubscriptions: GetSubscription = container.get(
+            COMPONENT_IDENTIFIER.GetSubscription
+        );
+        let subscriptions: Array<
+            Subscribe
+        > = await instanceSubscriptions.getSubscriptions();
+        let result: Array<any> = new Array<any>();
 
-    subscriptions.forEach(function(value: Subscribe) {
-        result.push(value);
-    });
+        subscriptions.forEach(function(value: Subscribe) {
+            result.push(value);
+        });
 
-    res.send(result);
+        res.send(result);
 
-    logger.log(Level.info, "subscriptions listed");
-});
+        logger.log(Level.info, "subscriptions listed");
+    }
+);
 
 router.get(
     "/userInterfaceInsurer",

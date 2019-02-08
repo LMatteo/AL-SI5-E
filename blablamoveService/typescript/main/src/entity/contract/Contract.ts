@@ -24,11 +24,11 @@ export class Contract implements Comparable, Jsonable {
     @Column()
     private type: Type;
 
-    @OneToOne(type => Contact, { cascade: true })
+    @OneToOne(type => Contact, { cascade: true, eager: true })
     @JoinColumn()
     private contact: Contact;
 
-    @OneToMany(type => Police, "owner", { cascade: true })
+    @OneToMany(type => Police, "owner", { cascade: true, eager: true })
     private polices: Police[];
 
     get getId(): number {

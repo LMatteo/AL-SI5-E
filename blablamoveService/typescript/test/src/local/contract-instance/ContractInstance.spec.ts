@@ -11,6 +11,7 @@ import {Contact} from "../../../../main/src/entity/contact/Contact";
 import * as assert from "assert";
 import container from "../../../../main/src/components/InjectionConfig";
 import {NoSuchSubscription} from "../../../../main/src/error/NoSuchSubscription";
+import {createConnection, getConnection} from "typeorm";
 
 
 
@@ -19,24 +20,54 @@ describe('contract instance test', function () {
     let getSubs : GetSubscription;
     let subs : Subscription;
 
-
-    beforeEach(() => {
-       new SubscribeStore().clear();
-       getSubs = container.get(COMPONENT_IDENTIFIER.GetSubscription);
-       subs = container.get(COMPONENT_IDENTIFIER.Subscription);
+    before(async () => {
+        try{
+            await createConnection()
+        } catch (e) {
+            await getConnection().synchronize(true);
+        }
     });
 
-    it('should had and retrive subscription', function () {
-        let custo = new Customer();
-        let contract = new Contract("test",Type.fragile,new Contact("test"),[]);
-        let subscription = subs.subscribeToContract(custo,contract);
+    beforeEach(async () => {
+        await getConnection().synchronize(true);
+        new SubscribeStore().clear();
+        getSubs = container.get(COMPONENT_IDENTIFIER.GetSubscription);
+        subs = container.get(COMPONENT_IDENTIFIER.Subscription);
+    });
 
-        assert.strictEqual(1,getSubs.getSubscriptionByCustomer(custo).length);
-        assert.deepStrictEqual(subscription,getSubs.getSubscriptionByCustomer(custo)[0]);
-        assert.deepStrictEqual(subscription,getSubs.getSubscriptionById(subscription.$id))
+    it('should add and retrive subscription', async function () {
+        let custo = new Customer();
+        custo.$name = "jean";
+        let contract = new Contract("test",Type.fragile,new Contact("test"),[]);
+        let subscription = await subs.subscribeToContract(custo,contract);
+
+        assert.strictEqual(1,(await getSubs.getSubscriptionByCustomer(custo)).length);
+        assert.deepStrictEqual(subscription,(await getSubs.getSubscriptionByCustomer(custo))[0]);
+        assert.deepStrictEqual(subscription,(await getSubs.getSubscriptionById(subscription.$id)))
     });
 
     it('should throw an error', function () {
-        assert.throws(() => getSubs.getSubscriptionById(900000),NoSuchSubscription)
+        return getSubs.getSubscriptionById(7897984545)
+            .catch((e) => {
+                assert.strictEqual(true ,e instanceof NoSuchSubscription)
+            })
     });
+
+    it('should cancel subscription', async function () {
+        let custo = new Customer();
+        custo.$name = "jean";
+        let contract = new Contract("test",Type.fragile,new Contact("test"),[]);
+        let subscription = await subs.subscribeToContract(custo,contract);
+
+        assert.strictEqual(1,(await getSubs.getSubscriptionByCustomer(custo)).length);
+        await subs.cancelSubscritpion(subscription);
+        assert.strictEqual(0,(await getSubs.getSubscriptionByCustomer(custo)).length);
+
+        await getSubs.getSubscriptionById(subscription.$id)
+            .catch((e) => {
+                assert.strictEqual(true ,e instanceof NoSuchSubscription)
+            })
+    });
+
+
 });
