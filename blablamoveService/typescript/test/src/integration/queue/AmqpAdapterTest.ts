@@ -26,7 +26,13 @@ describe("amqpTest", function() {
         let result: Travel = undefined;
         MessageQueue.exchangeValidation.activateConsumer(msg => {result = (<Travel>msg.getContent());console.log("Received message")} );
         let travel:Travel  = new Travel();
-        messageQueue.sendMessage(MessageQueue.VALIDATION_QUEUE, travel);
+        let marshalledTravel: string = JSON.stringify(travel, (key, value) => {
+            if (key === "customer" || key === "transporter") {
+                return { name: value.$name, id: value.$id };
+            }
+            return value;
+        });
+        messageQueue.sendMessage(MessageQueue.VALIDATION_QUEUE, marshalledTravel);
         console.log("Sent!");
 
     });

@@ -43,7 +43,13 @@ export class PathService implements ControlTravels {
         await this.validator.pathValidate(travel);
         let travelRepo = getRepository(Travel);
         await travelRepo.save(travel);
-        await this.messageQueue.sendMessage("validation", travel);
+        let marshalledTravel: string = JSON.stringify(travel, (key, value) => {
+            if (key === "customer" || key === "transporter") {
+                return { name: value.$name, id: value.$id };
+            }
+            return value;
+        });
+        await this.messageQueue.sendMessage("validation", marshalledTravel);
         travel = await travelRepo.findOne(travel.$id, {
             relations: ["items", "customer", "validator", "transporter"]
         });
@@ -68,8 +74,13 @@ export class PathService implements ControlTravels {
         travel.addItem(item);
         travel.$customer.addItem(item);
         await travelRepo.save(travel);
-        
-        await this.messageQueue.sendMessage("validation", travel);
+        let marshalledTravel: string = JSON.stringify(travel, (key, value) => {
+            if (key === "customer" || key === "transporter") {
+                return { name: value.$name, id: value.$id };
+            }
+            return value;
+        });
+        await this.messageQueue.sendMessage("validation", marshalledTravel);
         return travel;
     }
 
@@ -128,7 +139,13 @@ export class PathService implements ControlTravels {
             relations: ["transporter", "customer", "items", "validator"]
         });
         await this.validator.pathValidate(travel);
-        await this.messageQueue.sendMessage("validation", travel);
+        let marshalledTravel: string = JSON.stringify(travel, (key, value) => {
+            if (key === "customer" || key === "transporter") {
+                return { name: value.$name, id: value.$id };
+            }
+            return value;
+        });
+        await this.messageQueue.sendMessage("validation", marshalledTravel);
 
         return travel;
     }

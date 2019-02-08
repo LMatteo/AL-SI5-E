@@ -13,8 +13,10 @@ export class MessageQueue {
     private static connection: Amqp.Connection;
     public static exchangeValidation: Amqp.Exchange;
     private static exchangeEndNotification: Amqp.Exchange;
+    private static exchangeContracts: Amqp.Exchange;
     public static VALIDATION_QUEUE: string = "validation";
     public static END_NOTIFICATION_QUEUE: string = "end_notification";
+    public static CONTRACTS_QUEUE: string = "contracts";
     @inject(COMPONENT_IDENTIFIER.Validate)
     private validate: Validate;
 
@@ -42,18 +44,29 @@ export class MessageQueue {
             });
 
             // end notification queue
-            MessageQueue.exchangeEndNotification = MessageQueue.connection.declareExchange(
-                "ExchangeEndNotification"
+            MessageQueue.exchangeContracts = MessageQueue.connection.declareExchange(
+                "exchangeContracts"
             );
             var queue2 = MessageQueue.connection.declareQueue(
-                MessageQueue.END_NOTIFICATION_QUEUE
+                MessageQueue.CONTRACTS_QUEUE
             );
-            queue2.bind(MessageQueue.exchangeEndNotification);
+            queue2.bind(MessageQueue.exchangeContracts);
             queue2.activateConsumer(message => {
-                console.log("END_NOTIFICATION_QUEUE");
-                let travel: Travel = Travel.deserialize(message.getContent());
+                console.log(MessageQueue.CONTRACTS_QUEUE);
+                console.log(message.getContent())
+            });
 
-                zis.validate.notify(travel);
+            // Queue validation
+            MessageQueue.exchangeValidation = MessageQueue.connection.declareExchange(
+                "ExchangeValidate"
+            );
+            var queue = MessageQueue.connection.declareQueue(
+                MessageQueue.VALIDATION_QUEUE
+            );
+            queue.bind(MessageQueue.exchangeValidation);
+            queue.activateConsumer(message => {
+                let travel: Travel = Travel.deserialize(message.getContent());
+                zis.validate.validate(travel);
             });
         }
     }
@@ -72,24 +85,30 @@ export class MessageQueue {
         this.queue.push({ topic: topic, receivers: [receiver] });
     }
 
-    async sendMessage(topic: string, data: Travel):  Promise<void>  {
-        var marshalled: string = JSON.stringify(data, (key, value) => {
-            if (key === "customer" || key === "transporter") {
-                return { name: value.$name, id: value.$id };
-            }
-            return value;
-        });
-        var msg2 = new Amqp.Message(marshalled);
-        if (topic === MessageQueue.VALIDATION_QUEUE) {
-            if (MessageQueue.exchangeValidation === undefined) {
-                this.initialize();
-            }
-            MessageQueue.exchangeValidation.send(msg2);
-        } else if (topic == MessageQueue.END_NOTIFICATION_QUEUE) {
-            if (MessageQueue.exchangeEndNotification === undefined) {
-                this.initialize();
-            }
-            MessageQueue.exchangeEndNotification.send(msg2);
+    async sendMessage(topic: string, data: string):  Promise<void>  {
+
+        var msg2 = new Amqp.Message(data);
+
+        switch (topic) {
+            case MessageQueue.VALIDATION_QUEUE:
+                if (MessageQueue.exchangeValidation === undefined) {
+                    this.initialize();
+                }
+                MessageQueue.exchangeValidation.send(msg2);
+                break;
+            case MessageQueue.END_NOTIFICATION_QUEUE:
+                if (MessageQueue.exchangeEndNotification === undefined) {
+                    this.initialize();
+                }
+                MessageQueue.exchangeEndNotification.send(msg2);
+                break;
+            case MessageQueue.CONTRACTS_QUEUE:
+                if (MessageQueue.exchangeContracts === undefined) {
+                    this.initialize();
+                }
+                MessageQueue.exchangeContracts.send(msg2);
+                break;
         }
+
     }
 }

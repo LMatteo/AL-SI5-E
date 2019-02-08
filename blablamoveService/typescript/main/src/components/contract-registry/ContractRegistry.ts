@@ -11,6 +11,7 @@ import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 import {ContractDoesNotExist} from "../../error/ContractDoesNotExist";
 import {getRepository} from "typeorm";
 import { Police } from "../../entity/Policy/Police";
+import {MessageQueue} from "../message-queue/MessageQueue";
 
 @injectable()
 export class ContractRegistry implements HandleContract, ListContract{
@@ -18,6 +19,8 @@ export class ContractRegistry implements HandleContract, ListContract{
     @inject(COMPONENT_IDENTIFIER.RegisterInsurer)
     private registerInsurer: RegisterInsurer;
 
+    @inject(COMPONENT_IDENTIFIER.MessageQueue)
+    private messageQueue: MessageQueue;
     constructor(){
     }
 
@@ -26,6 +29,8 @@ export class ContractRegistry implements HandleContract, ListContract{
         let repo = getRepository(Contract);
         await repo.save(contract);
         this.registerInsurer.registerInsurerContact(contract);
+        let marshalledContract: string = contract.toJson();
+        await this.messageQueue.sendMessage(MessageQueue.CONTRACTS_QUEUE,marshalledContract );
         return contract;
     }
 
