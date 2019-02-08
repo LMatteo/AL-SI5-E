@@ -30,13 +30,13 @@ describe('webservice test', function () {
 
     });
 
-    xit('should subscribe a user', async function() {
+    it('should subscribe a user', async function() {
        let travel = {
             customerName : "thierry",
             departure : "nice",
             destination : "paname"
        };
-       let newTravelRequest = await fetch.default(path+'/contracts/',
+       let newTravelRequest = await fetch.default(path+'/travels/',
            {method : 'POST', body : JSON.stringify(travel), headers: { 'Content-Type': 'application/json' },
            });
        let custoId = (await newTravelRequest.json()).id;
@@ -48,10 +48,23 @@ describe('webservice test', function () {
                 mail : 'lucas.leMatteo@mail.fr'
             }
        };
+
+
        let contractPost = await fetch.default(path+'/contracts/',
            {method : 'POST', body : JSON.stringify(contract), headers: { 'Content-Type': 'application/json' },
            });
        let contractId = (await contractPost.json()).id;
+
+       let subs = {
+           customerId : custoId,
+           contractId : contractId
+       };
+
+       let subsPost = await fetch.default(path+'/subscription/',
+        {method : 'POST', body : JSON.stringify(subs), headers: { 'Content-Type': 'application/json' },
+        });
+
+
 
     })
 });
