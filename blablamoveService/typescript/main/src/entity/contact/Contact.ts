@@ -19,7 +19,9 @@ export class Contact implements Comparable, Jsonable{
     getId(): number {
         return this.id;
     }
-
+    getMail(): string{
+        return this.mail
+    }
     equal(object: any): boolean {
         if(!(object instanceof Contact)) return false;
         return this.mail === object.mail;

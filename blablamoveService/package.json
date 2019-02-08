@@ -20,7 +20,7 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {name
+  "dependencies": {
     "amqp-ts": "^1.4.0",
     "amqplib": "^0.5.3",
     "express": "^4.16.4",
