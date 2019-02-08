@@ -1,13 +1,20 @@
-import {Type} from "../Type";
-import {Comparable} from "../Comparable";
-import {Contact} from "../contact/Contact";
-import {Jsonable} from "../Jsonable";
+import { Type } from "../Type";
+import { Comparable } from "../Comparable";
+import { Contact } from "../contact/Contact";
+import { Jsonable } from "../Jsonable";
 import { Police } from "../Policy/Police";
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, OneToMany} from "typeorm";
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    OneToMany
+} from "typeorm";
+import { type } from "os";
 
 @Entity()
-export class Contract implements Comparable, Jsonable{
-
+export class Contract implements Comparable, Jsonable {
     @PrimaryGeneratedColumn()
     private id: number;
 
@@ -15,22 +22,22 @@ export class Contract implements Comparable, Jsonable{
     private description: string;
 
     @Column()
-    private type : Type;
+    private type: Type;
 
-    @OneToOne(type => Contact, {cascade : true})
+    @OneToOne(type => Contact, { cascade: true })
     @JoinColumn()
     private contact: Contact;
 
+    @OneToMany(type => Police, "owner", { cascade: true })
+    private polices: Police[];
 
-
-    get getId() : number {
+    get getId(): number {
         return this.id;
     }
 
     set setId(id: number) {
         this.id = id;
     }
-
 
     get getDescription(): string {
         return this.description;
@@ -56,27 +63,37 @@ export class Contract implements Comparable, Jsonable{
         this.contact = value;
     }
 
-    constructor(description: string, type: Type, contact: Contact, polices : Array<Police>) {
+    get getPolices(): Police[] {
+        return this.polices;
+    }
+
+    set getPolices(value: Police[]) {
+        this.polices = value;
+    }
+
+    constructor(
+        description: string,
+        type: Type,
+        contact: Contact,
+        polices: Police[]
+    ) {
         this.description = description;
         this.type = type;
         this.contact = contact;
+        this.polices = polices;
     }
 
-
     equal(object: any): boolean {
-        if(!(object instanceof Contract)) return false;
+        if (!(object instanceof Contract)) return false;
         return object.id === this.id;
     }
 
     toJson(): any {
-        let j : any = {};
+        let j: any = {};
         j.id = this.id;
         j.type = this.type;
         j.contact = this.contact.toJson();
         j.description = this.description;
         return j;
     }
-
-
-
 }
