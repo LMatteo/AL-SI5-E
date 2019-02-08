@@ -29,7 +29,6 @@ router.get(
     "/contracts/:getType",
     async (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "listing contract");
-        console.log(req.params);
         let theType: keyof typeof Type = req.params.getType;
         logger.log(Level.info, theType);
 
@@ -49,38 +48,39 @@ router.get(
         res.send(resArr);
 
         logger.log(Level.info, "contract listed");
-
-        logger.log(Level.info, "listing all contracts");
     }
 );
+
+router.get("/contracts/id/:id",
+    async (req: express.Request, res: express.Response) => {
+        logger.log(Level.info, "get contract by ID");
+
+        let contractLister: ListContract = container.get(
+            COMPONENT_IDENTIFIER.ListContract
+        );
+
+        let contract = await contractLister.getContractById(req.params.id)
+        res.send(contract);
+
+        logger.log(Level.info,'Contract with id : ' + req.params.id + ' sent')
+    });
 
 router.post("/subscriptions", async (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "adding new subscriptions");
 
-    let name: string = req.body.subcribe.name;
-    let email: string = req.body.subcribe.email;
-    let phone: number = req.body.subcribe.phone;
-    let id: number = parseInt(req.body.subcribe.id) || -1;
-    let description: string = req.body.subcribe.description;
-    let type: keyof typeof Type = req.body.subcribe.typeName;
+    let custoId = req.body.customerId;
+    let contractId = req.body.contractId;
+
+    let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels);
+    let listContract : ListContract = container.get(COMPONENT_IDENTIFIER.ListContract);
 
     let contractHandler: Subscription = container.get(
         COMPONENT_IDENTIFIER.Subscription
     );
-    let customer: Customer = new Customer();
-    customer.$email = email;
-    customer.$phone = phone;
-    customer.$name = name;
-    customer.$id = id;
-    let contract: Contract = new Contract(
-        description,
-        Type[type],
-        new Contact(name),
-        []
-    );
+
     let subscription: Subscribe = await contractHandler.subscribeToContract(
-        customer,
-        contract
+        await controlTravel.getCustomerById(custoId),
+        await listContract.getContractById(contractId)
     );
 
     res.send(subscription);

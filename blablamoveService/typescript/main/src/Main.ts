@@ -41,6 +41,7 @@ app.use('/blabla-move-backend',customerWs);
 app.use('/blabla-move-backend',insurerWs);
 
 createConnection().then(() => {
+   logger.log(Level.info,"db connection initiated");
    app.listen(8080,() => {
       logger.log(Level.info,"listening on 8080");
    });
