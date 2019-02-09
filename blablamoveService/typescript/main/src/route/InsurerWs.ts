@@ -25,11 +25,11 @@ router.post(
         let contractHandler: HandleContract = container.get(
             COMPONENT_IDENTIFIER.HandleContract
         );
+
+        console.log(req.body);
         let type: keyof typeof Type = req.body.contract.typeName;
 
-        let policiesArray = <any[]>(
-            JSON.parse(JSON.stringify(req.body.contract.policies))
-        );
+        let policiesArray = <any[]>(req.body.contract.policies);
         let policies: Policy[] = [];
         for (let p of policiesArray) {
             policies.push(new Policy(p.name, p.price));

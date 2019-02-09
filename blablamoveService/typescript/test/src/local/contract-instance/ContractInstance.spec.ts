@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 import {GetSubscription} from "../../../../main/src/components/contract-instance/GetSubscription";
-import {inject} from "inversify";
 import COMPONENT_IDENTIFIER from "../../../../main/src/components/InjectionIdentifier";
 import {Subscription} from "../../../../main/src/components/contract-instance/Subscription";
 import {SubscribeStore} from "../../../../main/src/entityManager/local/SubscribeStore";
@@ -12,13 +11,14 @@ import * as assert from "assert";
 import container from "../../../../main/src/components/InjectionConfig";
 import {NoSuchSubscription} from "../../../../main/src/error/NoSuchSubscription";
 import {createConnection, getConnection} from "typeorm";
-
+import {HandleContract} from "../../../../main/src/components/contract-registry/HandleContract";
 
 
 describe('contract instance test', function () {
 
     let getSubs : GetSubscription;
     let subs : Subscription;
+    let contractHandler : HandleContract;
 
     before(async () => {
         try{
@@ -33,12 +33,14 @@ describe('contract instance test', function () {
         new SubscribeStore().clear();
         getSubs = container.get(COMPONENT_IDENTIFIER.GetSubscription);
         subs = container.get(COMPONENT_IDENTIFIER.Subscription);
+        contractHandler = container.get(COMPONENT_IDENTIFIER.HandleContract);
+
     });
 
     it('should add and retrive subscription', async function () {
         let custo = new Customer();
         custo.$name = "jean";
-        let contract = new Contract("test",Type.fragile,new Contact("test"),[]);
+        let contract = await contractHandler.addContract(Type.fragile, "test","test",[]);
         let subscription = await subs.subscribeToContract(custo,contract);
 
         assert.strictEqual(1,(await getSubs.getSubscriptionByCustomer(custo)).length);
@@ -56,7 +58,7 @@ describe('contract instance test', function () {
     it('should cancel subscription', async function () {
         let custo = new Customer();
         custo.$name = "jean";
-        let contract = new Contract("test",Type.fragile,new Contact("test"),[]);
+        let contract = await contractHandler.addContract(Type.fragile, "test","test",[]);
         let subscription = await subs.subscribeToContract(custo,contract);
 
         assert.strictEqual(1,(await getSubs.getSubscriptionByCustomer(custo)).length);
