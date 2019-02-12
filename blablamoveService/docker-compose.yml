@@ -21,6 +21,7 @@ services:
     ports:
       - "9090:8080"
     environment:
+      - mailer=extern_mailer
       - dbName=db
       - qName=rabbitmq
 
