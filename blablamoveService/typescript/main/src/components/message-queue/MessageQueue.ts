@@ -4,10 +4,7 @@ import { inject, injectable } from "inversify";
 import { Validate } from "../insurance-validator/Validate";
 import * as Amqp from "amqp-ts";
 import { Travel } from "../../entity/travel/Travel";
-import Level = require("../../logging/Level");
 import container from "../InjectionConfig";
-import { Customer } from "../../entity/customer/Customer";
-import {Validator} from "../../entity/validator/Validator";
 @injectable()
 export class MessageQueue {
     private static connection: Amqp.Connection;
@@ -43,7 +40,7 @@ export class MessageQueue {
                 zis.validate.validate(travel);
             });
 
-            // end notification queue
+            // update contract
             MessageQueue.exchangeContracts = MessageQueue.connection.declareExchange(
                 "exchangeContracts"
             );
@@ -51,22 +48,21 @@ export class MessageQueue {
                 MessageQueue.CONTRACTS_QUEUE
             );
             queue2.bind(MessageQueue.exchangeContracts);
-            queue2.activateConsumer(message => {
-                console.log(MessageQueue.CONTRACTS_QUEUE);
-                console.log(message.getContent())
-            });
 
-            // Queue validation
-            MessageQueue.exchangeValidation = MessageQueue.connection.declareExchange(
-                "ExchangeValidate"
+            // end notification queue
+            MessageQueue.exchangeEndNotification = MessageQueue.connection.declareExchange(
+                "ExchangeEndNotification"
             );
-            var queue = MessageQueue.connection.declareQueue(
-                MessageQueue.VALIDATION_QUEUE
+            var queue3 = MessageQueue.connection.declareQueue(
+                MessageQueue.END_NOTIFICATION_QUEUE
             );
-            queue.bind(MessageQueue.exchangeValidation);
-            queue.activateConsumer(message => {
-                let travel: Travel = Travel.deserialize(message.getContent());
-                zis.validate.validate(travel);
+            queue3.bind(MessageQueue.exchangeEndNotification);
+            queue3.activateConsumer(message => {
+                let travelMarshalled = JSON.parse(message.getContent());
+                let travel: Travel = travelMarshalled;
+                travel.$customer = travelMarshalled.customer;
+                travel.$transporter = travelMarshalled.transporter;
+                zis.validate.notify(travel);
             });
         }
     }
