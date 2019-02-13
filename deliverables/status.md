@@ -1,5 +1,19 @@
 # Status
 
+## Week 07
+
+### Achieved
+
+- la première implémentation du simulateur
+- ajout des polices
+- interface indépendante
+
+### Planned
+
+- intégration de simulateur et interface
+
+### YELLOW
+
 ## Week 06
 
 ### Achieved
