@@ -3,16 +3,11 @@ import express = require("express");
 import bodyParser = require("body-parser");
 import Level = require("./logging/Level");
 import {Logger} from "./logging/Logger";
-import * as Amqp from "amqp-ts";
-import container from "./components/InjectionConfig";
-import COMPONENT_IDENTIFIER from "./components/InjectionIdentifier";
-import { Validate } from "./components/insurance-validator/Validate";
-import { Travel } from "./entity/travel/Travel";
 import {createConnection} from "typeorm";
 import * as cors from "cors";
 
-let customerWs : express.Router = require("./route/CustomerWs");
-let insurerWs : express.Router = require("./route/InsurerWs");
+let customerWs: express.Router = require("./route/CustomerWs");
+let insurerWs: express.Router = require("./route/InsurerWs");
 
 const app: express.Express = express();
 const logger: Logger = new Logger();
@@ -43,8 +38,11 @@ app.use('/blabla-move-backend', customerWs);
 app.use('/blabla-move-backend', insurerWs);
 
 createConnection().then(() => {
-   logger.log(Level.info,"db connection initiated");
-   app.listen(8080,() => {
-      logger.log(Level.info,"listening on 8080");
-   });
-});
+    logger.log(Level.info, "db connection initiated");
+    app.listen(8080, () => {
+        logger.log(Level.info, "listening on 8080");
+    });
+})
+    .catch(()=>{
+        console.log("connection to db failed")
+    })

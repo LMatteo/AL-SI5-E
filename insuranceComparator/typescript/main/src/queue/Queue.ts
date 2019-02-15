@@ -1,5 +1,6 @@
 import * as Amqp from "amqp-ts";
 import {Contract} from "../entity/Contract";
+import {Policy} from "../entity/Policy";
 
 
 export class Queue {
@@ -28,7 +29,19 @@ export class Queue {
         await this.queue.bind(this.exchange);
         this.queue.activateConsumer(message => {
             console.log(message.getContent());
-            this.consumer(new Contract("type", []))
+            var jsonContract = JSON.parse(message.getContent());
+
+            let policies: Policy[] = [];
+            let totalPrice: number = 0;
+            for (let i = 0; i < jsonContract.policies.length; i++) {
+
+                let policy = new Policy(jsonContract.policies[i].name,jsonContract.policies[i].price);
+                totalPrice += policy.price;
+                policies.push(policy);
+            }
+            let contract = new Contract(jsonContract.id, jsonContract.type, policies);
+            contract.totalprice = totalPrice;
+            this.consumer(contract)
         });
         console.log("connection initialized");
     }

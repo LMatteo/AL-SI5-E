@@ -33,7 +33,7 @@ describe('webservice test', function () {
 
     });
 
-    xit('should subscribe a user', async function() {
+    it('should subscribe a user', async function() {
        let travel = {
             customerName : "thierry",
             departure : "nice",
@@ -68,7 +68,7 @@ describe('webservice test', function () {
         {method : 'POST', body : JSON.stringify(subs), headers: { 'Content-Type': 'application/json' },
         });
 
-       console.log(subsPost)
+       console.log(await subsPost.json())
 
 
 

@@ -1,0 +1,32 @@
+pipeline {
+    agent  { 
+        label 'slave-3.23-maven-3.5.4'
+    }
+    stages {
+        stage('Build images') {
+            steps {
+                sh '''
+                    cd blablamoveService
+                    docker build -t hsy20000118/blablamove-mailer .
+                '''
+            }
+            post { 
+                always { 
+                    sh '''
+                        docker container prune -f
+                        docker image prune -f
+                    '''
+                }
+            }
+        }
+        stage('Push images') {
+            steps {
+                withDockerRegistry([ credentialsId: "a98e883f-4efa-48cb-9dcc-7922a4582450", url: "" ]) {
+                    sh '''
+                        docker push hsy20000118/blablamove-mailer:latest
+                    '''
+                }
+            }
+        }
+    }
+}
