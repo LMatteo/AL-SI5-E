@@ -29,7 +29,7 @@ services:
       - "5672:5672"
 
   comparator:
-    image: hsy20000118/blablamove-insuranceComparator
+    image: hsy20000118/blablamove-comparator
     ports:
       - "7080:7080"
     environment:

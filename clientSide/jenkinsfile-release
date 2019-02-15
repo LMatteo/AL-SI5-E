@@ -7,7 +7,7 @@ pipeline {
             steps {
                 sh '''
                     cd clientSide
-                    docker build -t hsy20000118/blablamove-clientSide .
+                    docker build -t hsy20000118/blablamove-client .
                 '''
             }
             post { 
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 withDockerRegistry([ credentialsId: "a98e883f-4efa-48cb-9dcc-7922a4582450", url: "" ]) {
                     sh '''
-                        docker push hsy20000118/blablamove-clientSide:latest
+                        docker push hsy20000118/blablamove-client:latest
                     '''
                 }
             }
