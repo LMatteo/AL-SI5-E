@@ -71,5 +71,19 @@ describe('contract instance test', function () {
             })
     });
 
+    it('should subscribe same customer to two contracts', async function () {
+        let custo = new Customer();
+        custo.$name = "jean";
+        let custo2 = new Customer();
+        custo2.$name = "salut";
+        let contract = await contractHandler.addContract(Type.fragile, "test","test",[]);
+
+        let sub1 = await subs.subscribeToContract(custo,contract);
+        let sub2 = await subs.subscribeToContract(custo2,contract);
+
+
+
+    });
+
 
 });
