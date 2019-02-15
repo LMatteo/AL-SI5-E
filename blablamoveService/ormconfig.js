@@ -8,6 +8,7 @@ module.exports = {
     connectTimeout: 1500,
     database: "blablamove",
     synchronize: true,
+    logging: true,
     entities: [
         "dist/main/src/entity/contact/Contact.js",
         "dist/main/src/entity/contract/Contract.js",

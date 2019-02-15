@@ -59,9 +59,7 @@ export class MessageQueue {
             queue3.bind(MessageQueue.exchangeEndNotification);
             queue3.activateConsumer(message => {
                 let travelMarshalled = JSON.parse(message.getContent());
-                let travel: Travel = travelMarshalled;
-                travel.$customer = travelMarshalled.customer;
-                travel.$transporter = travelMarshalled.transporter;
+                let travel: Travel =  Travel.deserialize(travelMarshalled);
                 zis.validate.notify(travel);
             });
         }
