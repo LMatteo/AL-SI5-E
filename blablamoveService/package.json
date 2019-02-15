@@ -11,6 +11,7 @@
   "scripts": {
     "test": "mocha dist/test/src/local/**/*.js --exit",
     "test-all": "mocha dist/test/src/**/*.js --exit",
+    "integ" : "mocha dist/test/src/integration/request",
     "build": "rimraf dist && tsc",
     "start": "node dist/main/src/Main.js",
     "debug": "node %NODE_DEBUG_OPTION% dist/main/src/Main.js",

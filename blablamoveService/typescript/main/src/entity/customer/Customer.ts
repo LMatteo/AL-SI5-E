@@ -2,6 +2,7 @@ import { Comparable } from "../Comparable";
 import { Item } from "../item/Item";
 import { Travel } from "../travel/Travel";
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import {Subscribe} from "../Subscription/Subscribe";
 
 @Entity()
 export class Customer implements Comparable {
@@ -31,6 +32,9 @@ export class Customer implements Comparable {
         cascade: ["insert", "update"]
     })
     private transports: Travel[];
+
+    @OneToMany(type => Subscribe, "customer")
+    private subscriptions : Subscribe[];
 
     public get $id(): number {
         return this.id;

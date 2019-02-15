@@ -1,7 +1,7 @@
 version: "3.3"
 
 services:
-  db:
+  blablamove-db:
     container_name: blablamove_db
     image: lucasmatteo/db_order_soa
     ports:
@@ -15,14 +15,12 @@ services:
 
   blablamove:
     container_name: blablamove_service
-    build: 
-      context: .
     image: hsy20000118/blablamove
     ports:
       - "9090:8080"
     environment:
       - mailer=extern_mailer
-      - dbName=db
+      - dbName=blablamove-db
       - qName=rabbitmq
 
   rabbitmq:
@@ -30,8 +28,14 @@ services:
     ports:
       - "5672:5672"
 
-  extern_mailer:
-    image: extern_mailer
-    build: ./mailer
+  comparator:
+    image: hsy20000118/blablamove-comparator
     ports:
-    - "9091:9091"
+      - "7080:7080"
+    environment:
+      - blablamove_queue=rabbitmq
+
+  extern_mailer:
+    image: hsy20000118/blablamove-mailer
+    ports:
+      - "9091:9091"

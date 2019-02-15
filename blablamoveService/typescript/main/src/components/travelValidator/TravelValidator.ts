@@ -2,12 +2,16 @@ import {InsuranceValidate} from "./InsuranceValidate";
 import {PathValidate} from "./PathValidate";
 import {Travel} from "../../entity/travel/Travel";
 import {injectable} from "inversify";
-
+import Level = require("../../logging/Level");
 import {Validator} from "../../entity/validator/Validator";
 import {getRepository} from "typeorm";
+import {Logger} from "../../logging/Logger";
 
 @injectable()
 export class TravelValidator implements InsuranceValidate, PathValidate {
+
+    private logger : Logger = new Logger();
+
     async insuranceValidate(travel: Travel): Promise<Travel> {
         console.log("insuranceValidate",travel.$id);
 
@@ -16,7 +20,11 @@ export class TravelValidator implements InsuranceValidate, PathValidate {
         }
         travel.$validator.$insuranceValidation = true;
         let travelRepo = getRepository(Travel);
-        await travelRepo.save(travel);
+        try {
+            await travelRepo.save(travel);
+        } catch (e) {
+            this.logger.log(Level.error,"could not update travel validation")
+        }
         return travel;
     }
 
@@ -28,7 +36,11 @@ export class TravelValidator implements InsuranceValidate, PathValidate {
         travel.$validator.$insuranceValidation = false;
 
         let travelRepo = getRepository(Travel);
-        await travelRepo.save(travel);
+        try {
+            await travelRepo.save(travel);
+        } catch (e) {
+            this.logger.log(Level.error,"could not update travel validation")
+        }
         return travel;
     }
 
@@ -39,7 +51,11 @@ export class TravelValidator implements InsuranceValidate, PathValidate {
         }
         travel.$validator.$pathValidation = true;
         let travelRepo = getRepository(Travel);
-        await travelRepo.save(travel);
+        try {
+            await travelRepo.save(travel);
+        } catch (e) {
+            this.logger.log(Level.error,"could not update travel validation")
+        }
         return travel;
     }
 
@@ -50,7 +66,11 @@ export class TravelValidator implements InsuranceValidate, PathValidate {
         }
         travel.$validator.$pathValidation = false;
         let travelRepo = getRepository(Travel);
-        await travelRepo.save(travel);
+        try {
+            await travelRepo.save(travel);
+        } catch (e) {
+            this.logger.log(Level.error,"could not update travel validation")
+        }
         return travel;
     }
 }

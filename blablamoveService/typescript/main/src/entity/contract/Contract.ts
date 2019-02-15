@@ -12,6 +12,7 @@ import {
     OneToMany
 } from "typeorm";
 import { type } from "os";
+import {Subscribe} from "../Subscription/Subscribe";
 
 @Entity()
 export class Contract implements Comparable, Jsonable {
@@ -30,6 +31,9 @@ export class Contract implements Comparable, Jsonable {
 
     @OneToMany(type => Policy, "owner", { cascade: true, eager: true })
     private policies: Policy[];
+
+    @OneToMany(type => Subscribe, "contrat")
+    private subscriptions : Subscribe[];
 
     get getId(): number {
         return this.id;
