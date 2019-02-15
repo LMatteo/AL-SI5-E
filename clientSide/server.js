@@ -1,8 +1,10 @@
 var path = require("path");
+var cors = require('cors');
 
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const pathFile = __dirname;
+app.use(cors());
 
 //API css and js files
 app.get('/blablamove/interfaceClient.js', function (req, res) {

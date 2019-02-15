@@ -4,6 +4,7 @@ import bodyParser = require("body-parser");
 import Level = require("./logging/Level");
 import {Logger} from "./logging/Logger";
 import {createConnection} from "typeorm";
+import * as cors from "cors";
 
 let customerWs: express.Router = require("./route/CustomerWs");
 let insurerWs: express.Router = require("./route/InsurerWs");
@@ -11,16 +12,17 @@ let insurerWs: express.Router = require("./route/InsurerWs");
 const app: express.Express = express();
 const logger: Logger = new Logger();
 
-app.use(function (req: express.Request, res: express.Response, next: express.NextFunction) {
-    logger.log(Level.info, "new request");
-    next();
-});
-app.use(bodyParser.json());
 
-app.use(function (req: express.Request, res: express.Response, next: express.NextFunction) {
+app.use((req,res,next) => {
+    logger.log(Level.info, "new request");
     res.contentType("application/json");
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Allow", "POST,GET,PUT,DELETE");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-});
+ });
+
+app.use(bodyParser.json());
 
 app.use(function (error: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
     let errorMsg: any = {};
