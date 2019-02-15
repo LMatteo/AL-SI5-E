@@ -32,10 +32,15 @@ export class Queue {
             var jsonContract = JSON.parse(message.getContent());
 
             let policies: Policy[] = [];
+            let totalPrice: number = 0;
             for (let i = 0; i < jsonContract.policies.length; i++) {
-                policies.push(new Policy(jsonContract.policies[i].name,jsonContract.policies[i].price));
+
+                let policy = new Policy(jsonContract.policies[i].name,jsonContract.policies[i].price);
+                totalPrice += policy.price;
+                policies.push(policy);
             }
             let contract = new Contract(jsonContract.id, jsonContract.type, policies);
+            contract.totalprice = totalPrice;
             this.consumer(contract)
         });
         console.log("connection initialized");
