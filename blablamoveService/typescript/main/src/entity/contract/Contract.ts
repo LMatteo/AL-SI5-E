@@ -94,6 +94,11 @@ export class Contract implements Comparable, Jsonable {
         j.type = this.type;
         j.contact = this.contact.toJson();
         j.description = this.description;
-        return j;
+        j.policies = [];
+        for (let i = 0; i <  this.policies.length; i++) {
+            let policy:any = {price: this.policies[i].$price, name: this.policies[i].$name}
+            j.policies.push(policy);
+        }
+        return JSON.stringify(j);
     }
 }

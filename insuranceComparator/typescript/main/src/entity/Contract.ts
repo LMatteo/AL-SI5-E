@@ -1,11 +1,12 @@
 import {Policy} from "./Policy";
 
 export class Contract {
-    private type: string;
-    private policies: Policy[];
+    public type: string;
+    public policies: Policy[];
+    public id: number;
 
-
-    constructor(type: string, policies: Policy[]) {
+    constructor(id: number, type: string, policies: Policy[]) {
+        this.id = id;
         this.type = type;
         this.policies = policies;
     }
