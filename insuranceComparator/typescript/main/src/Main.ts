@@ -15,16 +15,23 @@ app.use(function (req: express.Request, res: express.Response, next: express.Nex
     res.contentType("application/json");
     next();
 });
-
+let contracts: Contract[] = [];
 let host: string = process.env.blablamove_queue || "amqp://localhost:5672";
 
-
+app.get('/searchContract', function (req, res) {
+    if(contracts.length < 1){
+        res.statusCode = 404;
+        res.send("No contracts found");
+    }else{
+        res.send(contracts[contracts.length - 1]);
+    }
+});
 let queue: Queue = new Queue(host);
 
 queue.initializeConnection()
     .then(function () {
         queue.setConsumer(function (contract: Contract) {
-            console.log(contract)
+            contracts.push(contract);
         });
 
         app.listen(7080, () => {
