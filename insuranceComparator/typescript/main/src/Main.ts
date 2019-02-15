@@ -25,12 +25,11 @@ app.post('/searchContract', function (req, res) {
         return;
 
     }
+    /* TODO: replace the algorithm by mongo request
     mongoHelper.db.collection('contracts').aggregate([ {"$group":{"_id":null,"min":{"$min":"$totalprice"}}}]).each(function (e,ff) {
-        console.log("result aggregate");
-        console.log(e);
-        console.log(ff);
-
     })
+     */
+
     let bestContract : Contract= undefined;
     for (let i = 0; i < req.body.items.length; i++) {
         let item = req.body.items[i];
