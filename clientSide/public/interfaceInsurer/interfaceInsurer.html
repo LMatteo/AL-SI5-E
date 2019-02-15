@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="interfaceInsurer.css">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="interfaceInsurer.js"></script>
+</head>
+
+<body>
+    <div ng-app="myShoppingList" ng-controller="myCtrl">
+
+        <div class="margin-container">
+
+            <!-- UI Insurer: <input getType="checkbox" ng-model="isInsurer"> -->
+
+            <div class="container">
+                <h1>BlaBlaMove Assurance</h1>
+                <p ng-show="isInsurer">List of insurance contracts</p>
+            </div>
+
+            <div>
+
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="x in contracts">
+                        <b>Type</b> : {{x.type}} <br>
+                        <b>Insurer contact</b> : {{x.contact.mail}} <br>
+                        <b>Description</b> : {{x.description}} <br>
+                    </li>
+                    <li class="list-group-item newcontract" ng-click="setVisibleForm()">+ new contract</li>
+                </ul>
+
+                <div id="form" class="form-visibility" ng-show="showForm">
+                    <form>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Email address</label>
+                            <input type="email" class="form-control" id="inputmail" placeholder="name@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Type</label>
+                            <select class="form-control" id="inputtype">
+                                <option>hightech</option>
+                                <option>fragile</option>
+                                <option>heavy</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Description</label>
+                            <textarea class="form-control" id="inputdescription" rows="3"></textarea>
+                        </div>
+
+                    </form>
+
+                    <button ng-click="addContract()">Add contract</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
