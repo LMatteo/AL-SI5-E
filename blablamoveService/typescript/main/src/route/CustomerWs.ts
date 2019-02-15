@@ -192,7 +192,7 @@ router.put(
     }
 );
 
-router.post("/calculator", (req: express.Request, res: express.Response) => {
+router.post("/calculate/type", (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "calculator");
     let action = req.body.action;
     var result;
@@ -213,14 +213,5 @@ router.post("/calculator", (req: express.Request, res: express.Response) => {
     }
     res.send(result);
 });
-
-router.get(
-    "/userInterfaceClient",
-    (req: express.Request, res: express.Response) => {
-        logger.log(Level.info, "interface Client Used");
-        res.contentType("text/html");
-        res.sendFile(pathFile + "/public/interfaceClient.html");
-    }
-);
 
 export = router;
