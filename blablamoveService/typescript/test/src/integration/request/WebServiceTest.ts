@@ -1,6 +1,6 @@
 import fetch = require("node-fetch");
 import assert = require('assert');
-const path = 'http://localhost:8080/blabla-move-backend';
+const path = 'http://localhost:9090/blabla-move-backend';
 
 describe('webservice test', function () {
     let array : [] = [];
@@ -68,9 +68,11 @@ describe('webservice test', function () {
         {method : 'POST', body : JSON.stringify(subs), headers: { 'Content-Type': 'application/json' },
         });
 
-       console.log(await subsPost.json())
+       let response = await subsPost.json();
 
-
-
+        assert.strictEqual(response.customer.id,custoId);
+        assert.strictEqual(response.contract.id,contractId);
     })
+
+
 });
