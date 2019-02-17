@@ -11,12 +11,11 @@ app.controller("myCtrl", function ($scope) {
     $scope.to = "";
     $scope.bestContracts = [];
     $scope.activateBestContracts = false;
-    $scope.objects = [{ name: "", type: "hightech" }]
+    $scope.policies = [{ name: "", price: "" }]
     $scope.contractSearched = [];
     $scope.showContracts = false;
 
     if ($scope.contracts === null || $scope.contracts === undefined) {
-        console.log()
         initContracts();
     }
 
@@ -26,10 +25,15 @@ app.controller("myCtrl", function ($scope) {
         Http.open("GET", url);
         Http.send();
         Http.onreadystatechange = (e) => {
-            if (Http.responseText !== undefined && Http.responseText !== null) {
-                $scope.contracts = JSON.parse(Http.responseText);
-                console.log($scope.contracts)
-                $scope.$apply();
+            // XMLHttpRequest.DONE === 4
+            if (e.target.readyState === 4) {
+                if (e.target.status === 200) {
+                    if (Http.responseText !== undefined && Http.responseText !== null) {
+                        $scope.contracts = JSON.parse(Http.responseText);
+                        console.log($scope.contracts)
+                        $scope.$apply();
+                    }
+                }
             }
         }
     }
@@ -40,31 +44,40 @@ app.controller("myCtrl", function ($scope) {
         Http.open("GET", url);
         Http.send();
         Http.onreadystatechange = (e) => {
-            if (JSON.parse(Http.responseText).length == 0) {
-                var typename1 = "fragile"
-                var typename2 = "hightech"
-                var typename3 = "heavy"
-                var description1 = "Vous déménagez ou bien souhaitez ponctuellement assurer des marchandises que vous confiez à un transporteur ?";
-                var description2 = "Vous êtes un professionnel du transport ? Il vous faut couvrir votre responsabilité vis à vis des marchandises qui vous sont confiées."
-                var mail1 = "axaAssurance@axa.fr";
-                var mail2 = "leLynx@llx.fr";
-                var data1 = JSON.stringify({ "contract": { "typeName": typename1, "description": description1, "mail": mail1 } });
-                var data2 = JSON.stringify({ "contract": { "typeName": typename2, "description": description2, "mail": mail2 } });
-                var data2 = JSON.stringify({ "contract": { "typeName": typename3, "description": description1, "mail": mail2 } });
-                addContractwithParams(typename1, mail1, description1);
-                addContractwithParams(typename2, mail2, description2);
-                addContractwithParams(typename3, mail2, description1)
-            }
+            // XMLHttpRequest.DONE === 4
+            if (e.target.readyState === 4) {
+                if (e.target.status === 200) {
+                    console.log("Réponse reçue: %s", e.target.responseText);
+                    if (JSON.parse(e.target.responseText).length == 0) {
+                        var typename1 = "fragile"
+                        var typename2 = "hightech"
+                        var typename3 = "heavy"
+                        var description1 = "Vous déménagez ou bien souhaitez ponctuellement assurer des marchandises que vous confiez à un transporteur ?";
+                        var description2 = "Vous êtes un professionnel du transport ? Il vous faut couvrir votre responsabilité vis à vis des marchandises qui vous sont confiées."
+                        var mail1 = "axaAssurance@axa.fr";
+                        var mail2 = "leLynx@llx.fr";
+                        var policies1 = [{ "name":"police1","price":456},{ "name":"police2","price":226}];
+                        var policies2 = [{ "name":"mamoute","price":86 }];
+                        var policies3 = [{ "name":"dino","price":26 }];
+
+                        addContractwithParams(typename1, mail1, description1, policies1);
+                        addContractwithParams(typename2, mail2, description2, policies2);
+                        addContractwithParams(typename3, mail2, description1, policies3);
+                    }
+                } else {
+                    console.log("Status de la réponse: %d (%s)", e.target.status, e.target.statusText);
+                }
+            }            
         }
         getContracts();
     }
 
-    function addContractwithParams(type, mail, description) {
+    function addContractwithParams(type, mail, description, policies) {
         const Http = new XMLHttpRequest();
         const url = 'http://localhost:8080/blabla-move-backend/contracts';
         Http.open("POST", url, true);
         Http.setRequestHeader("Content-type", "application/json");
-        var data = JSON.stringify({ "contract": { "typeName": type, "description": description, "mail": mail } });
+        var data = JSON.stringify({ "contract": { "typeName": type, "description": description, "mail": mail, "policies" : policies } });
         Http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 console.log(this.responseText)
@@ -78,7 +91,7 @@ app.controller("myCtrl", function ($scope) {
         const url = 'http://localhost:8080/blabla-move-backend/contracts';
         Http.open("POST", url, true);
         Http.setRequestHeader("Content-type", "application/json");
-        var data = JSON.stringify({ "contract": { "typeName": document.getElementById('inputtype').value, "description": document.getElementById('inputdescription').value, "mail": document.getElementById('inputmail').value } });
+        var data = JSON.stringify({ "contract": { "typeName": document.getElementById('inputtype').value, "description": document.getElementById('inputdescription').value, "mail": document.getElementById('inputmail').value, "policies": $scope.policies } });
         Http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 getContracts()
@@ -93,22 +106,6 @@ app.controller("myCtrl", function ($scope) {
         } else {
             $scope.showForm = true;
         }
-    }
-
-    $scope.searchContracts = function () {
-        const Http = new XMLHttpRequest();
-        const url = 'http://localhost:8080/blabla-move-backend/calculator';
-        Http.open("POST", url, true);
-        Http.setRequestHeader("Content-type", "application/json");
-        var data = JSON.stringify({ "action": "searchType", "request": { "objects": $scope.objects } });
-        Http.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                $scope.getType = JSON.parse(this.responseText).type;  // getType of contracts
-                console.log(this.responseText);
-                getContractsByType();
-            }
-        };
-        Http.send(data);
     }
 
 
@@ -127,23 +124,6 @@ app.controller("myCtrl", function ($scope) {
     }
 
 
-    var addPrice = function () {
-        const Http = new XMLHttpRequest();
-        const url = 'http://localhost:8080/blabla-move-backend/calculator';
-        Http.open("POST", url, true);
-        Http.setRequestHeader("Content-type", "application/json");
-        var data = JSON.stringify({ "action": "calculatePrice", "request": { "from": $scope.from, "to": $scope.to, "contracts": $scope.contractSearched, "objects": $scope.objects, "type": $scope.type } });
-        Http.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                $scope.contractSearched = JSON.parse(this.responseText);  // contracts with prices
-                console.log($scope.contractSearched);
-                $scope.showContracts = true;
-                $scope.$apply();
-            }
-        };
-        Http.send(data);
-    }
-
 
     $scope.findBestContract = function () {
         $scope.bestContracts = [];
@@ -161,8 +141,8 @@ app.controller("myCtrl", function ($scope) {
         $scope.activateBestContracts = true;
     }
 
-    $scope.addObject = function () {
-        $scope.objects.push({ name: "", type: "hightech" })
+    $scope.addPolice = function () {
+        $scope.policies.push({ name: "", price: "" })
     }
 
     $scope.subscribe = function (mail, type, description) {

@@ -8,7 +8,7 @@ import { TravelDoNotExist } from "../../error/TravelDoNotExist";
 import { PathValidate } from "../travelValidator/PathValidate";
 import { inject, injectable } from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
-import {getRepository} from "typeorm";
+import { getRepository } from "typeorm";
 
 @injectable()
 export class PathService implements ControlTravels {
@@ -158,6 +158,19 @@ export class PathService implements ControlTravels {
         let customer: Customer;
         let customerRepo = getRepository(Customer);
         customer = await customerRepo.findOne(id, {
+            relations: ["transports", "shipments", "items"]
+        });
+        if (customer === undefined) {
+            throw new CustomerDoNotExist();
+        }
+        return customer;
+    }
+
+    async getCustomerByName(name: string): Promise<Customer> {
+        let customer: Customer;
+        let customerRepo = getRepository(Customer);
+        customer = await customerRepo.findOne({
+            where: { name: name },
             relations: ["transports", "shipments", "items"]
         });
         if (customer === undefined) {

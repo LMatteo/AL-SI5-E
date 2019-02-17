@@ -88,13 +88,4 @@ router.get(
     }
 );
 
-router.get(
-    "/userInterfaceInsurer",
-    (req: express.Request, res: express.Response) => {
-        logger.log(Level.info, "interface Insurer Used");
-        res.contentType("text/html");
-        res.sendFile(pathFile + "/public/interfaceInsurer.html");
-    }
-);
-
 export = router;

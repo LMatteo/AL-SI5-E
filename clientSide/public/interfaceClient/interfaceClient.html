@@ -87,10 +87,10 @@
                                 <b>Insurer contact</b> : {{x.contact.mail}} <br>
                                 <b>Description</b> : {{x.description}} <br>
                                 <b>Price</b> : {{x.price}} €<br>
-                                <b>Police </b> :
-                                    <input type="checkbox" ng-model="x.police.checkaccident" ng-change="accidentChanged(x)"> accidents
-                                    <input type="checkbox" ng-model="x.police.checkfires" ng-change="firesChanged(x)"> fires
-                                    <input type="checkbox" ng-model="x.police.checksteals" ng-change="stealsChanged(x)"> steals
+                                <b>Police </b> : 
+                                <span ng-repeat="police in x.policies">
+                                    <input type="checkbox" ng-model="police.checked" ng-change="checkChanged(x)"> {{police.name}}
+                                </span>
                             </div>
                             <div class="button-souscrire">
                                 <button ng-click="subscribe()">Subscribe</button>
