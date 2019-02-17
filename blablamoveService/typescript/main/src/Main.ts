@@ -4,7 +4,6 @@ import bodyParser = require("body-parser");
 import Level = require("./logging/Level");
 import {Logger} from "./logging/Logger";
 import {createConnection} from "typeorm";
-import * as cors from "cors";
 
 let customerWs: express.Router = require("./route/CustomerWs");
 let insurerWs: express.Router = require("./route/InsurerWs");
