@@ -94,77 +94,107 @@
             $scope.objects = [{ name: "", type: "hightech" }]
             $scope.contractSearched = [];
             $scope.showContracts = false;
-
+            $scope.policies = [];
             if ($scope.contracts === null || $scope.contracts === undefined) {
                 console.log()
                 initContracts();
             }
 
             function getContracts() {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/contracts';
-                Http.open("GET", url);
-                Http.send();
-                Http.onreadystatechange = (e) => {
-                    if (Http.responseText !== undefined && Http.responseText !== null) {
-                        $scope.contracts = JSON.parse(Http.responseText);
-                        console.log($scope.contracts)
-                        $scope.$apply();
-                    }
-                }
-            }
+                let myRequest = new Request('/blabla-move-backend/contracts');
 
+                fetch(myRequest)
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('HTTP error, status = ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(function (response) {
+                        $scope.contracts = response;
+                        console.log($scope.contracts);
+                        $scope.$apply();
+
+                    });
+            }
             function initContracts() {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/contracts';
-                Http.open("GET", url);
-                Http.send();
-                Http.onreadystatechange = (e) => {
-                    if (JSON.parse(Http.responseText).length == 0) {
-                        var typename1 = "fragile"
-                        var typename2 = "hightech"
-                        var typename3 = "heavy"
-                        var description1 = "Vous déménagez ou bien souhaitez ponctuellement assurer des marchandises que vous confiez à un transporteur ?";
-                        var description2 = "Vous êtes un professionnel du transport ? Il vous faut couvrir votre responsabilité vis à vis des marchandises qui vous sont confiées."
-                        var mail1 = "axaAssurance@axa.fr";
-                        var mail2 = "leLynx@llx.fr";
-                        var data1 = JSON.stringify({ "contract": { "typeName": typename1, "description": description1, "mail": mail1 } });
-                        var data2 = JSON.stringify({ "contract": { "typeName": typename2, "description": description2, "mail": mail2 } });
-                        var data2 = JSON.stringify({ "contract": { "typeName": typename3, "description": description1, "mail": mail2 } });
-                        addContractwithParams(typename1, mail1, description1);
-                        addContractwithParams(typename2, mail2, description2);
-                        addContractwithParams(typename3, mail2, description1)
-                    }
-                }
+                let listContractsRequest = new Request('/blabla-move-backend/contracts');
+
+                fetch(listContractsRequest)
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('HTTP error, status = ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(function (response) {
+                        if (response.length === 0) {
+                            alert("Mock des contrats");
+
+                            addContractwithParams("fragile", "axaAssurance@axa.fr", "Vous déménagez ou bien souhaitez ponctuellement assurer des marchandises que vous confiez à un transporteur ?");
+                            addContractwithParams("hightech", "leLynx@llx.fr", "Vous êtes un professionnel du transport ? Il vous faut couvrir votre responsabilité vis à vis des marchandises qui vous sont confiées.");
+                        } else {
+                            $scope.contracts = response;
+                            console.log($scope.contracts);
+                            $scope.$apply();
+                        }
+                    });
                 getContracts();
+
             }
 
             function addContractwithParams(type, mail, description) {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/contracts';
-                Http.open("POST", url, true);
-                Http.setRequestHeader("Content-type", "application/json");
-                var data = JSON.stringify({ "contract": { "typeName": type, "description": description, "mail": mail } });
-                Http.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        console.log(this.responseText)
+                var data = new FormData();
+                data.append("json", JSON.stringify({
+                    "contract": {
+                        "typeName": type,
+                        "description": description,
+                        "mail": mail
                     }
-                };
-                Http.send(data);
+                }));
+
+                fetch("/echo/json/",
+                    {
+                        method: "POST",
+                        body: data
+                    })
+                    .then(function (res) {
+                        return res.json();
+                    })
+                    .then(function (data) {
+                        alert(JSON.stringify(data))
+                    })
+            }
+
+            $scope.addPolicy =function(){
+                $scope.policies.push({name:document.getElementById("newPoliceName").value, price: document.getElementById("newPolicePrice").value});
             }
 
             $scope.addContract = function () {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/contracts';
-                Http.open("POST", url, true);
-                Http.setRequestHeader("Content-type", "application/json");
-                var data = JSON.stringify({ "contract": { "typeName": document.getElementById('inputtype').value, "description": document.getElementById('inputdescription').value, "mail": document.getElementById('inputmail').value } });
-                Http.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        getContracts()
-                    }
+                var element = { contract:
+                        { typeName: document.getElementById('inputtype').value,
+                            description: document.getElementById('inputdescription').value,
+                            mail: document.getElementById('inputmail').value,
+                            policies:$scope.policies
+                        }
+
                 };
-                Http.send(data);
+
+                fetch("/blabla-move-backend/contracts",
+                    {
+                        method: "POST",
+                        body: JSON.stringify(element),
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(function (res) {
+                        return res.json();
+                    })
+                    .then(function (data) {
+                        getContracts();
+                    });
             }
 
             $scope.setVisibleForm = function () {
@@ -306,10 +336,28 @@
                                 <option>heavy</option>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Description</label>
                             <textarea class="form-control" id="inputdescription" rows="3"></textarea>
+                        </div>
+
+                        <label for="newPoliceName">Policies</label>
+
+                        <div id="policies">
+
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="x in policies">
+                                    <b>Name</b> : {{x.name}} <br>
+                                    <b>Price</b> : {{x.price}} <br>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="form-inline">
+
+                            <input type="text" class="form-control form-group mb-2" id="newPoliceName" placeholder="Policy name">
+                            <input type="number" class="form-control form-group mx-sm-3 mb-2" id="newPolicePrice" placeholder="Policy price">
+
+                            <button type="button" class="btn btn-primary mb-2" ng-click="addPolicy()">Confirm adding</button>
                         </div>
 
                     </form>

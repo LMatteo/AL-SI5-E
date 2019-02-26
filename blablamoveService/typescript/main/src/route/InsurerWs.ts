@@ -87,7 +87,12 @@ router.get(
         logger.log(Level.info, "subscriptions listed");
     }
 );
+router.get("/", (req: express.Request, res: express.Response) => {
+    res.contentType("text/html");
 
+    res.sendFile(pathFile + "/public/index");
+
+});
 router.get(
     "/userInterfaceInsurer",
     (req: express.Request, res: express.Response) => {

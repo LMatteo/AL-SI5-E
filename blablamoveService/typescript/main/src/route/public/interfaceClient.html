@@ -23,7 +23,7 @@
             margin-left: 30px;
         }
 
-        .margin-top{
+        .margin-top {
             margin-top: 30px;
         }
 
@@ -31,7 +31,7 @@
             margin-top: 30px;
         }
 
-        .background-ul{
+        .background-ul {
             background-color: bisque !important;
         }
 
@@ -51,20 +51,20 @@
             display: flex !important;
         }
 
-        .contractDisplay{
+        .contractDisplay {
             display: flex !important;
         }
 
-        .little-width{
+        .little-width {
             width: 200px !important;
             display: inline-block !important;
         }
 
-        .content-contract{
+        .content-contract {
             width: 80%
         }
 
-        .button-souscrire{
+        .button-souscrire {
             width: 20%
         }
 
@@ -91,7 +91,7 @@
             $scope.to = "";
             $scope.bestContracts = [];
             $scope.activateBestContracts = false;
-            $scope.objects = [{ name: "", type: "hightech" }]
+            $scope.objects = [{name: "", type: "hightech"}]
             $scope.contractSearched = [];
             $scope.showContracts = false;
             $scope.checkaccident = false;
@@ -99,203 +99,241 @@
             $scope.checksteals = false;
 
             if ($scope.contracts === null || $scope.contracts === undefined) {
-                console.log()
                 initContracts();
             }
-
-            function getContracts() {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/contracts';
-                Http.open("GET", url);
-                Http.send();
-                Http.onreadystatechange = (e) => {
-                    if (Http.responseText !== undefined && Http.responseText !== null) {
-                        $scope.contracts = JSON.parse(Http.responseText);
-                        console.log($scope.contracts)
-                        $scope.$apply();
-                    }
-                }
-            }
-
-            function initContracts() {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/contracts';
-                Http.open("GET", url);
-                Http.send();
-                Http.onreadystatechange = (e) => {
-                    if (JSON.parse(Http.responseText).length == 0) {
-                        var typename1 = "fragile"
-                        var typename2 = "hightech"
-                        var typename3 = "heavy"
-                        var description1 = "Vous déménagez ou bien souhaitez ponctuellement assurer des marchandises que vous confiez à un transporteur ?";
-                        var description2 = "Vous êtes un professionnel du transport ? Il vous faut couvrir votre responsabilité vis à vis des marchandises qui vous sont confiées."
-                        var mail1 = "axaAssurance@axa.fr";
-                        var mail2 = "leLynx@llx.fr";
-                        var data1 = JSON.stringify({ "contract": { "typeName": typename1, "description": description1, "mail": mail1 } });
-                        var data2 = JSON.stringify({ "contract": { "typeName": typename2, "description": description2, "mail": mail2 } });
-                        var data2 = JSON.stringify({ "contract": { "typeName": typename3, "description": description1, "mail": mail2 } });
-                        addContractwithParams(typename1, mail1, description1);
-                        addContractwithParams(typename2, mail2, description2);
-                        addContractwithParams(typename3, mail2, description1)
-                    }
-                }
-                getContracts();
-            }
-
-            function addContractwithParams(type, mail, description) {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/contracts';
-                Http.open("POST", url, true);
-                Http.setRequestHeader("Content-type", "application/json");
-                var data = JSON.stringify({ "contract": { "typeName": type, "description": description, "mail": mail } });
-                Http.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        console.log(this.responseText)
-                    }
-                };
-                Http.send(data);
-            }
-
-            $scope.addContract = function () {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/contracts';
-                Http.open("POST", url, true);
-                Http.setRequestHeader("Content-type", "application/json");
-                var data = JSON.stringify({ "contract": { "typeName": document.getElementById('inputtype').value, "description": document.getElementById('inputdescription').value, "mail": document.getElementById('inputmail').value } });
-                Http.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        getContracts()
-                    }
-                };
-                Http.send(data);
-            }
-
-            $scope.setVisibleForm = function () {
-                if ($scope.showForm) {
-                    $scope.showForm = false;
-                } else {
-                    $scope.showForm = true;
-                }
-            }
-
-            $scope.searchContracts = function () {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/calculator';
-                Http.open("POST", url, true);
-                Http.setRequestHeader("Content-type", "application/json");
-                var data = JSON.stringify({ "action": "searchType", "request": { "objects": $scope.objects } });
-                Http.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        $scope.getType = JSON.parse(this.responseText).type;  // getType of contracts
-                        $scope.type = JSON.parse(this.responseText).type;
-                        console.log(this.responseText);
-                        getContractsByType();
-                    }
-                };
-                Http.send(data);
-            }
-
-
-            var getContractsByType = function () {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/contracts/' + $scope.type;
-                Http.open("GET", url);
-                Http.send();
-                Http.onreadystatechange = (e) => {
-                    if (Http.responseText !== undefined && Http.responseText !== null) {
-                        $scope.contractSearched = JSON.parse(Http.responseText); // contracts
-                        console.log($scope.contractSearched);
-                        addPrice();
-                    }
-                }
-            }
-
-            $scope.accidentChanged = function (contract) {
-                console.log(contract.police.checkaccident)
-                if(contract.police.checkaccident){
-                    contract.price += 5
-                }else{
-                    contract.price -= 5
-                }
-            }
-
-            $scope.stealsChanged = function (contract) {
-                if(contract.police.checksteals){
-                    contract.price += 15
-                }else{
-                    contract.price -= 15
-                }
-            }
-
-            $scope.firesChanged = function (contract) {
-                if(contract.police.checkfires){
-                    contract.price += 10
-                }else{
-                    contract.price -= 10
-                }
-            }
-
-
-            var addPrice = function () {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/calculator';
-                Http.open("POST", url, true);
-                Http.setRequestHeader("Content-type", "application/json");
-                var data = JSON.stringify({ "action": "calculatePrice", "request": { "from": $scope.from, "to": $scope.to, "contracts": $scope.contractSearched, "objects": $scope.objects, "type": $scope.type } });
-                Http.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        $scope.contractSearched = JSON.parse(this.responseText);  // contracts with prices
-                        console.log($scope.contractSearched);
-                        addPolices();
-                        $scope.showContracts = true;
-                        $scope.$apply();
-                    }
-                };
-                Http.send(data);
-            }
-
-            var addPolices = function () {
-                $scope.contractSearched.forEach(function (element) {
-                    element.police = {"checkfires": false, "checkaccident":false, "checksteals":false }
-                });
-            }
-
-
-            $scope.findBestContract = function () {
-                $scope.bestContracts = [];
-                var maxPrice = 1000;
-                $scope.contractSearched.forEach(function (element) {
-                    if (element.price < maxPrice) {
-                        maxPrice = element.price;
-                    }
-                });
-                $scope.contractSearched.forEach(function (element) {
-                    if (element.price === maxPrice) {
-                        $scope.bestContracts.push(element)
-                    }
-                });
-                $scope.activateBestContracts = true;
-            }
-
-            $scope.addObject = function () {
-                $scope.objects.push({ name: "", type: "hightech" })
-            }
-
-            $scope.subscribe = function (mail, type, description) {
-                const Http = new XMLHttpRequest();
-                const url = 'http://localhost:8080/blabla-move-backend/subscriptions';
-                Http.open("POST", url, true);
-                Http.setRequestHeader("Content-type", "application/json");
-                var data = JSON.stringify({ "subcribe" : {"name" : $scope.name, "email": mail, "phone": $scope.phone, "description": description, "typeName" : type } });
-                Http.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        alert("Subcribe successfull : "+ this.responseText); 
-                    }
-                };
-                Http.send(data);  
-            }
-
         });
+
+        function getContracts() {
+            let myRequest = new Request('/blabla-move-backend/contracts');
+
+            fetch(myRequest)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('HTTP error, status = ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (response) {
+                    $scope.contracts = response;
+                    console.log($scope.contracts);
+                    $scope.$apply();
+
+                });
+        }
+
+        function initContracts() {
+            let listContractsRequest = new Request('/blabla-move-backend/contracts');
+
+            fetch(listContractsRequest)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('HTTP error, status = ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (response) {
+                    if (response.length === 0) {
+                        alert("Mock des contrats");
+
+                        addContractwithParams("fragile", "axaAssurance@axa.fr", "Vous déménagez ou bien souhaitez ponctuellement assurer des marchandises que vous confiez à un transporteur ?");
+                        addContractwithParams("hightech", "leLynx@llx.fr", "Vous êtes un professionnel du transport ? Il vous faut couvrir votre responsabilité vis à vis des marchandises qui vous sont confiées.");
+                    } else {
+                        $scope.contracts = response;
+                        console.log($scope.contracts);
+                        $scope.$apply();
+                    }
+                });
+            getContracts();
+
+        }
+
+        function addContractwithParams(type, mail, description) {
+            var data = new FormData();
+            data.append("json", JSON.stringify({
+                "contract": {
+                    "typeName": type,
+                    "description": description,
+                    "mail": mail
+                }
+            }));
+
+            fetch("/echo/json/",
+                {
+                    method: "POST",
+                    body: data
+                })
+                .then(function (res) {
+                    return res.json();
+                })
+                .then(function (data) {
+                    alert(JSON.stringify(data))
+                })
+        }
+
+        $scope.addContract = function () {
+            const Http = new XMLHttpRequest();
+            const url = 'http://localhost:8080/blabla-move-backend/contracts';
+            Http.open("POST", url, true);
+            Http.setRequestHeader("Content-type", "application/json");
+            var data = JSON.stringify({
+                "contract": {
+                    "typeName": document.getElementById('inputtype').value,
+                    "description": document.getElementById('inputdescription').value,
+                    "mail": document.getElementById('inputmail').value
+                }
+            });
+            Http.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    getContracts()
+                }
+            };
+            Http.send(data);
+        }
+
+        $scope.setVisibleForm = function () {
+            if ($scope.showForm) {
+                $scope.showForm = false;
+            } else {
+                $scope.showForm = true;
+            }
+        }
+
+        $scope.searchContracts = function () {
+            const Http = new XMLHttpRequest();
+            const url = 'http://localhost:8080/blabla-move-backend/calculator';
+            Http.open("POST", url, true);
+            Http.setRequestHeader("Content-type", "application/json");
+            var data = JSON.stringify({"action": "searchType", "request": {"objects": $scope.objects}});
+            Http.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    $scope.getType = JSON.parse(this.responseText).type;  // getType of contracts
+                    $scope.type = JSON.parse(this.responseText).type;
+                    console.log(this.responseText);
+                    getContractsByType();
+                }
+            };
+            Http.send(data);
+        }
+
+
+        var getContractsByType = function () {
+            const Http = new XMLHttpRequest();
+            const url = 'http://localhost:8080/blabla-move-backend/contracts/' + $scope.type;
+            Http.open("GET", url);
+            Http.send();
+            Http.onreadystatechange = (e) => {
+                if (Http.responseText !== undefined && Http.responseText !== null) {
+                    $scope.contractSearched = JSON.parse(Http.responseText); // contracts
+                    console.log($scope.contractSearched);
+                    addPrice();
+                }
+            }
+        }
+
+        $scope.accidentChanged = function (contract) {
+            console.log(contract.police.checkaccident)
+            if (contract.police.checkaccident) {
+                contract.price += 5
+            } else {
+                contract.price -= 5
+            }
+        }
+
+        $scope.stealsChanged = function (contract) {
+            if (contract.police.checksteals) {
+                contract.price += 15
+            } else {
+                contract.price -= 15
+            }
+        }
+
+        $scope.firesChanged = function (contract) {
+            if (contract.police.checkfires) {
+                contract.price += 10
+            } else {
+                contract.price -= 10
+            }
+        }
+
+
+        var addPrice = function () {
+            const Http = new XMLHttpRequest();
+            const url = 'http://localhost:8080/blabla-move-backend/calculator';
+            Http.open("POST", url, true);
+            Http.setRequestHeader("Content-type", "application/json");
+            var data = JSON.stringify({
+                "action": "calculatePrice",
+                "request": {
+                    "from": $scope.from,
+                    "to": $scope.to,
+                    "contracts": $scope.contractSearched,
+                    "objects": $scope.objects,
+                    "type": $scope.type
+                }
+            });
+            Http.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    $scope.contractSearched = JSON.parse(this.responseText);  // contracts with prices
+                    console.log($scope.contractSearched);
+                    addPolices();
+                    $scope.showContracts = true;
+                    $scope.$apply();
+                }
+            };
+            Http.send(data);
+        }
+
+        var addPolices = function () {
+            $scope.contractSearched.forEach(function (element) {
+                element.police = {"checkfires": false, "checkaccident": false, "checksteals": false}
+            });
+        }
+
+
+        $scope.findBestContract = function () {
+            $scope.bestContracts = [];
+            var maxPrice = 1000;
+            $scope.contractSearched.forEach(function (element) {
+                if (element.price < maxPrice) {
+                    maxPrice = element.price;
+                }
+            });
+            $scope.contractSearched.forEach(function (element) {
+                if (element.price === maxPrice) {
+                    $scope.bestContracts.push(element)
+                }
+            });
+            $scope.activateBestContracts = true;
+        }
+
+        $scope.addObject = function () {
+            $scope.objects.push({name: "", type: "hightech"})
+        }
+
+        $scope.subscribe = function (mail, type, description) {
+            const Http = new XMLHttpRequest();
+            const url = 'http://localhost:8080/blabla-move-backend/subscriptions';
+            Http.open("POST", url, true);
+            Http.setRequestHeader("Content-type", "application/json");
+            var data = JSON.stringify({
+                "subcribe": {
+                    "name": $scope.name,
+                    "email": mail,
+                    "phone": $scope.phone,
+                    "description": description,
+                    "typeName": type
+                }
+            });
+            Http.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert("Subcribe successfull : " + this.responseText);
+                }
+            };
+            Http.send(data);
+        }
+
+        })
+        ;
 
     </script>
 
@@ -304,116 +342,114 @@
 
 <body>
 
-    <div ng-app="myShoppingList" ng-controller="myCtrl">
+<div ng-app="myShoppingList" ng-controller="myCtrl">
 
-        <div class="margin-container">
+    <div class="margin-container">
 
-            <!-- UI Insurer: <input getType="checkbox" ng-model="isInsurer"> -->
+        <!-- UI Insurer: <input getType="checkbox" ng-model="isInsurer"> -->
 
-            <div class="container">
-                <h1>BlaBlaMove Client</h1>
-                <p ng-show="isInsurer">List of insurance contracts</p>
+        <div class="container">
+            <h1>BlaBlaMove Client</h1>
+            <p ng-show="isInsurer">List of insurance contracts</p>
+        </div>
+
+        <div>
+
+            <div class="form-visibility">
+                <form>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control" ng-value="name" ng-model="name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email address</label>
+                        <input type="email" class="form-control" ng-value="mail" ng-model="mail">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input class="form-control" ng-value="phone" ng-model="phone">
+                    </div>
+                    <div class="form-group">
+                        <label>Travel</label>
+                        <div>
+                            From
+                            <input class="form-control little-width" ng-value="from" ng-model="from">
+                            To
+                            <input class="form-control little-width" ng-value="to" ng-model="to">
+                        </div>
+                    </div>
+                    <label>Objects</label>
+                    <ul class="list-group background-ul">
+                        <li class="list-group-item" ng-repeat="x in objects">
+                            <div>
+                                Name
+                                <input class="form-control little-width" ng-value="x.name" ng-model="x.name">
+                                Type
+                                <select class="form-control little-width" ng-model="x.type">
+                                    <option>hightech</option>
+                                    <option>fragile</option>
+                                    <option>heavy</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li class="list-group-item newcontract" ng-click="addObject()">+ add object</li>
+                    </ul>
+                </form>
+
+                <button ng-click="searchContracts()">Search contracts</button>
+
             </div>
 
-            <div>
+            <div class="margin-container" ng-show="showContracts">
 
-                <div class="form-visibility">
-                    <form>
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input class="form-control" ng-value="name" ng-model="name">
+                <ul class="list-group">
+                    <li ng-repeat="x in contractSearched" class="list-group-item contractDisplay">
+                        <div class="content-contract">
+                            <b>Type</b> : {{x.type}} <br>
+                            <b>Insurer contact</b> : {{x.contact.mail}} <br>
+                            <b>Description</b> : {{x.description}} <br>
+                            <b>Price</b> : {{x.price}} €<br>
+                            <b>Police </b> :
+                            <input type="checkbox" ng-model="x.police.checkaccident" ng-change="accidentChanged(x)">
+                            accidents
+                            <input type="checkbox" ng-model="x.police.checkfires" ng-change="firesChanged(x)"> fires
+                            <input type="checkbox" ng-model="x.police.checksteals" ng-change="stealsChanged(x)"> steals
                         </div>
-                        <div class="form-group">
-                            <label>Email address</label>
-                            <input type="email" class="form-control" ng-value="mail" ng-model="mail">
+                        <div class="button-souscrire">
+                            <button ng-click="subscribe()">Subscribe</button>
                         </div>
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input class="form-control" ng-value="phone" ng-model="phone">
-                        </div>
-                        <div class="form-group">
-                            <label>Travel</label>
-                            <div>
-                                From
-                                <input class="form-control little-width" ng-value="from" ng-model="from">
-                                To
-                                <input class="form-control little-width" ng-value="to" ng-model="to">
-                            </div>
-                        </div>
-                        <label>Objects</label>
-                        <ul class="list-group background-ul">
-                            <li class="list-group-item" ng-repeat="x in objects">
-                                <div>
-                                    Name
-                                    <input class="form-control little-width" ng-value="x.name" ng-model="x.name">
-                                    Type
-                                    <select class="form-control little-width" ng-model="x.type">
-                                        <option>hightech</option>
-                                        <option>fragile</option>
-                                        <option>heavy</option>
-                                    </select>
-                                </div>
-                            </li>
-                            <li class="list-group-item newcontract" ng-click="addObject()">+ add object</li>
-                        </ul>
-                    </form>
+                    </li>
+                </ul>
 
-                    <button ng-click="searchContracts()">Search contracts</button>
+                <button ng-click="findBestContract()">Best contract</button>
 
-                </div>
-
-                <div class="margin-container" ng-show="showContracts">
-
+                <div ng-show="activateBestContracts" class="margin-top">
                     <ul class="list-group">
-                        <li ng-repeat="x in contractSearched" class="list-group-item contractDisplay">
+                        <li ng-repeat="x in bestContracts" class="list-group-item bestcontrats">
                             <div class="content-contract">
                                 <b>Type</b> : {{x.type}} <br>
                                 <b>Insurer contact</b> : {{x.contact.mail}} <br>
                                 <b>Description</b> : {{x.description}} <br>
                                 <b>Price</b> : {{x.price}} €<br>
-                                <b>Police </b> :
-                                    <input type="checkbox" ng-model="x.police.checkaccident" ng-change="accidentChanged(x)"> accidents
-                                    <input type="checkbox" ng-model="x.police.checkfires" ng-change="firesChanged(x)"> fires
-                                    <input type="checkbox" ng-model="x.police.checksteals" ng-change="stealsChanged(x)"> steals
                             </div>
                             <div class="button-souscrire">
-                                <button ng-click="subscribe()">Subscribe</button>
+                                <button ng-click="subscribe(x.contact.mail, x.type, x.description)">Subscribe</button>
                             </div>
+
+
                         </li>
                     </ul>
-
-                    <button ng-click="findBestContract()">Best contract</button>
-
-                    <div ng-show="activateBestContracts" class="margin-top">
-                        <ul class="list-group">
-                            <li ng-repeat="x in bestContracts" class="list-group-item bestcontrats">
-                                <div class="content-contract">
-                                    <b>Type</b> : {{x.type}} <br>
-                                    <b>Insurer contact</b> : {{x.contact.mail}} <br>
-                                    <b>Description</b> : {{x.description}} <br>
-                                    <b>Price</b> : {{x.price}} €<br>
-                                </div>
-                                <div class="button-souscrire">
-                                    <button ng-click="subscribe(x.contact.mail, x.type, x.description)">Subscribe</button>
-                                </div>
-
-
-                            </li>
-                        </ul>
-                    </div>
-
-
-
                 </div>
-
-
 
 
             </div>
 
+
         </div>
 
     </div>
+
+</div>
 
 </body>
 

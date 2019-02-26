@@ -85,6 +85,7 @@ export class Contract implements Comparable, Jsonable {
         this.type = type;
         this.contact = contact;
         this.policies = policies;
+        this.subscriptions = [];
     }
 
     equal(object: any): boolean {
