@@ -9,13 +9,13 @@ export class Customer implements Comparable {
     @PrimaryGeneratedColumn()
     private id: number;
 
-    @Column()
+    @Column({default : "default"})
     private name: string;
 
-    @Column({ nullable: true })
+    @Column({default : "nomail", nullable: true })
     private email: string;
 
-    @Column({ nullable: true })
+    @Column({default : 2, nullable: true })
     private phone: number;
 
     @OneToMany(type => Item, "owner", {

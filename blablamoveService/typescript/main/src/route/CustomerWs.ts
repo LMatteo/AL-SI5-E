@@ -26,6 +26,27 @@ let pathFile = __dirname.replace("dist", "typescript");
 router.use(express.static(path.join(pathFile, "public")));
 
 router.get(
+    "/customers/:customerName",
+    async (req: express.Request, res: express.Response) => {
+        logger.log(
+            Level.info,
+            "searching for customer " + req.params.customerName
+        );
+        let controlTravel: ControlTravels = container.get(
+            COMPONENT_IDENTIFIER.ControlTravels
+        );
+        let customer = await controlTravel.getCustomerByName(
+            req.params.customerName
+        );
+        res.send(customer);
+        logger.log(
+            Level.info,
+            "Customer " + req.params.customerName + " found"
+        );
+    }
+);
+
+router.get(
     "/contracts/:getType",
     async (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "listing contract");
@@ -51,7 +72,8 @@ router.get(
     }
 );
 
-router.get("/contracts/id/:id",
+router.get(
+    "/contracts/id/:id",
     async (req: express.Request, res: express.Response) => {
         logger.log(Level.info, "get contract by ID");
 
@@ -59,33 +81,41 @@ router.get("/contracts/id/:id",
             COMPONENT_IDENTIFIER.ListContract
         );
 
-        let contract = await contractLister.getContractById(req.params.id)
+        let contract = await contractLister.getContractById(req.params.id);
         res.send(contract);
 
-        logger.log(Level.info,'Contract with id : ' + req.params.id + ' sent')
-    });
+        logger.log(Level.info, "Contract with id : " + req.params.id + " sent");
+    }
+);
 
-router.post("/subscriptions", async (req: express.Request, res: express.Response) => {
-    logger.log(Level.info, "adding new subscriptions");
+router.post(
+    "/subscriptions",
+    async (req: express.Request, res: express.Response) => {
+        logger.log(Level.info, "adding new subscriptions");
 
-    let custoId = req.body.customerId;
-    let contractId = req.body.contractId;
+        let custoId = req.body.customerId;
+        let contractId = req.body.contractId;
 
-    let controlTravel : ControlTravels = container.get(COMPONENT_IDENTIFIER.ControlTravels);
-    let listContract : ListContract = container.get(COMPONENT_IDENTIFIER.ListContract);
+        let controlTravel: ControlTravels = container.get(
+            COMPONENT_IDENTIFIER.ControlTravels
+        );
+        let listContract: ListContract = container.get(
+            COMPONENT_IDENTIFIER.ListContract
+        );
 
-    let contractHandler: Subscription = container.get(
-        COMPONENT_IDENTIFIER.Subscription
-    );
+        let contractHandler: Subscription = container.get(
+            COMPONENT_IDENTIFIER.Subscription
+        );
 
-    let subscription: Subscribe = await contractHandler.subscribeToContract(
-        await controlTravel.getCustomerById(custoId),
-        await listContract.getContractById(contractId)
-    );
+        let subscription: Subscribe = await contractHandler.subscribeToContract(
+            await controlTravel.getCustomerById(custoId),
+            await listContract.getContractById(contractId)
+        );
 
-    res.send(subscription);
-    logger.log(Level.info, "new subscriptions added");
-});
+        res.send(subscription);
+        logger.log(Level.info, "new subscriptions added");
+    }
+);
 
 router.post("/travels", async (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "creating new travel");
@@ -192,7 +222,7 @@ router.put(
     }
 );
 
-router.post("/calculator", (req: express.Request, res: express.Response) => {
+router.post("/calculate/type", (req: express.Request, res: express.Response) => {
     logger.log(Level.info, "calculator");
     let action = req.body.action;
     var result;
@@ -213,14 +243,5 @@ router.post("/calculator", (req: express.Request, res: express.Response) => {
     }
     res.send(result);
 });
-
-router.get(
-    "/userInterfaceClient",
-    (req: express.Request, res: express.Response) => {
-        logger.log(Level.info, "interface Client Used");
-        res.contentType("text/html");
-        res.sendFile(pathFile + "/public/interfaceClient.html");
-    }
-);
 
 export = router;

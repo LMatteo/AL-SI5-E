@@ -20,4 +20,6 @@ export interface ControlTravels {
     finishTravel(travelId: number): void;
 
     getCustomerById(id: number): Promise<Customer>;
+
+    getCustomerByName(name: string): Promise<Customer>;
 }

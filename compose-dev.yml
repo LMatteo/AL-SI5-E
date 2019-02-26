@@ -1,0 +1,35 @@
+version: "3.3"
+
+services:
+  blablamove-db:
+    container_name: blablamove_db
+    image: lucasmatteo/db_order_soa
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=blablamove
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user
+
+  blablamove:
+    container_name: blablamove_service
+    build: ./blablamoveService
+    ports:
+      - "9090:8080"
+    environment:
+      - mailer=extern_mailer
+      - dbName=blablamove-db
+      - qName=rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3.7
+    ports:
+      - "5672:5672"
+
+
+  extern_mailer:
+    image: hsy20000118/blablamove-mailer
+    ports:
+      - "9091:9091"
