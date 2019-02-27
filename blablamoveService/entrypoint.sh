@@ -1,5 +1,4 @@
 #!/bin/bash
-
 mysql -h$dbName -uuser -puser > /dev/null 2> /dev/null
 
 res=$?

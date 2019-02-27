@@ -9,7 +9,7 @@ COPY --from=builder /insuranceComparator/node_modules /insuranceComparator/node_
 COPY --from=builder /insuranceComparator/package*.json /insuranceComparator/
 COPY --from=builder /insuranceComparator/dist /insuranceComparator/dist
 WORKDIR /insuranceComparator
-EXPOSE 8080
+EXPOSE 7080
 CMD [ "npm", "start" ]
 
 
