@@ -7,7 +7,7 @@ module.exports = {
     password: "user",
     connectTimeout: 15000,
     database: "blablamove",
-    synchronize: false,
+    synchronize: true,
     logging: false,
     entities: [
         "dist/main/src/entity/contact/Contact.js",
