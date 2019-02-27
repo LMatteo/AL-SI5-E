@@ -2,20 +2,20 @@ import { Comparable } from "../Comparable";
 import { Item } from "../item/Item";
 import { Travel } from "../travel/Travel";
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import {Subscribe} from "../Subscription/Subscribe";
+import { Subscribe } from "../Subscription/Subscribe";
 
 @Entity()
 export class Customer implements Comparable {
     @PrimaryGeneratedColumn()
     private id: number;
 
-    @Column({default : "default"})
+    @Column({ default: "default" })
     private name: string;
 
-    @Column({default : "nomail", nullable: true })
+    @Column({ default: "nomail", nullable: true })
     private email: string;
 
-    @Column({default : 2, nullable: true })
+    @Column({ default: 2, nullable: true })
     private phone: number;
 
     @OneToMany(type => Item, "owner", {
@@ -34,7 +34,7 @@ export class Customer implements Comparable {
     private transports: Travel[];
 
     @OneToMany(type => Subscribe, "customer")
-    private subscriptions : Subscribe[];
+    private subscriptions: Subscribe[];
 
     public get $id(): number {
         return this.id;
@@ -113,10 +113,13 @@ export class Customer implements Comparable {
     }
 
     equal(object: any): boolean {
-        if(object === undefined){return false;}
-        if(object !== undefined && !(object instanceof Customer)){
+        if (object === undefined) {
             return false;
-        }if(! ("id" in object)){
+        }
+        if (object !== undefined && !(object instanceof Customer)) {
+            return false;
+        }
+        if (!("id" in object)) {
         }
         return this.id === object.id || this.name == object.name;
     }

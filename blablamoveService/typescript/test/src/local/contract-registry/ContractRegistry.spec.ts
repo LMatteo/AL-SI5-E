@@ -32,7 +32,6 @@ describe("contract registry test", function () {
     it('should add contract ', async function () {
         let contract = await handleContract.addContract(Type.fragile, "test","salut@hotmail.com",[]);
 
-
         Assert.strictEqual(1,(await listContract.getAllContract()).length);
 
         Assert.strictEqual(Type.fragile,contract.getType);

@@ -30,7 +30,6 @@ describe('contract instance test', function () {
 
     beforeEach(async () => {
         await getConnection().synchronize(true);
-        new SubscribeStore().clear();
         getSubs = container.get(COMPONENT_IDENTIFIER.GetSubscription);
         subs = container.get(COMPONENT_IDENTIFIER.Subscription);
         contractHandler = container.get(COMPONENT_IDENTIFIER.HandleContract);

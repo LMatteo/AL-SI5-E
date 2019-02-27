@@ -5,10 +5,10 @@ module.exports = {
     port: 3306,
     username: "user",
     password: "user",
-    connectTimeout: 1500,
+    connectTimeout: 15000,
     database: "blablamove",
-    synchronize: true,
-    logging: true,
+    synchronize: false,
+    logging: false,
     entities: [
         "dist/main/src/entity/contact/Contact.js",
         "dist/main/src/entity/contract/Contract.js",

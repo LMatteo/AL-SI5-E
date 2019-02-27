@@ -11,8 +11,7 @@ import {
     PrimaryGeneratedColumn,
     OneToMany
 } from "typeorm";
-import { type } from "os";
-import {Subscribe} from "../Subscription/Subscribe";
+import { Subscribe } from "../Subscription/Subscribe";
 
 @Entity()
 export class Contract implements Comparable, Jsonable {
@@ -33,7 +32,7 @@ export class Contract implements Comparable, Jsonable {
     private policies: Policy[];
 
     @OneToMany(type => Subscribe, "contrat")
-    private subscriptions : Subscribe[];
+    private subscriptions: Subscribe[];
 
     get getId(): number {
         return this.id;
@@ -85,7 +84,6 @@ export class Contract implements Comparable, Jsonable {
         this.type = type;
         this.contact = contact;
         this.policies = policies;
-        this.subscriptions = [];
     }
 
     equal(object: any): boolean {
@@ -100,8 +98,11 @@ export class Contract implements Comparable, Jsonable {
         j.contact = this.contact.toJson();
         j.description = this.description;
         j.policies = [];
-        for (let i = 0; i <  this.policies.length; i++) {
-            let policy:any = {price: this.policies[i].$price, name: this.policies[i].$name}
+        for (let i = 0; i < this.policies.length; i++) {
+            let policy: any = {
+                price: this.policies[i].$price,
+                name: this.policies[i].$name
+            };
             j.policies.push(policy);
         }
         return JSON.stringify(j);
