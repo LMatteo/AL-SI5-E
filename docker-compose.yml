@@ -15,7 +15,9 @@ services:
   blablamove:
     container_name: blablamove_service
     image: hsy20000118/blablamove
-
+    depends_on:
+      - rabbitmq
+      - blablamove-db
     ports:
       - "9090:8080"
     environment:
@@ -24,12 +26,17 @@ services:
       - qName=rabbitmq
 
   rabbitmq:
+    container_name: blablamove_messagequeue
     image: rabbitmq:3.7
     ports:
       - "5672:5672"
 
   comparator:
+    container_name: blablamove_comparator
     image: hsy20000118/blablamove-comparator
+    depends_on:
+      - rabbitmq
+      - comparator_db
     ports:
       - "7080:7080"
     environment:
@@ -37,12 +44,18 @@ services:
       - mongo_host=comparator_db
 
   comparator_db:
+    container_name: blablamove_comparator_db
     image: mongo
     ports:
       - "27017:27017"
 
-
   extern_mailer:
+    container_name: blablamove_mailer
     image: hsy20000118/blablamove-mailer
     ports:
       - "9091:9091"
+
+  client:
+    container_name: blablamove_client
+    image: hsy20000118/blablamove-client
+    network_mode: "host"
