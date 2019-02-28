@@ -58,13 +58,9 @@ export class ContractInstance implements GetSubscription, Subscription {
             contract,
             policies
         );
-        console.log("aaa");
         let repo = getRepository(Subscribe);
-        console.log("bbb");
         await repo.save(subscription);
-        console.log("ccc");
         this.notify.notifyContractRegister(subscription);
-        console.log("ddd");
         return subscription;
     }
 
