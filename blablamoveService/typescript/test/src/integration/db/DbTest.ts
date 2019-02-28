@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 import { Contact } from "../../../../main/src/entity/contact/Contact";
-import { createConnection, getConnection, getRepository} from "typeorm";
+import { createConnection, getConnection, getRepository } from "typeorm";
 import * as assert from "assert";
 import { Contract } from "../../../../main/src/entity/contract/Contract";
 import { Type } from "../../../../main/src/entity/Type";
@@ -9,12 +9,12 @@ import { Item } from "../../../../main/src/entity/item/Item";
 import { Validator } from "../../../../main/src/entity/validator/Validator";
 import { Travel } from "../../../../main/src/entity/travel/Travel";
 import { Customer } from "../../../../main/src/entity/customer/Customer";
-import {Subscribe} from "../../../../main/src/entity/Subscription/Subscribe";
+import { Subscribe } from "../../../../main/src/entity/Subscription/Subscribe";
 
 describe("dbTest", function() {
     before(async () => {
         try {
-            await createConnection()
+            await createConnection();
         } catch (e) {
             await getConnection().synchronize(true);
         }
@@ -24,17 +24,16 @@ describe("dbTest", function() {
         await getConnection().synchronize();
     });
 
-    it("should retrieve getContact", async function () {
+    it("should retrieve getContact", async function() {
         let contact: Contact = new Contact("salut");
 
         let contactRepo = getRepository(Contact);
         await contactRepo.save(contact);
         let entity: Contact = await contactRepo.findOne(contact.getId());
         assert.deepStrictEqual(entity, contact);
-
     });
 
-    it("should retrive contract", async function () {
+    it("should retrive contract", async function() {
         let contract: Contract = new Contract(
             "type",
             Type.fragile,
@@ -46,53 +45,45 @@ describe("dbTest", function() {
         await contractRepo.save(contract);
         assert.deepStrictEqual(
             await contractRepo.findOne({
-                where: {id: contract.getId},
+                where: { id: contract.getId }
             }),
             contract
         );
     });
 
-    it("should retrive item", async function () {
+    it("should retrive item", async function() {
         let item: Item = new Item();
         item.$name = "test";
 
         let repo = getRepository(Item);
         await repo.save(item);
         assert.deepStrictEqual(await repo.findOne(item.$id), item);
-
     });
 
-    it("should save validator", async function () {
+    it("should save validator", async function() {
         let validator: Validator = new Validator();
 
         let repo = getRepository(Validator);
         await repo.save(validator);
 
-        assert.deepStrictEqual(
-            validator,
-            await repo.findOne(validator.$id)
-        );
+        assert.deepStrictEqual(validator, await repo.findOne(validator.$id));
 
         validator.$insuranceValidation = true;
         validator.$pathValidation = true;
         await repo.save(validator);
 
-        assert.deepStrictEqual(
-            await repo.findOne(validator.$id),
-            validator
-        );
+        assert.deepStrictEqual(await repo.findOne(validator.$id), validator);
     });
 
-    it("should save customer", async function () {
+    it("should save customer", async function() {
         let customer = new Customer();
         customer.$name = "toto";
         let repo = getRepository(Customer);
         await repo.save(customer);
         assert.deepStrictEqual(await repo.findOne(customer.$id), customer);
-
     });
 
-    it("should save travel", async function () {
+    it("should save travel", async function() {
         let travel = new Travel();
         travel.$departure = "nice";
         travel.$destination = "paris";
@@ -100,12 +91,12 @@ describe("dbTest", function() {
         let repo = getRepository(Travel);
         await repo.save(travel);
         assert.deepStrictEqual(
-            await repo.findOne(travel.$id, {relations: ["validator"]}),
+            await repo.findOne(travel.$id, { relations: ["validator"] }),
             travel
         );
     });
 
-    it("should save travel and customer", async function () {
+    it("should save travel and customer", async function() {
         let travel = new Travel();
         travel.$departure = "nice";
         travel.$destination = "paris";
@@ -136,10 +127,9 @@ describe("dbTest", function() {
             customer2.$shipments[0].$id,
             customer.$shipments[0].$id
         );
-
     });
 
-    it("should save travel and transporter", async function () {
+    it("should save travel and transporter", async function() {
         let travel = new Travel();
         travel.$departure = "nice";
         travel.$destination = "paris";
@@ -173,10 +163,9 @@ describe("dbTest", function() {
             transporter2.$shipments[0].$id,
             transporter.$shipments[0].$id
         );
-
     });
 
-    it("should save travel and item", async function () {
+    it("should save travel and item", async function() {
         let travel = new Travel();
         travel.$departure = "nice";
         travel.$destination = "paris";
@@ -194,13 +183,9 @@ describe("dbTest", function() {
         assert.deepStrictEqual(travel2.$departure, travel.$departure);
         assert.deepStrictEqual(travel2.$destination, travel.$destination);
         assert.deepStrictEqual(travel2.$items[0].$id, travel.$items[0].$id);
-        assert.deepStrictEqual(
-            travel2.$items[0].$name,
-            travel.$items[0].$name
-        );
-
+        assert.deepStrictEqual(travel2.$items[0].$name, travel.$items[0].$name);
     });
-    it("should save customer and item", async function () {
+    it("should save customer and item", async function() {
         let customer = new Customer();
         customer.$name = "toto";
         let item = new Item();
@@ -214,17 +199,14 @@ describe("dbTest", function() {
             relations: ["items"]
         });
         assert.deepStrictEqual(customer2.$name, customer.$name);
-        assert.deepStrictEqual(
-            customer2.$items[0].$id,
-            customer.$items[0].$id
-        );
+        assert.deepStrictEqual(customer2.$items[0].$id, customer.$items[0].$id);
         assert.deepStrictEqual(
             customer2.$items[0].$name,
             customer.$items[0].$name
         );
     });
 
-    it('should save subscription', async function () {
+    it("should save subscription", async function() {
         let customer = new Customer();
         customer.$name = "toto";
 
@@ -235,16 +217,15 @@ describe("dbTest", function() {
             []
         );
 
-        let subscription = new Subscribe(customer,contract);
+        let subscription = new Subscribe(customer, contract, []);
 
         let repo = getRepository(Subscribe);
 
         await repo.save(subscription);
-        let retrivedSubscription : Subscribe = await repo.findOne({
-            where: {id: subscription.$id}
+        let retrivedSubscription: Subscribe = await repo.findOne({
+            where: { id: subscription.$id }
         });
 
-        assert.deepStrictEqual(subscription,retrivedSubscription);
+        assert.deepStrictEqual(subscription, retrivedSubscription);
     });
-
 });

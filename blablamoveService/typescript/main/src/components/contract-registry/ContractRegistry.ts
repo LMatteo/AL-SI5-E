@@ -1,17 +1,16 @@
 import { HandleContract } from "./HandleContract";
 import { ListContract } from "./ListContract";
 import { Type } from "../../entity/Type";
-import { ContractStore } from "../../entityManager/local/ContractStore";
 import { RegisterInsurer } from "../agency-notifier/RegisterInsurer";
 import { Contract } from "../../entity/contract/Contract";
 import { Contact } from "../../entity/contact/Contact";
-import { AgencyNotifier } from "../agency-notifier/AgengyNotifier";
 import { inject, injectable } from "inversify";
 import COMPONENT_IDENTIFIER from "../InjectionIdentifier";
 import { ContractDoesNotExist } from "../../error/ContractDoesNotExist";
 import { getRepository } from "typeorm";
 import { Policy } from "../../entity/Policy/Policy";
-import {MessageQueue} from "../message-queue/MessageQueue";
+import { MessageQueue } from "../message-queue/MessageQueue";
+import { PolicyDoesNotExist } from "../../error/PolicyDoesNotExist";
 
 @injectable()
 export class ContractRegistry implements HandleContract, ListContract {
@@ -38,7 +37,10 @@ export class ContractRegistry implements HandleContract, ListContract {
         await repo.save(contract);
         this.registerInsurer.registerInsurerContact(contract);
         let marshalledContract: string = contract.toJson();
-        await this.messageQueue.sendMessage(MessageQueue.CONTRACTS_QUEUE,marshalledContract );
+        await this.messageQueue.sendMessage(
+            MessageQueue.CONTRACTS_QUEUE,
+            marshalledContract
+        );
         return contract;
     }
 
@@ -72,5 +74,14 @@ export class ContractRegistry implements HandleContract, ListContract {
         let repo = getRepository(Contract);
         let contracts = await repo.find({});
         return contracts;
+    }
+
+    async getPolicyById(id: number): Promise<Policy> {
+        let repo = getRepository(Policy);
+        let policy = await repo.findOne({ where: { id: id } });
+        if (policy === undefined) {
+            throw new PolicyDoesNotExist();
+        }
+        return policy;
     }
 }

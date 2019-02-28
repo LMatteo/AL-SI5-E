@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from "typeorm";
 import { Contract } from "../contract/Contract";
+import { Subscribe } from "../Subscription/Subscribe";
 
 @Entity()
 export class Policy {

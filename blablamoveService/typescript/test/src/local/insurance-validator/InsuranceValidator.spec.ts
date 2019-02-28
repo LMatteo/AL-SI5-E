@@ -36,14 +36,18 @@ describe("insurance validator test", function() {
         contracts = container.get(COMPONENT_IDENTIFIER.GetSubscription);
         notifier = container.get(COMPONENT_IDENTIFIER.Notify);
         subscription = container.get(COMPONENT_IDENTIFIER.Subscription);
-       
+
         christophe = new Customer();
         christophe.$name = "christophe";
         new CustomerStore().persist(christophe);
-        let contract: Contract = new Contract("Contract",Type.hightech, new Contact("unit@test"),[]);
-        subscription.subscribeToContract(christophe, contract);
+        let contract: Contract = new Contract(
+            "Contract",
+            Type.hightech,
+            new Contact("unit@test"),
+            []
+        );
+        subscription.subscribeToContract(christophe, contract, []);
 
-     
         johan = new Customer();
         johan.$name = "johan";
         new CustomerStore().persist(johan);
@@ -62,10 +66,8 @@ describe("insurance validator test", function() {
         travelA.$transporter = johan;
         travelA.$departure = "startA";
         travelA.$destination = "endA";
-        
+
         insuranceValidator.notify(travelA);
-
-
     });
     xit("return error if bad travel is passed", function() {
         let travelA: Travel = new Travel();
@@ -74,11 +76,13 @@ describe("insurance validator test", function() {
         travelA.$destination = "endA";
         travelA.$transporter = johan;
 
-        Assert.throws(() =>  insuranceValidator.validate(travelA), TravelDoNotExist, "Error thrown");
-
-
+        Assert.throws(
+            () => insuranceValidator.validate(travelA),
+            TravelDoNotExist,
+            "Error thrown"
+        );
     });
-/*
+    /*
     it("add item to travel", function() {
         let travel1 = pathService.addItemToTravel(itemA, travelA.$id);
         Assert.strictEqual(travel1, travelA);
