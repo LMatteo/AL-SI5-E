@@ -4,6 +4,7 @@
   "description": "interface client",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": ""
   },
   "repository": {
