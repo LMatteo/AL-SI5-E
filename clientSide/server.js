@@ -5,6 +5,15 @@ const express = require('express');
 const app = express();
 const pathFile = __dirname;
 app.use(cors());
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Allow", "POST,GET,PUT,DELETE,OPTIONS");
+  res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 //API css and js files
 app.get('/blablamove/interfaceClient.js', function (req, res) {
@@ -50,5 +59,6 @@ app.get('/blablamove/clientFinish', function (req, res) {
 
 //run server
 app.listen(3000, function () {
+  
   console.log('server listening on port 3000!')
 })

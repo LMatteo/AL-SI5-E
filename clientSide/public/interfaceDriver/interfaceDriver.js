@@ -74,7 +74,7 @@ app.controller("myCtrl", function ($scope) {
         Http.open("POST", url, true);
         Http.setRequestHeader("Content-type", "application/json");
 
-        var data = JSON.stringify({ "contractId": contractId, "customerId": $scope.transporterId });
+        var data = JSON.stringify({ "contractId": contractId, "customerId": $scope.transporterId ,"policies":[]});
         Http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 alert("Subcribe successfull : " + this.responseText);

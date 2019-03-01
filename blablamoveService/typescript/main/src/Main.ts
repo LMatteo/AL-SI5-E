@@ -14,7 +14,7 @@ const logger: Logger = new Logger();
 app.use((req, res, next) => {
     logger.log(Level.info, "new request");
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Allow", "POST,GET,PUT,DELETE");
+    res.header("Allow", "POST,GET,PUT,DELETE,OPTIONS");
     res.header(
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept"

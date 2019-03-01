@@ -31,6 +31,7 @@ app.controller("myCtrl", function ($scope) {
                 if (e.target.status === 200) {
                     if (Http.responseText !== undefined && Http.responseText !== null) {
                         $scope.contracts = JSON.parse(Http.responseText);
+                        console.log("GET Contrats");
                         console.log($scope.contracts)
                         $scope.$apply();
                     }
@@ -48,7 +49,7 @@ app.controller("myCtrl", function ($scope) {
             // XMLHttpRequest.DONE === 4
             if (e.target.readyState === 4) {
                 if (e.target.status === 200) {
-                    console.log("Réponse reçue: %s", e.target.responseText);
+                    //console.log("Réponse reçue: %s", e.target.responseText);
                     if (JSON.parse(e.target.responseText).length == 0) {
                         var typename1 = "fragile"
                         var typename2 = "hightech"
@@ -89,7 +90,7 @@ app.controller("myCtrl", function ($scope) {
 
     $scope.addContract = function () {
         const Http = new XMLHttpRequest();
-        const url = url_prefix+'/blabla-move-backend/contracts';
+        const url = url_prefix+'blabla-move-backend/contracts';
         Http.open("POST", url, true);
         Http.setRequestHeader("Content-type", "application/json");
         var data = JSON.stringify({ "contract": { "typeName": document.getElementById('inputtype').value, "description": document.getElementById('inputdescription').value, "mail": document.getElementById('inputmail').value, "policies": $scope.policies } });
@@ -112,7 +113,7 @@ app.controller("myCtrl", function ($scope) {
 
     var getContractsByType = function () {
         const Http = new XMLHttpRequest();
-        const url = url_prefix+'/blabla-move-backend/contracts/' + $scope.type;
+        const url = url_prefix+'blabla-move-backend/contracts/' + $scope.type;
         Http.open("GET", url);
         Http.send();
         Http.onreadystatechange = (e) => {
