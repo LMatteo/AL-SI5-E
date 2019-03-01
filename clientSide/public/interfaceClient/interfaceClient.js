@@ -184,13 +184,13 @@ app.controller("myCtrl", function ($scope) {
         $scope.objects.push({ name: "", type: "hightech" })
     }
 
-    $scope.subscribe = function (contract,customerId) {
+    $scope.subscribe = function (contractId,customerId) {
         const Http = new XMLHttpRequest();
         const url = url_prefix+'blabla-move-backend/subscriptions';
         Http.open("POST", url, true);
         Http.setRequestHeader("Content-type", "application/json");
         
-        var data = JSON.stringify({ "contractId" : contract.id,"customerId":customerId });
+        var data = JSON.stringify({ "contractId" : contractId,"customerId":customerId });
         Http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 alert("Subcribe successfull : " + this.responseText);
@@ -198,6 +198,21 @@ app.controller("myCtrl", function ($scope) {
         };
         Http.send(data);
     }
+
+    $scope.addItem = function(item,idTravel){
+        const Http = new XMLHttpRequest();
+        const url = url_prefix+'blabla-move-backend/travels/'+idTravel;
+        Http.open("PUT", url, true);
+        Http.setRequestHeader("Content-type", "application/json");
+        var data = JSON.stringify({ "itemName" : item});
+        Http.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log("item : "+ item +" a été ajouté");
+            }
+        };
+        Http.send(data);
+    }
+
 
     $scope.createTravel = function(contract){
         const Http = new XMLHttpRequest();
@@ -208,7 +223,13 @@ app.controller("myCtrl", function ($scope) {
         Http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var result = JSON.parse(this.responseText);
-                $scope.subscribe(contract,result.id)
+                console.log(result);
+                $scope.subscribe(contract.id,result.customer.id);
+                $scope.objects.forEach(function(element) {
+                    console.log(element);
+                    $scope.addItem(element.name,result.id)
+                  });
+                
             }
         };
         Http.send(data);
