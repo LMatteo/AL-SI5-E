@@ -1,6 +1,14 @@
 import { Customer } from "../customer/Customer";
 import { Contract } from "../contract/Contract";
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Policy } from "../Policy/Policy";
+import {
+    Entity,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    OneToMany,
+    ManyToMany,
+    JoinTable
+} from "typeorm";
 
 @Entity()
 export class Subscribe {
@@ -12,6 +20,10 @@ export class Subscribe {
 
     @ManyToOne(type => Contract, { cascade: ["insert", "update"], eager: true })
     private contract: Contract;
+
+    @ManyToMany(type => Policy, { cascade: ["insert", "update"], eager: true })
+    @JoinTable()
+    private policies: Policy[];
 
     public get $id(): number {
         return this.id;
@@ -37,8 +49,9 @@ export class Subscribe {
         this.contract = value;
     }
 
-    constructor(customer: Customer, contract: Contract) {
+    constructor(customer: Customer, contract: Contract, policies: Policy[]) {
         this.customer = customer;
         this.contract = contract;
+        this.policies = policies;
     }
 }

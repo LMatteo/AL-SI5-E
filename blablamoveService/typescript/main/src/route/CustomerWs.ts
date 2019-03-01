@@ -19,6 +19,7 @@ import container from "../components/InjectionConfig";
 import COMPONENT_IDENTIFIER from "../components/InjectionIdentifier";
 import { ControlTravels } from "../components/path-service/ControlTravel";
 import { TravelDoNotExist } from "../error/TravelDoNotExist";
+import { Policy } from "../entity/Policy/Policy";
 
 let router: express.Router = express.Router();
 const logger: Logger = new Logger();
@@ -95,7 +96,7 @@ router.post(
 
         let custoId = req.body.customerId;
         let contractId = req.body.contractId;
-
+        let policiesArray = <any[]>req.body.policies;
         let controlTravel: ControlTravels = container.get(
             COMPONENT_IDENTIFIER.ControlTravels
         );
@@ -106,12 +107,15 @@ router.post(
         let contractHandler: Subscription = container.get(
             COMPONENT_IDENTIFIER.Subscription
         );
-
+        let policies: Policy[] = [];
+        for (let p of policiesArray) {
+            policies.push(await listContract.getPolicyById(p.id));
+        }
         let subscription: Subscribe = await contractHandler.subscribeToContract(
             await controlTravel.getCustomerById(custoId),
-            await listContract.getContractById(contractId)
+            await listContract.getContractById(contractId),
+            policies
         );
-
         res.send(subscription);
         logger.log(Level.info, "new subscriptions added");
     }
@@ -222,26 +226,29 @@ router.put(
     }
 );
 
-router.post("/calculate/type", (req: express.Request, res: express.Response) => {
-    logger.log(Level.info, "calculator");
-    let action = req.body.action;
-    var result;
-    if (action === "calculatePrice") {
-        let from = req.body.request.from;
-        let to = req.body.request.to;
-        let contracts = req.body.request.contracts;
-        let objects = req.body.request.objects;
-        let type = req.body.request.type;
-        let calculator: Calculate = new Calculate();
-        result = calculator.calcule(from, to, contracts, objects, type);
-    } else if (action === "searchType") {
-        let objects = req.body.request.objects;
-        let calculator: Calculate = new Calculate();
-        result = { type: calculator.searchType(objects) };
-    } else {
-        result = { error: "this action is not define" };
+router.post(
+    "/calculate/type",
+    (req: express.Request, res: express.Response) => {
+        logger.log(Level.info, "calculator");
+        let action = req.body.action;
+        var result;
+        if (action === "calculatePrice") {
+            let from = req.body.request.from;
+            let to = req.body.request.to;
+            let contracts = req.body.request.contracts;
+            let objects = req.body.request.objects;
+            let type = req.body.request.type;
+            let calculator: Calculate = new Calculate();
+            result = calculator.calcule(from, to, contracts, objects, type);
+        } else if (action === "searchType") {
+            let objects = req.body.request.objects;
+            let calculator: Calculate = new Calculate();
+            result = { type: calculator.searchType(objects) };
+        } else {
+            result = { error: "this action is not define" };
+        }
+        res.send(result);
     }
-    res.send(result);
-});
+);
 
 export = router;

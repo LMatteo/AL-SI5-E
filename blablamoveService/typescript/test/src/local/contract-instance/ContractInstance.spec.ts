@@ -1,28 +1,26 @@
-import 'reflect-metadata'
-import {GetSubscription} from "../../../../main/src/components/contract-instance/GetSubscription";
+import "reflect-metadata";
+import { GetSubscription } from "../../../../main/src/components/contract-instance/GetSubscription";
 import COMPONENT_IDENTIFIER from "../../../../main/src/components/InjectionIdentifier";
-import {Subscription} from "../../../../main/src/components/contract-instance/Subscription";
-import {SubscribeStore} from "../../../../main/src/entityManager/local/SubscribeStore";
-import {Customer} from "../../../../main/src/entity/customer/Customer";
-import {Contract} from "../../../../main/src/entity/contract/Contract";
-import {Type} from "../../../../main/src/entity/Type";
-import {Contact} from "../../../../main/src/entity/contact/Contact";
+import { Subscription } from "../../../../main/src/components/contract-instance/Subscription";
+import { SubscribeStore } from "../../../../main/src/entityManager/local/SubscribeStore";
+import { Customer } from "../../../../main/src/entity/customer/Customer";
+import { Contract } from "../../../../main/src/entity/contract/Contract";
+import { Type } from "../../../../main/src/entity/Type";
+import { Contact } from "../../../../main/src/entity/contact/Contact";
 import * as assert from "assert";
 import container from "../../../../main/src/components/InjectionConfig";
-import {NoSuchSubscription} from "../../../../main/src/error/NoSuchSubscription";
-import {createConnection, getConnection} from "typeorm";
-import {HandleContract} from "../../../../main/src/components/contract-registry/HandleContract";
+import { NoSuchSubscription } from "../../../../main/src/error/NoSuchSubscription";
+import { createConnection, getConnection } from "typeorm";
+import { HandleContract } from "../../../../main/src/components/contract-registry/HandleContract";
 
-
-describe('contract instance test', function () {
-
-    let getSubs : GetSubscription;
-    let subs : Subscription;
-    let contractHandler : HandleContract;
+describe("contract instance test", function() {
+    let getSubs: GetSubscription;
+    let subs: Subscription;
+    let contractHandler: HandleContract;
 
     before(async () => {
-        try{
-            await createConnection()
+        try {
+            await createConnection();
         } catch (e) {
             await getConnection().synchronize(true);
         }
@@ -33,56 +31,77 @@ describe('contract instance test', function () {
         getSubs = container.get(COMPONENT_IDENTIFIER.GetSubscription);
         subs = container.get(COMPONENT_IDENTIFIER.Subscription);
         contractHandler = container.get(COMPONENT_IDENTIFIER.HandleContract);
-
     });
 
-    it('should add and retrive subscription', async function () {
+    it("should add and retrive subscription", async function() {
         let custo = new Customer();
         custo.$name = "jean";
-        let contract = await contractHandler.addContract(Type.fragile, "test","test",[]);
-        let subscription = await subs.subscribeToContract(custo,contract);
+        let contract = await contractHandler.addContract(
+            Type.fragile,
+            "test",
+            "test",
+            []
+        );
+        let subscription = await subs.subscribeToContract(custo, contract, []);
 
-        assert.strictEqual(1,(await getSubs.getSubscriptionByCustomer(custo)).length);
-        assert.deepStrictEqual(subscription,(await getSubs.getSubscriptionByCustomer(custo))[0]);
-        assert.deepStrictEqual(subscription,(await getSubs.getSubscriptionById(subscription.$id)))
+        assert.strictEqual(
+            1,
+            (await getSubs.getSubscriptionByCustomer(custo)).length
+        );
+        assert.deepStrictEqual(
+            subscription,
+            (await getSubs.getSubscriptionByCustomer(custo))[0]
+        );
+        assert.deepStrictEqual(
+            subscription,
+            await getSubs.getSubscriptionById(subscription.$id)
+        );
     });
 
-    it('should throw an error', function () {
-        return getSubs.getSubscriptionById(7897984545)
-            .catch((e) => {
-                assert.strictEqual(true ,e instanceof NoSuchSubscription)
-            })
+    it("should throw an error", function() {
+        return getSubs.getSubscriptionById(7897984545).catch(e => {
+            assert.strictEqual(true, e instanceof NoSuchSubscription);
+        });
     });
 
-    it('should cancel subscription', async function () {
+    it("should cancel subscription", async function() {
         let custo = new Customer();
         custo.$name = "jean";
-        let contract = await contractHandler.addContract(Type.fragile, "test","test",[]);
-        let subscription = await subs.subscribeToContract(custo,contract);
+        let contract = await contractHandler.addContract(
+            Type.fragile,
+            "test",
+            "test",
+            []
+        );
+        let subscription = await subs.subscribeToContract(custo, contract, []);
 
-        assert.strictEqual(1,(await getSubs.getSubscriptionByCustomer(custo)).length);
+        assert.strictEqual(
+            1,
+            (await getSubs.getSubscriptionByCustomer(custo)).length
+        );
         await subs.cancelSubscritpion(subscription);
-        assert.strictEqual(0,(await getSubs.getSubscriptionByCustomer(custo)).length);
-
-        await getSubs.getSubscriptionById(subscription.$id)
-            .catch((e) => {
-                assert.strictEqual(true ,e instanceof NoSuchSubscription)
-            })
+        assert.strictEqual(
+            0,
+            (await getSubs.getSubscriptionByCustomer(custo)).length
+        );
+        await getSubs.getSubscriptionById(subscription.$id).catch(e => {
+            assert.strictEqual(true, e instanceof NoSuchSubscription);
+        });
     });
 
-    it('should subscribe same customer to two contracts', async function () {
+    it("should subscribe same customer to two contracts", async function() {
         let custo = new Customer();
         custo.$name = "jean";
         let custo2 = new Customer();
         custo2.$name = "salut";
-        let contract = await contractHandler.addContract(Type.fragile, "test","test",[]);
+        let contract = await contractHandler.addContract(
+            Type.fragile,
+            "test",
+            "test",
+            []
+        );
 
-        let sub1 = await subs.subscribeToContract(custo,contract);
-        let sub2 = await subs.subscribeToContract(custo2,contract);
-
-
-
+        let sub1 = await subs.subscribeToContract(custo, contract, []);
+        let sub2 = await subs.subscribeToContract(custo2, contract, []);
     });
-
-
 });

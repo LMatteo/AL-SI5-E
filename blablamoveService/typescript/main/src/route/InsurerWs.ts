@@ -29,7 +29,7 @@ router.post(
         console.log(req.body);
         let type: keyof typeof Type = req.body.contract.typeName;
 
-        let policiesArray = <any[]>(req.body.contract.policies);
+        let policiesArray = <any[]>req.body.contract.policies;
         let policies: Policy[] = [];
         for (let p of policiesArray) {
             policies.push(new Policy(p.name, p.price));
@@ -91,7 +91,6 @@ router.get("/", (req: express.Request, res: express.Response) => {
     res.contentType("text/html");
 
     res.sendFile(pathFile + "/public/index");
-
 });
 router.get(
     "/userInterfaceInsurer",
