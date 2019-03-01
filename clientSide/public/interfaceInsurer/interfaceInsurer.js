@@ -14,6 +14,7 @@ app.controller("myCtrl", function ($scope) {
     $scope.policies = [{ name: "", price: "" }]
     $scope.contractSearched = [];
     $scope.showContracts = false;
+    var url_prefix = 'http://localhost:8080/'
 
     if ($scope.contracts === null || $scope.contracts === undefined) {
         initContracts();
@@ -21,7 +22,7 @@ app.controller("myCtrl", function ($scope) {
 
     function getContracts() {
         const Http = new XMLHttpRequest();
-        const url = 'http://localhost:8080/blabla-move-backend/contracts';
+        const url = url_prefix+'blabla-move-backend/contracts';
         Http.open("GET", url);
         Http.send();
         Http.onreadystatechange = (e) => {
@@ -74,7 +75,7 @@ app.controller("myCtrl", function ($scope) {
 
     function addContractwithParams(type, mail, description, policies) {
         const Http = new XMLHttpRequest();
-        const url = 'http://localhost:8080/blabla-move-backend/contracts';
+        const url = url_prefix+'blabla-move-backend/contracts';
         Http.open("POST", url, true);
         Http.setRequestHeader("Content-type", "application/json");
         var data = JSON.stringify({ "contract": { "typeName": type, "description": description, "mail": mail, "policies" : policies } });
@@ -88,7 +89,7 @@ app.controller("myCtrl", function ($scope) {
 
     $scope.addContract = function () {
         const Http = new XMLHttpRequest();
-        const url = 'http://localhost:8080/blabla-move-backend/contracts';
+        const url = url_prefix+'/blabla-move-backend/contracts';
         Http.open("POST", url, true);
         Http.setRequestHeader("Content-type", "application/json");
         var data = JSON.stringify({ "contract": { "typeName": document.getElementById('inputtype').value, "description": document.getElementById('inputdescription').value, "mail": document.getElementById('inputmail').value, "policies": $scope.policies } });
@@ -111,7 +112,7 @@ app.controller("myCtrl", function ($scope) {
 
     var getContractsByType = function () {
         const Http = new XMLHttpRequest();
-        const url = 'http://localhost:8080/blabla-move-backend/contracts/' + $scope.type;
+        const url = url_prefix+'/blabla-move-backend/contracts/' + $scope.type;
         Http.open("GET", url);
         Http.send();
         Http.onreadystatechange = (e) => {
@@ -143,20 +144,6 @@ app.controller("myCtrl", function ($scope) {
 
     $scope.addPolice = function () {
         $scope.policies.push({ name: "", price: "" })
-    }
-
-    $scope.subscribe = function (mail, type, description) {
-        const Http = new XMLHttpRequest();
-        const url = 'http://localhost:8080/blabla-move-backend/subscriptions';
-        Http.open("POST", url, true);
-        Http.setRequestHeader("Content-type", "application/json");
-        var data = JSON.stringify({ "subcribe": { "name": $scope.name, "email": mail, "phone": $scope.phone, "description": description, "typeName": type } });
-        Http.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                alert("Subcribe successfull : " + this.responseText);
-            }
-        };
-        Http.send(data);
     }
 
 });
