@@ -14,6 +14,7 @@ app.controller("myCtrl", function ($scope) {
     $scope.checkaccident = false;
     $scope.checkfires = false;
     $scope.checksteals = false;
+    $scope.idContract = "";
     var url_prefix = 'http://localhost:8080/'
 
     if ($scope.contracts === null || $scope.contracts === undefined) {
@@ -211,6 +212,9 @@ app.controller("myCtrl", function ($scope) {
             }
         };
         Http.send(data);
+    }
+
+    $scope.finishTravel = function(){
     }
 
 

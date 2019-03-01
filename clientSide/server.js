@@ -43,6 +43,10 @@ app.get('/blablamove/driver', function (req, res) {
   res.sendFile(pathFile + "/public/interfaceDriver/interfaceDriver.html");
 })
 
+app.get('/blablamove/clientFinish', function (req, res) {
+  res.contentType("text/html");
+  res.sendFile(pathFile + "/public/interfaceClient/finishContrat.html");
+})
 
 //run server
 app.listen(3000, function () {
