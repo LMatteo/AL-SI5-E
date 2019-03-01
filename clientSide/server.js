@@ -19,6 +19,12 @@ app.get('/blablamove/interfaceInsurer.js', function (req, res) {
 app.get('/blablamove/interfaceInsurer.css', function (req, res) {
     res.sendFile(pathFile + "/public/interfaceInsurer/interfaceInsurer.css");
 })
+app.get('/blablamove/interfaceDriver.js', function (req, res) {
+  res.sendFile(pathFile + "/public/interfaceDriver/interfaceDriver.js");
+})
+app.get('/blablamove/interfaceDriver.css', function (req, res) {
+  res.sendFile(pathFile + "/public/interfaceDriver/interfaceDriver.css");
+})
 
 
 //interfaces
@@ -30,6 +36,11 @@ app.get('/blablamove/client', function (req, res) {
 app.get('/blablamove/insurer', function (req, res) {
   res.contentType("text/html");
   res.sendFile(pathFile + "/public/interfaceInsurer/interfaceInsurer.html");
+})
+
+app.get('/blablamove/driver', function (req, res) {
+  res.contentType("text/html");
+  res.sendFile(pathFile + "/public/interfaceDriver/interfaceDriver.html");
 })
 
 
